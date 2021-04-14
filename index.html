@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="description" content="Vanilla JS demo" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <h2>Extract ID Info & Liveness detection</h2>
+    <div id="container"></div>
+
+    <div style="margin-bottom:10px">
+      <label>
+        Keys:
+        <select id="select-api-key" onchange="onSelectKey()">
+          <option value="0" selected>Web face tracking (..a31)</option>
+          <option value="1">Labeller test real data (..3b2)</option>
+          <option value="2">Labeller test fake data (..ac4)</option>
+        </select>
+      </label>
+    </div>
+    <div style="margin-bottom:10px">
+      <label>
+        Access key
+        <input id="access-key" style="width:500px" />
+      </label>
+    </div>
+    <div style="margin-bottom:10px">
+      <label>
+        Secret key
+        <input id="secret-key" style="width:500px" />
+      </label>
+    </div>
+    <div style="margin-bottom:10px">
+      <label>
+        API URL
+        <input id="api-url" style="width:500px" />
+      </label>
+    </div>
+    <div>
+      Api check:
+      <select id="select-api-check">
+        <option value="false">false</option>
+        <option value="true" selected>true</option>
+      </select>
+    </div>
+
+    <hr />
+    <h4>Extract ID Info</h4>
+    <div style="margin-bottom:10px">
+      Card side:
+      <select id="select-card-side"></select>
+    </div>
+    <div style="margin-bottom:10px">
+      Front card Id:
+      <input id="input-cardInfo-front-card-id" style="width:500px" />
+    </div>
+    <button onclick="startExtractIDInfo()">Start Extract ID Info</button>
+    <pre id="result-extract-id-info"></pre>
+    <hr />
+    <h4>Liveness detection</h4>
+    <div>
+      Mode:
+      <select id="select-mode"></select>
+    </div>
+    <div>
+      Camera:
+      <select id="select-camera">
+        <option value="true">Front</option>
+        <option value="false">Back</option>
+      </select>
+    </div>
+    <div>
+      Enable Recording:
+      <select id="select-enable-recording">
+        <option value="false">false</option>
+        <!-- <option value="true">true</option> -->
+      </select>
+    </div>
+    <button onclick="startLivenessDetection()">Liveness detection</button>
+    <div id="result-liveness-detection"></div>
+    <script src="/build/tvweb-sdk.standalone.min.js"></script>
+    <script>
+      const keys = [
+        {
+          accessKey: 'f051dfd3-8a6e-4a15-a4e8-7ea8cdc84a31',
+          secretKey: 'vgiKCenoKvhPq79KABbFmxCBu6WX1tdw',
+        },
+        {
+          accessKey: 'db3d055f-ba7b-4177-b7e8-110068bda3b2',
+          secretKey: 'R1zjKNbTH3RkT2xgO2CarxAsFbcLCdsf',
+        },
+        {
+          accessKey: '4e24c8f3-7fe0-4824-9339-9a1216a72ac4',
+          secretKey: 'CkoyKslrfBGv4m53LIlH0Q8yJYf4O56e',
+        }
+      ];
+      function onSelectKey() {
+        const selectedKey = document.getElementById('select-api-key').value;
+        const { accessKey, secretKey } = keys[selectedKey];
+        inputAccessKey.value = accessKey;
+        inputSecretKey.value = secretKey;
+      }
+    </script>
+    <script type="text/javascript">
+      const tv = new TVWebSDK.SDK({
+        container: document.getElementById("container"),
+        lang: "vi",
+        assetRoot: "https://unpkg.com/@tsocial/tvweb-sdk@latest/assets",
+      });
+      window.tv = tv;
+      const resultExtractIdInfoEl = document.getElementById(
+        "result-extract-id-info"
+      );
+      const resultLivenessDetectionEl = document.getElementById(
+        "result-liveness-detection"
+      );
+      const selectModeEl = document.getElementById("select-mode");
+      const selectApiCheckEl = document.getElementById("select-api-check");
+      const selectCardSideEl = document.getElementById("select-card-side");
+      const selectEnableRecordingEl = document.getElementById("select-enable-recording");
+      const inputAccessKey = document.getElementById("access-key");
+      const inputSecretKey = document.getElementById("secret-key");
+      const inputApiUrl = document.getElementById("api-url");
+      inputAccessKey.value = "f051dfd3-8a6e-4a15-a4e8-7ea8cdc84a31"
+      inputSecretKey.value = "vgiKCenoKvhPq79KABbFmxCBu6WX1tdw"
+      inputApiUrl.value = "https://tv-testing.trustingsocial.com/api"
+
+      Object.keys(TVWebSDK.Constants.Mode).forEach((k) => {
+        const option = document.createElement("option");
+        option.appendChild(document.createTextNode(k));
+        option.setAttribute("value", TVWebSDK.Constants.Mode[k]);
+        selectModeEl.appendChild(option);
+      });
+
+      Object.keys(TVWebSDK.Constants.IDCardSide).forEach((k) => {
+        const option = document.createElement("option");
+        option.appendChild(document.createTextNode(k));
+        option.setAttribute("value", TVWebSDK.Constants.IDCardSide[k]);
+        selectCardSideEl.appendChild(option);
+      });
+
+      function startExtractIDInfo() {
+        const cardSide = selectCardSideEl.value;
+        const apiCheck = selectApiCheckEl.value === "true";
+        const inputFrontIdEl = document.getElementById("input-cardInfo-front-card-id");
+        resultExtractIdInfoEl.innerHTML = "";
+
+        tv.readIDCard({
+          apiCheck: apiCheck,
+          accessKey: inputAccessKey.value,
+          secretKey: inputSecretKey.value,
+          apiUrl: inputApiUrl.value,
+          frontCamera: false,
+          cardSide: cardSide,
+          frontCardId: inputFrontIdEl.value,
+          title: cardSide === TVWebSDK.Constants.IDCardSide.FRONT ? "Mặt trước CMND/CCCD" : "Mặt sau CMND/CCCD",
+          description: cardSide === TVWebSDK.Constants.IDCardSide.FRONT ? "Căn mặt trước CMND/CCCD vào khung" : "Căn mặt sau CMND/CCCD vào khung",
+          onSuccess: handleReadIDCardResult,
+          onError: (e) => {
+            resultExtractIdInfoEl.appendChild(
+              document.createTextNode(`${JSON.stringify(e, null, "\t")}`)
+            );
+            tv.destroyView();
+          },
+        });
+      }
+
+      function startLivenessDetection() {
+        const livenessDetectionMode = selectModeEl.value;
+        const apiCheck = selectApiCheckEl.value === "true";
+        const enableRecording = selectEnableRecordingEl.value === "true";
+        const cameraSelected = document.getElementById('select-camera');
+
+        tv.livenessDetection({
+          apiCheck: apiCheck,
+          mode: livenessDetectionMode,
+          accessKey: inputAccessKey.value,
+          secretKey: inputSecretKey.value,
+          apiUrl: inputApiUrl.value,
+          onLivenessDetectionDone: handleLivenessDetectionDone,
+          enableRecording: enableRecording,
+          captureFrameData: true,
+          onError: (e) => console.error(e),
+          frontCamera: cameraSelected.value === "true"
+        });
+      }
+
+      function handleReadIDCardResult(img) {
+        const apiCheck = selectApiCheckEl.value === "true";
+
+        if (apiCheck === false) {
+          const imgEl = document.createElement("img");
+          imgEl.width = "200";
+          imgEl.src = URL.createObjectURL(img);
+          resultExtractIdInfoEl.appendChild(imgEl);
+        } else {
+          resultExtractIdInfoEl.appendChild(
+            document.createTextNode(`${JSON.stringify(img, null, "\t")}`)
+          );
+        }
+        
+        tv.destroyView();
+      }
+
+      function handleLivenessDetectionDone(result) {
+        const { frontalFaces, apiCheckPassed, steps, videoRecord } = result;
+        const apiCheck = selectApiCheckEl.value === "true";
+        resultLivenessDetectionEl.innerHTML = "";
+        if (apiCheck === false) {
+          setTimeout(function () {
+            tv.destroyView();
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode("Random frontal faces detected: ")
+            );
+            frontalFaces.forEach((blob) => {
+              const imgEl = document.createElement("img");
+              imgEl.width = "200";
+              imgEl.style.marginRight = "5px";
+              imgEl.src = URL.createObjectURL(blob);
+              resultLivenessDetectionEl.appendChild(imgEl);
+            });
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode("Directional faces:")
+            );
+            steps.forEach((s) => {
+              const imgEl = document.createElement("img");
+              imgEl.width = "200";
+              imgEl.style.marginRight = "5px";
+              imgEl.src = URL.createObjectURL(s.image.blob);
+              resultLivenessDetectionEl.appendChild(imgEl);
+            });
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode("Video:")
+            );
+            if (videoRecord.length) {
+              const videoEl = document.createElement("video");
+              videoEl.width = "200";
+              videoEl.controls = "controls";
+              videoEl.src = URL.createObjectURL(videoRecord[0]);
+              resultLivenessDetectionEl.appendChild(videoEl);
+            }
+          }, 500);
+        } else {
+          tv.destroyView();
+          resultLivenessDetectionEl.appendChild(
+            document.createTextNode(`apiCheckPassed: ${apiCheckPassed}`)
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
