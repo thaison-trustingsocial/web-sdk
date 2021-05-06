@@ -72,10 +72,12 @@
       </select>
     </div>
     <div>
-      Enable Recording:
-      <select id="select-enable-recording">
-        <option value="false">false</option>
-        <!-- <option value="true">true</option> -->
+      Record frame rate:
+      <select id="select-frame-rate">
+        <option value="1">1 (max)</option>
+        <option value="2">1/2</option>
+        <option value="3">1/3</option>
+        <option value="4">1/4</option>
       </select>
     </div>
     <button onclick="startLivenessDetection()">Liveness detection</button>
@@ -119,7 +121,6 @@
       const selectModeEl = document.getElementById("select-mode");
       const selectApiCheckEl = document.getElementById("select-api-check");
       const selectCardSideEl = document.getElementById("select-card-side");
-      const selectEnableRecordingEl = document.getElementById("select-enable-recording");
       const inputAccessKey = document.getElementById("access-key");
       const inputSecretKey = document.getElementById("secret-key");
       const inputApiUrl = document.getElementById("api-url");
@@ -170,9 +171,9 @@
       function startLivenessDetection() {
         const livenessDetectionMode = selectModeEl.value;
         const apiCheck = selectApiCheckEl.value === "true";
-        const enableRecording = selectEnableRecordingEl.value === "true";
         const cameraSelected = document.getElementById('select-camera');
-
+        const frameRate = document.getElementById('select-frame-rate');
+        console.log(+frameRate.value);
         tv.livenessDetection({
           apiCheck: apiCheck,
           mode: livenessDetectionMode,
@@ -180,9 +181,15 @@
           secretKey: inputSecretKey.value,
           apiUrl: inputApiUrl.value,
           onLivenessDetectionDone: handleLivenessDetectionDone,
-          enableRecording: enableRecording,
           captureFrameData: true,
-          onError: (e) => console.error(e),
+          frameRate: +frameRate.value,
+          onError: (e) => {
+            resultLivenessDetectionEl.innerHTML = "";
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode(`${JSON.stringify(e, null, "\t")}`)
+            );
+            tv.destroyView();
+          },
           frontCamera: cameraSelected.value === "true"
         });
       }

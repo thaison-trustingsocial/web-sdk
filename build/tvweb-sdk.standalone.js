@@ -65041,45 +65041,48 @@
 	      O = void 0 === F ? 500 : F,
 	      M = e.captureFrameData,
 	      P = void 0 !== M && M,
-	      L = react.useState(!1),
-	      B = C$3(L, 2),
-	      z = B[0],
-	      W = B[1],
-	      V = react.useState(!1),
-	      U = C$3(V, 2),
-	      H = U[0],
-	      G = U[1],
-	      j = react.useRef(null),
-	      q = c$1.useSDKSettings(),
-	      K = q.lang,
-	      X = q.assetRoot,
-	      Y = q.apiClient,
-	      Q = u === Hv.ACTIVE,
-	      Z = react.useReducer(function (e) {
+	      L = e.frameRate,
+	      B = void 0 === L ? 1 : L,
+	      z = react.useState(!1),
+	      W = C$3(z, 2),
+	      V = W[0],
+	      U = W[1],
+	      H = react.useState(!1),
+	      G = C$3(H, 2),
+	      j = G[0],
+	      q = G[1],
+	      K = react.useRef(null),
+	      X = c$1.useSDKSettings(),
+	      Y = X.lang,
+	      Q = X.assetRoot,
+	      Z = X.apiClient,
+	      J = u === Hv.ACTIVE,
+	      ee = react.useReducer(function (e) {
 	    return e + 1;
 	  }, 0),
-	      J = C$3(Z, 2),
-	      ee = (J[0], J[1]),
-	      te = react.useRef(null),
-	      ne = react.useRef(!1),
-	      re = react.useRef(null);
-	  null === re.current && (re.current = At.initFaceVerificationData({
-	    assetRoot: X,
+	      te = C$3(ee, 2),
+	      ne = (te[0], te[1]),
+	      re = react.useRef(null),
+	      ae = react.useRef(!1),
+	      oe = react.useRef(null);
+	  null === oe.current && (oe.current = At.initFaceVerificationData({
+	    assetRoot: Q,
 	    customInstructions: k,
 	    customIcon: I,
 	    customDirectionIcon: E
 	  }));
-	  var ae = react.useState(""),
-	      oe = C$3(ae, 2),
-	      se = oe[0],
-	      ie = oe[1],
-	      ue = react.useRef([]),
-	      le = react.useRef(),
+
+	  var se = react.useState(""),
+	      ie = C$3(se, 2),
+	      ue = ie[0],
+	      le = ie[1],
 	      ce = react.useRef([]),
-	      de = react.useRef(-1),
-	      pe = react.useRef(1),
-	      fe = react.useRef(["image/jpeg", .4]),
-	      he = react.useCallback(function (e) {
+	      de = react.useRef(),
+	      pe = react.useRef([]),
+	      fe = react.useRef(-1),
+	      he = react.useRef(B),
+	      me = react.useRef(["image/jpeg", .4]),
+	      ge = react.useCallback(function (e) {
 	    var t,
 	        n,
 	        r = e.clientWidth,
@@ -65092,14 +65095,14 @@
 	    var c = Math.floor((o - t) / 2) + i,
 	        d = 5 + u,
 	        p = l;
-	    te.current = {
+	    re.current = {
 	      x: c,
 	      y: d,
 	      width: t,
 	      height: n,
 	      image: p,
 	      surroundStyle: f
-	    }, "object" === x$6(v) ? te.current = N$3(N$3({}, te.current), v) : "function" == typeof v && (te.current = N$3(N$3({}, te.current), v({
+	    }, "object" === x$6(v) ? re.current = N$3(N$3({}, re.current), v) : "function" == typeof v && (re.current = N$3(N$3({}, re.current), v({
 	      clientWidth: r,
 	      clientHeight: a,
 	      videoAreaWidth: o,
@@ -65109,35 +65112,35 @@
 	      isMobile: D$3.isMobile,
 	      width: t,
 	      height: n
-	    }))), ee(), W(!0);
+	    }))), ne(), U(!0);
 	  }, [l, f, v]),
-	      me = react.useState(3),
-	      ge = C$3(me, 2),
-	      ye = ge[0],
-	      be = ge[1],
-	      xe = react.useState(!1),
-	      ve = C$3(xe, 2),
-	      we = ve[0],
-	      ke = ve[1],
-	      Ie = react.useRef(!1),
-	      Ee = react.useCallback(function (e) {
-	    ke(e), Ie.current = e;
+	      ye = react.useState(3),
+	      be = C$3(ye, 2),
+	      xe = be[0],
+	      ve = be[1],
+	      we = react.useState(!1),
+	      ke = C$3(we, 2),
+	      Ie = ke[0],
+	      Ee = ke[1],
+	      Ne = react.useRef(!1),
+	      Te = react.useCallback(function (e) {
+	    Ee(e), Ne.current = e;
 	  }, []),
-	      Ne = react.useRef(null),
-	      Te = react.useRef([]),
-	      Ce = react.useCallback(function () {
-	    be(3), clearInterval(Ne.current), Ee(!0), Ne.current = setInterval(function () {
-	      be(function (e) {
+	      Ce = react.useRef(null),
+	      Se = react.useRef([]),
+	      _e$1 = react.useCallback(function () {
+	    ve(3), clearInterval(Ce.current), Te(!0), Ce.current = setInterval(function () {
+	      ve(function (e) {
 	        if (e - 1 == 0) {
-	          clearInterval(Ne.current);
-	          var t = Te.current,
-	              n = ue.current.map(function (e) {
+	          clearInterval(Ce.current);
+	          var t = Se.current,
+	              n = ce.current.map(function (e) {
 	            return e.blob;
 	          });
 
 	          if (i) {
 	            var r = t.map(function (e) {
-	              return Y.uploadImage({
+	              return Z.uploadImage({
 	                file: e.blob,
 	                label: "portrait",
 	                metadata: JSON.stringify({
@@ -65146,7 +65149,7 @@
 	                })
 	              });
 	            }).concat(n.map(function (e) {
-	              return Y.uploadFile({
+	              return Z.uploadFile({
 	                file: e,
 	                label: "video"
 	              });
@@ -65158,7 +65161,7 @@
 	                  r = e.filter(function (e, n) {
 	                return n >= t.length;
 	              });
-	              return Y.verifyFaceLiveness({
+	              return Z.verifyFaceLiveness({
 	                images: n.map(function (e) {
 	                  return {
 	                    id: e.data.image_id
@@ -65189,13 +65192,14 @@
 	        return e - 1;
 	      });
 	    }, 1e3);
-	  }, [Ee, i, T, Y, _]);
+	  }, [Te, i, T, Z, _]);
+
 	  react.useEffect(function () {
-	    se && (clearInterval(Ne.current), Ee(!1));
-	  }, [se, Ee]), react.useEffect(function () {
+	    ue && (clearInterval(Ce.current), Te(!1));
+	  }, [ue, Te]), react.useEffect(function () {
 	    var e,
 	        t,
-	        n = j.current,
+	        n = K.current,
 	        r = function () {
 	      var e = w$6(regeneratorRuntime.mark(function e() {
 	        var t, n, r;
@@ -65203,11 +65207,11 @@
 	          for (;;) {
 	            switch (e.prev = e.next) {
 	              case 0:
-	                return t = re.current.steps, n = [], t.forEach(function (e) {
+	                return t = oe.current.steps, n = [], t.forEach(function (e) {
 	                  var t = e.name,
 	                      r = e.image,
 	                      a = e.frontalFaceImage;
-	                  t !== Gv.FRONTAL ? n.push(Y.uploadImage({
+	                  t !== Gv.FRONTAL ? n.push(Z.uploadImage({
 	                    file: r.blob,
 	                    label: "portrait",
 	                    metadata: JSON.stringify({
@@ -65218,7 +65222,7 @@
 	                    data: {
 	                      image_id: null
 	                    }
-	                  })), a.blob ? n.push(Y.uploadImage({
+	                  })), a.blob ? n.push(Z.uploadImage({
 	                    file: a.blob,
 	                    label: "portrait",
 	                    metadata: JSON.stringify({
@@ -65258,11 +65262,11 @@
 	                return e.prev = 0, e.next = 3, r();
 
 	              case 3:
-	                t = re.current.steps, 0 === (n = t.filter(function (e) {
+	                t = oe.current.steps, 0 === (n = t.filter(function (e) {
 	                  return e.frontalFaceImage.imageId;
 	                })).length ? T({
 	                  error: "wrong_face_movement"
-	                }) : Y.verifyFaceLiveness({
+	                }) : Z.verifyFaceLiveness({
 	                  images: n.map(function (e) {
 	                    return {
 	                      id: e.frontalFaceImage.imageId
@@ -65279,11 +65283,11 @@
 	                    };
 	                  }),
 	                  videos: [{
-	                    frames: ce.current
+	                    frames: pe.current
 	                  }],
 	                  metadata: P ? {
 	                    sdk_logs: {
-	                      tracking_frames: ce.current.map(function (e) {
+	                      tracking_frames: pe.current.map(function (e) {
 	                        return {
 	                          index: e.index,
 	                          landmarks: e.landmarks,
@@ -65328,7 +65332,7 @@
 	          for (;;) {
 	            switch (e.prev = e.next) {
 	              case 0:
-	                if (t = re.current.steps, re.current.curStepIndex++, re.current.curStepIndex !== t.length) {
+	                if (t = oe.current.steps, oe.current.curStepIndex++, oe.current.curStepIndex !== t.length) {
 	                  e.next = 26;
 	                  break;
 	                }
@@ -65338,10 +65342,10 @@
 	                  break;
 	                }
 
-	                return e.next = 6, le.current.stopVideoRecording();
+	                return e.next = 6, de.current.stopVideoRecording();
 
 	              case 6:
-	                if (pe.current = 0, !T) {
+	                if (he.current = 0, !T) {
 	                  e.next = 26;
 	                  break;
 	                }
@@ -65388,9 +65392,7 @@
 	                l = e.t0, u && s.push(u), T({
 	                  steps: o,
 	                  frontalFaces: s,
-	                  videoRecord: ue.current.map(function (e) {
-	                    return e.blob;
-	                  }),
+	                  videoRecord: pe.current,
 	                  frontalScaledImage: l
 	                }), e.next = 26;
 	                break;
@@ -65399,7 +65401,7 @@
 	                return e.next = 26, a();
 
 	              case 26:
-	                ee();
+	                ne();
 
 	              case 27:
 	              case "end":
@@ -65414,12 +65416,14 @@
 	    }(),
 	        s = Ze(function (e, t) {
 	      var n = e[t],
-	          r = !1;
-	      null !== n.image.blob && (null !== n.frontalFaceImage.blob || t < e.length - 2) && (ne.current = !1, o(), r = !0);
-	      var a = e.filter(function (e) {
+	          r = e.length - 2,
+	          a = null !== n.image.blob,
+	          s = null !== n.frontalFaceImage.blob,
+	          i = e.filter(function (e) {
 	        return e.frontalFaceImage.blob;
-	      }).length;
-	      return null === n.frontalFaceImage.blob && null !== n.image.blob && t === e.length - 2 && 0 === a ? ne.current = !0 : ne.current = !1, G(!1), r;
+	      }).length,
+	          u = !1;
+	      return a && (s || t < r || i >= 1) ? (ae.current = !1, o(), u = !0) : ae.current = !(!a || s), q(!1), u;
 	    }, O);
 
 	    function u(e, t, n, r) {
@@ -65433,7 +65437,7 @@
 	          for (;;) {
 	            switch (e.prev = e.next) {
 	              case 0:
-	                if (o = re.current, i = o.curStepIndex, u = o.steps, !(i < u.length)) {
+	                if (o = oe.current, i = o.curStepIndex, u = o.steps, !(i < u.length)) {
 	                  e.next = 23;
 	                  break;
 	                }
@@ -65461,7 +65465,7 @@
 	                  break;
 	                }
 
-	                return G(!0), l.image.blurScore = r, e.next = 17, V$1.takePicture({
+	                return q(!0), l.image.blurScore = r, e.next = 17, V$1.takePicture({
 	                  canvas: n
 	                });
 
@@ -65487,14 +65491,14 @@
 	          for (;;) {
 	            switch (e.prev = e.next) {
 	              case 0:
-	                !0 === Ie.current && t === Gv.FRONTAL && Te.current.length < 3 && (V$1.takePicture({
+	                !0 === Ne.current && t === Gv.FRONTAL && Se.current.length < 3 && (V$1.takePicture({
 	                  canvas: n
 	                }).then(function (e) {
-	                  Te.current.push({
+	                  Se.current.push({
 	                    blob: e,
 	                    leftRightScore: r
 	                  });
-	                }), 2 === Te.current.length && A && le.current.stopVideoRecording());
+	                }), 2 === Se.current.length && A && de.current.stopVideoRecording());
 
 	              case 1:
 	              case "end":
@@ -65506,7 +65510,7 @@
 	    }
 
 	    function x(e, t, n) {
-	      if (de.current++, P && de.current % pe.current == 0) {
+	      if (fe.current++, P && fe.current % he.current == 0) {
 	        var r = e.topLeft,
 	            a = e.bottomRight,
 	            o = [].concat(S$3(r), S$3(a)),
@@ -65514,11 +65518,11 @@
 	        [r, a].forEach(function (e) {
 	          s = [].concat(S$3(s), [e[0] / mt.SIZE * t.width, e[1] / mt.SIZE * t.height]);
 	        });
-	        var i = Uv(e, 0 === ce.current.length),
+	        var i = Uv(e, 0 === pe.current.length),
 	            u = i.score,
 	            l = i.time,
-	            c = t.toDataURL.apply(t, S$3(fe.current));
-	        ce.current.push({
+	            c = t.toDataURL.apply(t, S$3(me.current));
+	        pe.current.push({
 	          label: "portrait",
 	          base64: c.split(",")[1],
 	          landmarks: n,
@@ -65527,7 +65531,7 @@
 	          }),
 	          score: u,
 	          time: l,
-	          index: ce.current.length,
+	          index: pe.current.length,
 	          bbox: o,
 	          original_bbox: s
 	        });
@@ -65562,12 +65566,12 @@
 	                });
 
 	              case 11:
-	                if (w = r.sent, k = w.error, I = w.fullFace, E = "", te.current.image = l, N = null, T = null, C = null, !I) {
+	                if (w = r.sent, k = w.error, I = w.fullFace, E = "", re.current.image = l, N = null, T = null, C = null, !I) {
 	                  r.next = 27;
 	                  break;
 	                }
 
-	                return S = re.current, _ = S.curStepIndex, $ = S.steps, R = $[_], C = I.landmarks, r.next = 25, At.calculateFaceDirection({
+	                return S = oe.current, _ = S.curStepIndex, $ = S.steps, R = $[_], C = I.landmarks, r.next = 25, At.calculateFaceDirection({
 	                  landmarks: C,
 	                  getPerfectFrontal: R && R.name === Gv.FRONTAL
 	                });
@@ -65581,7 +65585,7 @@
 	                  break;
 	                }
 
-	                if (!Q) {
+	                if (!J) {
 	                  r.next = 34;
 	                  break;
 	                }
@@ -65600,10 +65604,10 @@
 	                break;
 
 	              case 38:
-	                E = k.msg[K], te.current.image = c;
+	                E = k.msg[Y], re.current.image = c;
 
 	              case 40:
-	                ie(E), -1 !== t && (t = requestAnimationFrame(function () {
+	                le(E), -1 !== t && (t = requestAnimationFrame(function () {
 	                  return v(a, o);
 	                }));
 
@@ -65652,17 +65656,17 @@
 	                  break;
 	                }
 
-	                ie(jv.unable_to_load_model.msg[K]), _(jv.unable_to_load_model), t.next = 44;
+	                le(jv.unable_to_load_model.msg[Y]), _(jv.unable_to_load_model), t.next = 44;
 	                break;
 
 	              case 29:
 	                return t.next = 31, vd();
 
 	              case 31:
-	                e = t.sent, a = V$1.analyzeVideoAndWindowSizes(n, te.current), o = a.cropWidth, s = a.cropHeight, (i = document.createElement("canvas")).width = o, i.height = s, (u = i.getContext("2d")).translate(o, 0), u.scale(-1, 1), l = A ? Wv({
+	                e = t.sent, a = V$1.analyzeVideoAndWindowSizes(n, re.current), o = a.cropWidth, s = a.cropHeight, (i = document.createElement("canvas")).width = o, i.height = s, (u = i.getContext("2d")).translate(o, 0), u.scale(-1, 1), l = A ? Wv({
 	                  canvas: i,
-	                  resultsOutput: ue.current
-	                }) : {}, c = l.mediaRecorder, le.current = c, le.current && le.current.start(), v(a, i);
+	                  resultsOutput: ce.current
+	                }) : {}, c = l.mediaRecorder, de.current = c, de.current && de.current.start(), v(a, i);
 
 	              case 44:
 	              case "end":
@@ -65673,40 +65677,40 @@
 	      }))).apply(this, arguments);
 	    }
 
-	    return z && function () {
+	    return V && function () {
 	      I.apply(this, arguments);
 	    }(), function () {
 	      cancelAnimationFrame(t), t = -1;
 	    };
-	  }, [z, K, Q, Y, i, l, c, T, _, A, $, O, P]);
-	  var Se = re.current,
-	      _e$1 = Se.curStepIndex,
-	      $e = Se.steps,
-	      Re = react.useMemo(function () {
-	    return $e.find(function (e) {
+	  }, [V, Y, J, Z, i, l, c, T, _, A, $, O, P]);
+	  var $e = oe.current,
+	      Re = $e.curStepIndex,
+	      Ae = $e.steps,
+	      Fe = react.useMemo(function () {
+	    return Ae.find(function (e) {
 	      return e.name === o.FaceDirection.FRONTAL;
 	    });
-	  }, [$e]),
-	      Ae = ne.current ? Re : $e[_e$1],
-	      Fe = Ae ? Ae.instructions[K] : null,
-	      Oe = Ae ? Ae.directionIcon : "",
-	      De = Ae ? Ae.directionIconAnimation : "";
+	  }, [Ae]),
+	      Oe = ae.current ? Fe : Ae[Re],
+	      De = Oe ? Oe.instructions[Y] : null,
+	      Me = Oe ? Oe.directionIcon : "",
+	      Pe = Oe ? Oe.directionIconAnimation : "";
 	  return {
-	    countdownToTakePicture: ye,
-	    cropArea: te,
-	    curStepIndex: _e$1,
-	    directionIcon: Oe,
-	    directionIconAnimation: De,
-	    faceDetectionError: se,
-	    handleTriggerPassiveMode: Ce,
-	    handleVideoPlayed: he,
-	    instructions: Fe,
-	    isActiveMode: Q,
-	    refVideo: j,
-	    showCountdown: we,
-	    steps: $e,
-	    videoPlayed: z,
-	    activeCapturing: H
+	    countdownToTakePicture: xe,
+	    cropArea: re,
+	    curStepIndex: Re,
+	    directionIcon: Me,
+	    directionIconAnimation: Pe,
+	    faceDetectionError: ue,
+	    handleTriggerPassiveMode: _e$1,
+	    handleVideoPlayed: ge,
+	    instructions: De,
+	    isActiveMode: J,
+	    refVideo: K,
+	    showCountdown: Ie,
+	    steps: Ae,
+	    videoPlayed: V,
+	    activeCapturing: j
 	  };
 	}
 
@@ -65918,105 +65922,107 @@
 	      l = n.onError,
 	      c = n.enableRecording,
 	      d = n.captureFrameData,
-	      p = n.frontCamera,
-	      h = n.customDirectionIcon,
-	      m = A$2.useAsset("bg_camera_mask.png"),
-	      g = A$2.useAsset("bg_camera_mask_red.png"),
-	      y = C$3(react.useState({}), 2),
-	      b = y[0],
-	      x = y[1],
-	      v = b.yFaceDetectionError,
-	      w = b.yFaceVerificationStepsWrapper,
-	      k = C$3(react.useState(!1), 2),
-	      I = k[0],
-	      E = k[1],
-	      N = react.useCallback(function (e) {
+	      p = n.frameRate,
+	      h = n.frontCamera,
+	      m = n.customDirectionIcon,
+	      g = A$2.useAsset("bg_camera_mask.png"),
+	      y = A$2.useAsset("bg_camera_mask_red.png"),
+	      b = C$3(react.useState({}), 2),
+	      x = b[0],
+	      v = b[1],
+	      w = x.yFaceDetectionError,
+	      k = x.yFaceVerificationStepsWrapper,
+	      I = C$3(react.useState(!1), 2),
+	      E = I[0],
+	      N = I[1],
+	      T = react.useCallback(function (e) {
 	    var t = e.lostY,
 	        n = e.height,
 	        r = t + 10,
 	        a = r + 35;
-	    return x({
+	    return v({
 	      yFaceDetectionError: r,
 	      yFaceVerificationStepsWrapper: a + n + 40
 	    }), {
 	      y: a
 	    };
 	  }, []),
-	      T = qv({
+	      S = qv({
 	    apiCheck: o,
 	    mode: s,
-	    bgCameraMask: m,
-	    bgCameraMaskRed: g,
+	    bgCameraMask: g,
+	    bgCameraMaskRed: y,
 	    surroundStyle: Aw,
 	    onLivenessDetectionDone: i,
 	    onError: l,
-	    cropAreaDimension: N,
+	    cropAreaDimension: T,
 	    enableRecording: c,
 	    captureFrameData: d,
-	    customDirectionIcon: h
+	    frameRate: p,
+	    customDirectionIcon: m
 	  }),
-	      S = T.countdownToTakePicture,
-	      _ = T.cropArea,
-	      $ = T.curStepIndex,
-	      R = T.directionIcon,
-	      A = T.faceDetectionError,
-	      F = T.handleTriggerPassiveMode,
-	      O = T.handleVideoPlayed,
-	      D = T.instructions,
-	      M = T.isActiveMode,
-	      P = T.refVideo,
-	      L = T.showCountdown,
-	      B = T.steps,
-	      z = T.videoPlayed,
-	      W = T.activeCapturing;
+	      _ = S.countdownToTakePicture,
+	      $ = S.cropArea,
+	      R = S.curStepIndex,
+	      A = S.directionIcon,
+	      F = S.faceDetectionError,
+	      O = S.handleTriggerPassiveMode,
+	      D = S.handleVideoPlayed,
+	      M = S.instructions,
+	      P = S.isActiveMode,
+	      L = S.refVideo,
+	      B = S.showCountdown,
+	      z = S.steps,
+	      W = S.videoPlayed,
+	      V = S.activeCapturing;
 	  return react.useEffect(function () {
-	    Promise.all(B.map(function (e) {
+	    Promise.all(z.map(function (e) {
 	      return t = e.directionIcon, new Promise(function (e) {
 	        var n = new Image();
 	        n.onload = e, n.onerror = e, n.src = t;
 	      });
 	      var t;
 	    })).then(function () {
-	      return E(!0);
+	      return N(!0);
 	    });
-	  }, [B]), /*#__PURE__*/react.createElement(he$2, {
-	    frontCamera: p,
-	    onVideoPlayed: O,
+	  }, [z]), /*#__PURE__*/react.createElement(he$2, {
+	    frontCamera: h,
+	    onVideoPlayed: D,
 	    onClose: u,
-	    flipHorizontal: p,
-	    ref: P,
+	    flipHorizontal: h,
+	    ref: L,
 	    videoSettings: Rw,
 	    onError: l
-	  }, z && I ? /*#__PURE__*/react.createElement(react.Fragment, null, A ? /*#__PURE__*/react.createElement(ww, {
-	    top: v,
+	  }, W && E ? /*#__PURE__*/react.createElement(react.Fragment, null, F ? /*#__PURE__*/react.createElement(ww, {
+	    top: w,
 	    className: "face-detection-error"
-	  }, A) : null, _.current ? /*#__PURE__*/react.createElement(Ee$2, {
-	    x: "".concat(_.current.x, "px"),
-	    y: "".concat(_.current.y, "px"),
-	    width: "".concat(_.current.width, "px"),
-	    height: "".concat(_.current.height, "px"),
-	    surroundStyle: _.current.surroundStyle
+	  }, F) : null, $.current ? /*#__PURE__*/react.createElement(Ee$2, {
+	    x: "".concat($.current.x, "px"),
+	    y: "".concat($.current.y, "px"),
+	    width: "".concat($.current.width, "px"),
+	    height: "".concat($.current.height, "px"),
+	    surroundStyle: $.current.surroundStyle
 	  }, /*#__PURE__*/react.createElement(Ne$1, {
-	    src: _.current.image,
-	    width: _.current.width
-	  }), L ? /*#__PURE__*/react.createElement(Cw, null, S) : null, M ? /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(Sw, null, R), W && /*#__PURE__*/react.createElement($w, null)) : null) : null, M ? /*#__PURE__*/react.createElement(react.Fragment, null, D ? /*#__PURE__*/react.createElement(kw, {
-	    top: w - 30,
+	    src: $.current.image,
+	    width: $.current.width
+	  }), B ? /*#__PURE__*/react.createElement(Cw, null, _) : null, P ? /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(Sw, null, A), V && /*#__PURE__*/react.createElement($w, null)) : null) : null, P ? /*#__PURE__*/react.createElement(react.Fragment, null, M ? /*#__PURE__*/react.createElement(kw, {
+	    top: k - 30,
 	    className: "instructions"
-	  }, D) : null, /*#__PURE__*/react.createElement(Iw, {
-	    top: w
-	  }, B.map(function (t, n) {
+	  }, M) : null, /*#__PURE__*/react.createElement(Iw, {
+	    top: k
+	  }, z.map(function (t, n) {
 	    var r = t.name,
 	        a = t.image.objUrl;
 	    return /*#__PURE__*/react.createElement(Ew, {
 	      key: r,
-	      active: $ >= n,
+	      active: R >= n,
 	      className: "step-item"
 	    }, a ? /*#__PURE__*/react.createElement("img", {
 	      src: a,
 	      alt: ""
 	    }) : /*#__PURE__*/react.createElement("span", null, n + 1));
-	  }))) : /*#__PURE__*/react.createElement(react.Fragment, null, A ? null : /*#__PURE__*/react.createElement(Nw, null, /*#__PURE__*/react.createElement(Tw, {
-	    onClick: F
+	  }))) : /*#__PURE__*/react.createElement(react.Fragment, null, F ? null : /*#__PURE__*/react.createElement(Nw, null, /*#__PURE__*/react.createElement(Tw, {
+	    onClick: O
 	  }, /*#__PURE__*/react.createElement(Te$1, null))))) : null);
 	}
 
@@ -66028,6 +66034,7 @@
 	  onError: propTypes.func,
 	  enableRecording: propTypes.bool,
 	  captureFrameData: propTypes.bool,
+	  frameRate: propTypes.number,
 	  frontCamera: propTypes.bool,
 	  customDirectionIcon: propTypes.shape({})
 	}, Fw.defaultProps = {
@@ -66038,6 +66045,7 @@
 	  onError: function onError() {},
 	  enableRecording: !1,
 	  captureFrameData: !1,
+	  frameRate: 1,
 	  frontCamera: !0,
 	  customDirectionIcon: (ew = {}, k$5(ew, o.FaceDirection.LEFT, /*#__PURE__*/react.createElement(lw, {
 	    type: o.FaceDirection.LEFT
