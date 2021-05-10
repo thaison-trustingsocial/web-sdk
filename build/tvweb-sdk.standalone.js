@@ -10901,7 +10901,7 @@
 	  UP: "up",
 	  DOWN: "down"
 	},
-	    o = Object.freeze({
+	    i = Object.freeze({
 	  __proto__: null,
 	  Errors: n$2,
 	  FaceDirection: a,
@@ -10917,18 +10917,18 @@
 	    VN: "vn.national_id"
 	  }
 	}),
-	    i = /*#__PURE__*/react.createContext();
+	    o = /*#__PURE__*/react.createContext();
 
 	function s(e) {
 	  var r = e.value,
 	      n = e.children;
-	  return /*#__PURE__*/react.createElement(i.Provider, {
+	  return /*#__PURE__*/react.createElement(o.Provider, {
 	    value: r
 	  }, n);
 	}
 
 	function u$1() {
-	  var t = react.useContext(i);
+	  var t = react.useContext(o);
 	  if (void 0 === t) throw new Error("useSDKSettings must be used within a SDKSettingsProvider");
 	  return t;
 	}
@@ -10973,9 +10973,9 @@
 	  }
 	});
 
-	function g$1(t, e, r, n, a, o, i) {
+	function g$1(t, e, r, n, a, i, o) {
 	  try {
-	    var s = t[o](i),
+	    var s = t[i](o),
 	        u = s.value;
 	  } catch (t) {
 	    return void r(t);
@@ -10989,17 +10989,17 @@
 	    var e = this,
 	        r = arguments;
 	    return new Promise(function (n, a) {
-	      var o = t.apply(e, r);
+	      var i = t.apply(e, r);
 
-	      function i(t) {
-	        g$1(o, n, a, i, s, "next", t);
+	      function o(t) {
+	        g$1(i, n, a, o, s, "next", t);
 	      }
 
 	      function s(t) {
-	        g$1(o, n, a, i, s, "throw", t);
+	        g$1(i, n, a, o, s, "throw", t);
 	      }
 
-	      i(void 0);
+	      o(void 0);
 	    });
 	  };
 	}
@@ -11047,19 +11047,19 @@
 	    var r = [],
 	        n = !0,
 	        a = !1,
-	        o = void 0;
+	        i = void 0;
 
 	    try {
-	      for (var i, s = t[Symbol.iterator](); !(n = (i = s.next()).done) && (r.push(i.value), !e || r.length !== e); n = !0) {
+	      for (var o, s = t[Symbol.iterator](); !(n = (o = s.next()).done) && (r.push(o.value), !e || r.length !== e); n = !0) {
 	        ;
 	      }
 	    } catch (t) {
-	      a = !0, o = t;
+	      a = !0, i = t;
 	    } finally {
 	      try {
 	        n || null == s["return"] || s["return"]();
 	      } finally {
-	        if (a) throw o;
+	        if (a) throw i;
 	      }
 	    }
 
@@ -11098,8 +11098,8 @@
 	}
 
 	var _ = Symbol("Comlink.proxy"),
-	    E$3 = Symbol("Comlink.endpoint"),
-	    B$1 = Symbol("Comlink.releaseProxy"),
+	    B$1 = Symbol("Comlink.endpoint"),
+	    E$3 = Symbol("Comlink.releaseProxy"),
 	    C$1 = Symbol("Comlink.thrown"),
 	    Q$1 = function Q(t) {
 	  return "object" == _typeof(t) && null !== t || "function" == typeof t;
@@ -11152,27 +11152,27 @@
 	      path: []
 	    }, n.data),
 	        a = _Object$assign.id,
-	        o = _Object$assign.type,
-	        i = _Object$assign.path,
+	        i = _Object$assign.type,
+	        o = _Object$assign.path,
 	        s = (n.data.argumentList || []).map(L$1);
 
 	    var u;
 
 	    try {
-	      var _e2 = i.slice(0, -1).reduce(function (t, e) {
+	      var _e2 = o.slice(0, -1).reduce(function (t, e) {
 	        return t[e];
 	      }, t),
-	          _r = i.reduce(function (t, e) {
+	          _r = o.reduce(function (t, e) {
 	        return t[e];
 	      }, t);
 
-	      switch (o) {
+	      switch (i) {
 	        case 0:
 	          u = _r;
 	          break;
 
 	        case 1:
-	          _e2[i.slice(-1)[0]] = L$1(n.data.value), u = !0;
+	          _e2[o.slice(-1)[0]] = L$1(n.data.value), u = !0;
 	          break;
 
 	        case 2:
@@ -11215,11 +11215,11 @@
 	      var _x = x$2(t),
 	          _x2 = _slicedToArray(_x, 2),
 	          n = _x2[0],
-	          i = _x2[1];
+	          o = _x2[1];
 
 	      e.postMessage(Object.assign(Object.assign({}, n), {
 	        id: a
-	      }), i), 5 === o && (e.removeEventListener("message", r), k$1(e));
+	      }), o), 5 === i && (e.removeEventListener("message", r), k$1(e));
 	    });
 	  }), e.start && e.start();
 	}
@@ -11231,20 +11231,20 @@
 	}
 
 	function R$1(t, e) {
-	  return D$1(t, [], e);
-	}
-
-	function j$2(t) {
-	  if (t) throw new Error("Proxy has been released and is not useable");
+	  return j$2(t, [], e);
 	}
 
 	function D$1(t) {
+	  if (t) throw new Error("Proxy has been released and is not useable");
+	}
+
+	function j$2(t) {
 	  var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 	  var r = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};
 	  var n = !1;
 	  var a = new Proxy(r, {
-	    get: function get(r, o) {
-	      if (j$2(n), o === B$1) return function () {
+	    get: function get(r, i) {
+	      if (D$1(n), i === E$3) return function () {
 	        return F$1(t, {
 	          type: 5,
 	          path: e.map(function (t) {
@@ -11255,7 +11255,7 @@
 	        });
 	      };
 
-	      if ("then" === o) {
+	      if ("then" === i) {
 	        if (0 === e.length) return {
 	          then: function then() {
 	            return a;
@@ -11272,14 +11272,14 @@
 	        return _r3.then.bind(_r3);
 	      }
 
-	      return D$1(t, [].concat(_toConsumableArray(e), [o]));
+	      return j$2(t, [].concat(_toConsumableArray(e), [i]));
 	    },
-	    set: function set(r, a, o) {
-	      j$2(n);
+	    set: function set(r, a, i) {
+	      D$1(n);
 
-	      var _x3 = x$2(o),
+	      var _x3 = x$2(i),
 	          _x4 = _slicedToArray(_x3, 2),
-	          i = _x4[0],
+	          o = _x4[0],
 	          s = _x4[1];
 
 	      return F$1(t, {
@@ -11287,18 +11287,18 @@
 	        path: [].concat(_toConsumableArray(e), [a]).map(function (t) {
 	          return t.toString();
 	        }),
-	        value: i
+	        value: o
 	      }, s).then(L$1);
 	    },
-	    apply: function apply(r, a, o) {
-	      j$2(n);
-	      var i = e[e.length - 1];
-	      if (i === E$3) return F$1(t, {
+	    apply: function apply(r, a, i) {
+	      D$1(n);
+	      var o = e[e.length - 1];
+	      if (o === B$1) return F$1(t, {
 	        type: 4
 	      }).then(L$1);
-	      if ("bind" === i) return D$1(t, e.slice(0, -1));
+	      if ("bind" === o) return j$2(t, e.slice(0, -1));
 
-	      var _O = O$1(o),
+	      var _O = O$1(i),
 	          _O2 = _slicedToArray(_O, 2),
 	          s = _O2[0],
 	          u = _O2[1];
@@ -11312,20 +11312,20 @@
 	      }, u).then(L$1);
 	    },
 	    construct: function construct(r, a) {
-	      j$2(n);
+	      D$1(n);
 
 	      var _O3 = O$1(a),
 	          _O4 = _slicedToArray(_O3, 2),
-	          o = _O4[0],
-	          i = _O4[1];
+	          i = _O4[0],
+	          o = _O4[1];
 
 	      return F$1(t, {
 	        type: 3,
 	        path: e.map(function (t) {
 	          return t.toString();
 	        }),
-	        argumentList: o
-	      }, i).then(L$1);
+	        argumentList: i
+	      }, o).then(L$1);
 	    }
 	  });
 	  return a;
@@ -11403,7 +11403,7 @@
 
 	var P$1 = function () {
 	  if (!window.Worker) return null;
-	  var t = new Blob(['const t=Symbol("Comlink.proxy"),e=Symbol("Comlink.endpoint"),r=Symbol("Comlink.releaseProxy"),n=Symbol("Comlink.thrown"),a=t=>"object"==typeof t&&null!==t||"function"==typeof t,o=new Map([["proxy",{canHandle:e=>a(e)&&e[t],serialize(t){const{port1:e,port2:r}=new MessageChannel;return u(t,e),[r,[r]]},deserialize(t){return t.start(),s(t,[],e);var e}}],["throw",{canHandle:t=>a(t)&&n in t,serialize({value:t}){let e;return e=t instanceof Error?{isError:!0,value:{message:t.message,name:t.name,stack:t.stack}}:{isError:!1,value:t},[e,[]]},deserialize(t){if(t.isError)throw Object.assign(new Error(t.value.message),t.value);throw t.value}}]]);function u(e,r=self){r.addEventListener("message",(function a(o){if(!o||!o.data)return;const{id:c,type:s,path:l}=Object.assign({path:[]},o.data),g=(o.data.argumentList||[]).map(p);let m;try{const r=l.slice(0,-1).reduce(((t,e)=>t[e]),e),n=l.reduce(((t,e)=>t[e]),e);switch(s){case 0:m=n;break;case 1:r[l.slice(-1)[0]]=p(o.data.value),m=!0;break;case 2:m=n.apply(r,g);break;case 3:m=function(e){return Object.assign(e,{[t]:!0})}(new n(...g));break;case 4:{const{port1:t,port2:r}=new MessageChannel;u(e,r),m=function(t,e){return f.set(t,e),t}(t,[t])}break;case 5:m=void 0}}catch(t){m={value:t,[n]:0}}Promise.resolve(m).catch((t=>({value:t,[n]:0}))).then((t=>{const[e,n]=h(t);r.postMessage(Object.assign(Object.assign({},e),{id:c}),n),5===s&&(r.removeEventListener("message",a),i(r))}))})),r.start&&r.start()}function i(t){(function(t){return"MessagePort"===t.constructor.name})(t)&&t.close()}function c(t){if(t)throw new Error("Proxy has been released and is not useable")}function s(t,n=[],a=function(){}){let o=!1;const u=new Proxy(a,{get(e,a){if(c(o),a===r)return()=>g(t,{type:5,path:n.map((t=>t.toString()))}).then((()=>{i(t),o=!0}));if("then"===a){if(0===n.length)return{then:()=>u};const e=g(t,{type:0,path:n.map((t=>t.toString()))}).then(p);return e.then.bind(e)}return s(t,[...n,a])},set(e,r,a){c(o);const[u,i]=h(a);return g(t,{type:1,path:[...n,r].map((t=>t.toString())),value:u},i).then(p)},apply(r,a,u){c(o);const i=n[n.length-1];if(i===e)return g(t,{type:4}).then(p);if("bind"===i)return s(t,n.slice(0,-1));const[f,h]=l(u);return g(t,{type:2,path:n.map((t=>t.toString())),argumentList:f},h).then(p)},construct(e,r){c(o);const[a,u]=l(r);return g(t,{type:3,path:n.map((t=>t.toString())),argumentList:a},u).then(p)}});return u}function l(t){const e=t.map(h);return[e.map((t=>t[0])),(r=e.map((t=>t[1])),Array.prototype.concat.apply([],r))];var r}const f=new WeakMap;function h(t){for(const[e,r]of o)if(r.canHandle(t)){const[n,a]=r.serialize(t);return[{type:3,name:e,value:n},a]}return[{type:0,value:t},f.get(t)||[]]}function p(t){switch(t.type){case 3:return o.get(t.name).deserialize(t.value);case 0:return t.value}}function g(t,e,r){return new Promise((n=>{const a=new Array(4).fill(0).map((()=>Math.floor(Math.random()*Number.MAX_SAFE_INTEGER).toString(16))).join("-");t.addEventListener("message",(function e(r){r.data&&r.data.id&&r.data.id===a&&(t.removeEventListener("message",e),n(r.data))})),t.start&&t.start(),t.postMessage(Object.assign({id:a},e),r)}))}var m=[[0,1,0],[1,-4,1],[0,1,0]];function v(t,e,r,n){return t[4*(r*e+n)]}function d(t,e,r){return e in t?Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t}function b(t,e){return function(t){if(Array.isArray(t))return t}(t)||function(t,e){if("undefined"==typeof Symbol||!(Symbol.iterator in Object(t)))return;var r=[],n=!0,a=!1,o=void 0;try{for(var u,i=t[Symbol.iterator]();!(n=(u=i.next()).done)&&(r.push(u.value),!e||r.length!==e);n=!0);}catch(t){a=!0,o=t}finally{try{n||null==i.return||i.return()}finally{if(a)throw o}}return r}(t,e)||function(t,e){if(!t)return;if("string"==typeof t)return y(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);"Object"===r&&t.constructor&&(r=t.constructor.name);if("Map"===r||"Set"===r)return Array.from(t);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return y(t,e)}(t,e)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance. In order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function y(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}var w="frontal",S="left",M="right",_="up",k="down",E=0,j=1,A=2;var F={code:"no_face",msg:{en:"Face not found",vi:"Không tìm thấy khuôn mặt"}},O={code:"partial_face",msg:{en:"Face out of the box",vi:"Không tìm thấy toàn bộ khuôn mặt"}},x={code:"multiple_faces",msg:{en:"Too many faces",vi:"Quá nhiều khuôn mặt"}},I={code:"face_too_small",msg:{en:"Face too small",vi:"Khuôn mặt quá nhỏ"}},L={code:"face_too_large",msg:{en:"Face too large",vi:"Khuôn mặt quá to"}},P={code:"face_out_of_box",msg:{en:"Face is out of box",vi:"Khuôn mặt nằm ngoài khung ảnh"}};function C(t){return Math.pow(Math.pow(t[0],2)+Math.pow(t[1],2),.5)}function R(t,e){return[t[0]-e[0],t[1]-e[1]]}function N(t,e,r,n){var a=r*(4*e)+4*n;return{r:t[a],g:t[a+1],b:t[a+2]}}u({calculateBlurScoreFunc:function(t){for(var e=t.data,r=t.reducedWidth,n=t.reducedHeight,a=0;a<e.length;a+=4){var o=(e[a]+e[a+1]+e[a+2])/3;e[a]=o}for(var u=0,i=0,c=n-1,s=r-1,l=1;l<c;l++)for(var f=1;f<s;f++){var h=m[0][0]*v(e,r,f-1,l-1)+m[0][1]*v(e,r,f,l-1)+m[0][2]*v(e,r,f+1,l-1)+m[1][0]*v(e,r,f-1,l)+m[1][1]*v(e,r,f,l)+m[1][2]*v(e,r,f+1,l)+m[2][0]*v(e,r,f-1,l+1)+m[2][1]*v(e,r,f,l+1)+m[2][2]*v(e,r,f+1,l+1);(h=Math.abs(h))>25&&u++,h>15&&h<25&&i++}var p=0;return u+i!==0&&(p=u/(u+i)),p},calculateFaceDirectionFunc:function(t){var e=t.landmarks,r=t.getPerfectFrontal,n=function(t){var e,r,n,a,o,u,i,c=b(t,4),s=c[0],l=c[1],f=c[2],h=c[3],p=R(l,s),g=C(p),m=(a=l,e=[(n=s)[0]+a[0],n[1]+a[1]],r=2,[e[0]/r,e[1]/r]),v=R(f,m),d=C(R(h,f)),y=R(h,m),w=C(y),S=(v[0]*y[0]+v[1]*y[1])/w,M=d/w;if(g>.5*w)o=(v[0]*p[0]+v[1]*p[1])/g/g;else{var _=C(R(v,function(t,e){return[t[0]*e,t[1]*e]}(y,S/w)));i=y,o=((u=v)[0]*i[1]-i[0]*u[1]>=0?1:-1)*_/g}return{left_right_score:o,up_down_score:M}}(e),a=n.left_right_score,o=n.up_down_score,u=b(e,3),i=u[0],c=u[1],s=u[2],l=c[0]-s[0],f=i[0]-s[0],h=r?.1:.3,p=o>.7,g=o<.42,m=a>=.35&&a<=.6,v=a<=-.35&&a>=-.6;return o>=.42&&o<=.7&&a>-h&&a<h&&l*f<0?{gesture:w,leftRightScore:a}:p&&!v&&!m?{gesture:_,leftRightScore:a}:g&&!v&&!m?{gesture:k,leftRightScore:a}:m&&!p&&!g?{gesture:M,leftRightScore:a}:v&&!p&&!g?{gesture:S,leftRightScore:a}:null},validatePredictionsFunc:function(t){var e,r,n,a,o,u,i,c,s,l,f,h,p,g=t.predictions,m=[[0,0],[t.width,t.height]],v=g.reduce((function(t,e){var r,n,a,o,u,i,c,s,l,f=e.topLeft,h=e.bottomRight;return t[(r=[f,h],n=b(m,2),a=n[0],o=n[1],u=b(r,2),i=u[0],c=u[1],s=[a[0],o[0]],l=[a[1],o[1]],s[0]<=i[0]&&c[0]<=s[1]&&l[0]<=i[1]&&c[1]<=l[1]?A:s[0]<=i[0]||c[0]<=s[1]||l[0]<=i[1]||c[1]<=l[1]?j:E)].push(e),t}),(d(e={},j,[]),d(e,A,[]),d(e,E,[]),e)),y=v[A].length,w=v[j].length;if(0===y)r=w>0?O:F;else if(y+w>1)r=x;else{var S=n=v[A][0],M=S.topLeft,_=S.bottomRight,k=(a=m,o=b([M,_],2),u=o[0],i=o[1],c=b(a,2),s=c[0],l=c[1],f=i[0]-u[0],h=i[1]-u[1],p=l[0]-s[0],f/p<h/p?f/p:h/p);k<.4&&(r=I),k>.61&&(r=L),function(t,e){var r=b(t,2),n=r[0],a=r[1],o=b(e,2),u=o[0],i=o[1],c=a[0]-n[0],s=a[1]-n[1],l=i[0]-u[0],f=Math.abs(n[0]-(l-c)/2)/l<.2,h=Math.abs(n[1]-(l-s)/2)/l<.2;return!(!f||!h)}([M,_],m)||(r=P)}return{error:r,fullFace:n}},checkCardBlur:function(t){var e=t.data,r=t.width,n=t.height,a=function(t,e,r){for(var n=0,a=[],o=1;o<r-1;o++)for(var u=1;u<e-1;u++){var i=t[o-1][u-1],c=t[o][u-1],s=t[o+1][u-1],l=t[o-1][u],f=t[o][u],h=t[o+1][u],p=t[o-1][u+1],g=t[o][u+1],m=t[o+1][u+1],v=Number.parseInt(0*i+1*c+0*s,10),d=Number.parseInt(1*l+-4*f+1*h,10),b=Number.parseInt(0*p+1*g+0*m,10),y=Number.parseInt(Math.abs(v+d+b),10);a.push(y),n+=y}var w=a.length,S=n/w,M=0;a.forEach((function(t){M+=(t-S)*(t-S)}));var _=Math.sqrt(M/w);return{lapAvg:S,lapStd:_}}(function(t,e,r){for(var n=[],a=0;a<r+2;a++)for(var o=0;o<e+2;o++){n[a]||(n[a]=[]),0!==o&&0!==a&&o!==e+1&&a!==r+1||(n[a][o]=1);var u=N(t,e,a-1,o-1),i=u.r,c=u.g,s=u.b,l=Number.parseInt(Math.round(.299*i+.587*c+.114*s),10);n[a][o]=l}n[0]=n[2],n[r+1]=n[r-1];for(var f=0;f<r+2;f++)n[f][0]=n[f][2],n[f][e+1]=n[f][e-1];return n}(e,r,n),r+2,n+2);return function(t,e){return e<=18.553622245788574?e<=11.523502826690674?t<=-.05309182405471802?1:.5:t<=.2395537868142128?.29069767441860467:.8333333333333334:e<=23.69584369659424?e<=23.6335506439209?.10606060606060606:1:e<=33.88881301879883?.03896103896103896:0}(a.lapAvg,a.lapStd)},detectGlare:function(t,e,r){return function(t,e,r){for(var n=0,a=r[1],o=r[3],u=r[0],i=r[2],c=a;c<o;c++)for(var s=u;s<i;s++){var l=N(t,e,c,s),f=l.r,h=l.g,p=l.b;f>=245&&p>=245&&h>245&&(n+=1)}return n}(t,e,function(t,e){var r=Math.floor(.025*t),n=t-r,a=Math.floor(.025*e);return[r,a,n,e-a]}(e,r))/(e*r)>=.001}});']),
+	  var t = new Blob(['const t=Symbol("Comlink.proxy"),e=Symbol("Comlink.endpoint"),r=Symbol("Comlink.releaseProxy"),n=Symbol("Comlink.thrown"),a=t=>"object"==typeof t&&null!==t||"function"==typeof t,o=new Map([["proxy",{canHandle:e=>a(e)&&e[t],serialize(t){const{port1:e,port2:r}=new MessageChannel;return i(t,e),[r,[r]]},deserialize(t){return t.start(),s(t,[],e);var e}}],["throw",{canHandle:t=>a(t)&&n in t,serialize({value:t}){let e;return e=t instanceof Error?{isError:!0,value:{message:t.message,name:t.name,stack:t.stack}}:{isError:!1,value:t},[e,[]]},deserialize(t){if(t.isError)throw Object.assign(new Error(t.value.message),t.value);throw t.value}}]]);function i(e,r=self){r.addEventListener("message",(function a(o){if(!o||!o.data)return;const{id:c,type:s,path:l}=Object.assign({path:[]},o.data),m=(o.data.argumentList||[]).map(p);let g;try{const r=l.slice(0,-1).reduce(((t,e)=>t[e]),e),n=l.reduce(((t,e)=>t[e]),e);switch(s){case 0:g=n;break;case 1:r[l.slice(-1)[0]]=p(o.data.value),g=!0;break;case 2:g=n.apply(r,m);break;case 3:g=function(e){return Object.assign(e,{[t]:!0})}(new n(...m));break;case 4:{const{port1:t,port2:r}=new MessageChannel;i(e,r),g=function(t,e){return f.set(t,e),t}(t,[t])}break;case 5:g=void 0}}catch(t){g={value:t,[n]:0}}Promise.resolve(g).catch((t=>({value:t,[n]:0}))).then((t=>{const[e,n]=h(t);r.postMessage(Object.assign(Object.assign({},e),{id:c}),n),5===s&&(r.removeEventListener("message",a),u(r))}))})),r.start&&r.start()}function u(t){(function(t){return"MessagePort"===t.constructor.name})(t)&&t.close()}function c(t){if(t)throw new Error("Proxy has been released and is not useable")}function s(t,n=[],a=function(){}){let o=!1;const i=new Proxy(a,{get(e,a){if(c(o),a===r)return()=>m(t,{type:5,path:n.map((t=>t.toString()))}).then((()=>{u(t),o=!0}));if("then"===a){if(0===n.length)return{then:()=>i};const e=m(t,{type:0,path:n.map((t=>t.toString()))}).then(p);return e.then.bind(e)}return s(t,[...n,a])},set(e,r,a){c(o);const[i,u]=h(a);return m(t,{type:1,path:[...n,r].map((t=>t.toString())),value:i},u).then(p)},apply(r,a,i){c(o);const u=n[n.length-1];if(u===e)return m(t,{type:4}).then(p);if("bind"===u)return s(t,n.slice(0,-1));const[f,h]=l(i);return m(t,{type:2,path:n.map((t=>t.toString())),argumentList:f},h).then(p)},construct(e,r){c(o);const[a,i]=l(r);return m(t,{type:3,path:n.map((t=>t.toString())),argumentList:a},i).then(p)}});return i}function l(t){const e=t.map(h);return[e.map((t=>t[0])),(r=e.map((t=>t[1])),Array.prototype.concat.apply([],r))];var r}const f=new WeakMap;function h(t){for(const[e,r]of o)if(r.canHandle(t)){const[n,a]=r.serialize(t);return[{type:3,name:e,value:n},a]}return[{type:0,value:t},f.get(t)||[]]}function p(t){switch(t.type){case 3:return o.get(t.name).deserialize(t.value);case 0:return t.value}}function m(t,e,r){return new Promise((n=>{const a=new Array(4).fill(0).map((()=>Math.floor(Math.random()*Number.MAX_SAFE_INTEGER).toString(16))).join("-");t.addEventListener("message",(function e(r){r.data&&r.data.id&&r.data.id===a&&(t.removeEventListener("message",e),n(r.data))})),t.start&&t.start(),t.postMessage(Object.assign({id:a},e),r)}))}var g=[[0,1,0],[1,-4,1],[0,1,0]];function v(t,e,r,n){return t[4*(r*e+n)]}function d(t,e,r){return e in t?Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t}function b(t,e){return function(t){if(Array.isArray(t))return t}(t)||function(t,e){if("undefined"==typeof Symbol||!(Symbol.iterator in Object(t)))return;var r=[],n=!0,a=!1,o=void 0;try{for(var i,u=t[Symbol.iterator]();!(n=(i=u.next()).done)&&(r.push(i.value),!e||r.length!==e);n=!0);}catch(t){a=!0,o=t}finally{try{n||null==u.return||u.return()}finally{if(a)throw o}}return r}(t,e)||function(t,e){if(!t)return;if("string"==typeof t)return y(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);"Object"===r&&t.constructor&&(r=t.constructor.name);if("Map"===r||"Set"===r)return Array.from(t);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return y(t,e)}(t,e)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance. In order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function y(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}var w="frontal",M="left",S="right",_="up",k="down",E=0,j=1,A=2;var F={code:"no_face",msg:{en:"Face not found",vi:"Không tìm thấy khuôn mặt"}},x={code:"partial_face",msg:{en:"Face out of the box",vi:"Không tìm thấy toàn bộ khuôn mặt"}},O={code:"multiple_faces",msg:{en:"Too many faces",vi:"Quá nhiều khuôn mặt"}},I={code:"face_too_small",msg:{en:"Face too small",vi:"Khuôn mặt quá nhỏ"}},L={code:"face_too_large",msg:{en:"Face too large",vi:"Khuôn mặt quá to"}},P={code:"face_out_of_box",msg:{en:"Face is out of box",vi:"Khuôn mặt nằm ngoài khung ảnh"}};function C(t){return Math.pow(Math.pow(t[0],2)+Math.pow(t[1],2),.5)}function R(t,e){return[t[0]-e[0],t[1]-e[1]]}function N(t,e,r,n){var a=r*(4*e)+4*n;return{r:t[a],g:t[a+1],b:t[a+2]}}i({calculateBlurScoreFunc:function(t){for(var e=t.data,r=t.reducedWidth,n=t.reducedHeight,a=0;a<e.length;a+=4){var o=(e[a]+e[a+1]+e[a+2])/3;e[a]=o}for(var i=0,u=0,c=n-1,s=r-1,l=1;l<c;l++)for(var f=1;f<s;f++){var h=g[0][0]*v(e,r,f-1,l-1)+g[0][1]*v(e,r,f,l-1)+g[0][2]*v(e,r,f+1,l-1)+g[1][0]*v(e,r,f-1,l)+g[1][1]*v(e,r,f,l)+g[1][2]*v(e,r,f+1,l)+g[2][0]*v(e,r,f-1,l+1)+g[2][1]*v(e,r,f,l+1)+g[2][2]*v(e,r,f+1,l+1);(h=Math.abs(h))>25&&i++,h>15&&h<25&&u++}var p=0;return i+u!==0&&(p=i/(i+u)),p},calculateFaceDirectionFunc:function(t){var e=t.landmarks,r=t.getPerfectFrontal,n=function(t){var e,r,n,a,o,i,u,c=b(t,4),s=c[0],l=c[1],f=c[2],h=c[3],p=R(l,s),m=C(p),g=(a=l,e=[(n=s)[0]+a[0],n[1]+a[1]],r=2,[e[0]/r,e[1]/r]),v=R(f,g),d=C(R(h,f)),y=R(h,g),w=C(y),M=(v[0]*y[0]+v[1]*y[1])/w,S=d/w;if(m>.5*w)o=(v[0]*p[0]+v[1]*p[1])/m/m;else{var _=C(R(v,function(t,e){return[t[0]*e,t[1]*e]}(y,M/w)));u=y,o=((i=v)[0]*u[1]-u[0]*i[1]>=0?1:-1)*_/m}return{left_right_score:o,up_down_score:S}}(e),a=n.left_right_score,o=n.up_down_score,i=b(e,3),u=i[0],c=i[1],s=i[2],l=c[0]-s[0],f=u[0]-s[0],h=r?.1:.3,p=o>.7,m=o<.42,g=a>=.35&&a<=.6,v=a<=-.35&&a>=-.6;return o>=.42&&o<=.7&&a>-h&&a<h&&l*f<0?{gesture:w,leftRightScore:a}:p&&!v&&!g?{gesture:_,leftRightScore:a}:m&&!v&&!g?{gesture:k,leftRightScore:a}:g&&!p&&!m?{gesture:S,leftRightScore:a}:v&&!p&&!m?{gesture:M,leftRightScore:a}:null},validatePredictionsFunc:function(t){var e,r,n,a,o,i,u,c,s,l,f,h,p,m,g,v,y,w,M,S,_,k,C,R,N,z,K,H,q,T,B,G,W=t.predictions,D=[[0,0],[t.width,t.height]],Q=W.reduce((function(t,e){var r,n,a,o,i,u,c,s,l,f=e.topLeft,h=e.bottomRight;return t[(r=[f,h],n=b(D,2),a=n[0],o=n[1],i=b(r,2),u=i[0],c=i[1],s=[a[0],o[0]],l=[a[1],o[1]],s[0]<=u[0]&&c[0]<=s[1]&&l[0]<=u[1]&&c[1]<=l[1]?A:s[0]<=u[0]||c[0]<=s[1]||l[0]<=u[1]||c[1]<=l[1]?j:E)].push(e),t}),(d(e={},j,[]),d(e,A,[]),d(e,E,[]),e)),U=Q[A].length,X=Q[j].length;if(0===U)r=X>0?x:F;else if(U+X>1)r=O;else{var $=n=Q[A][0],J=$.topLeft,V=$.bottomRight,Y=(C=D,R=b([J,V],2),N=R[0],z=R[1],K=b(C,2),H=K[0],q=K[1],T=z[0]-N[0],B=z[1]-N[1],G=q[0]-H[0],T/G<B/G?T/G:B/G);Y<.4&&(r=I),Y>.61&&(r=L),function(t,e){var r=b(t,2),n=r[0],a=r[1],o=b(e,2),i=o[0],u=o[1],c=a[0]-n[0],s=a[1]-n[1],l=u[0]-i[0],f=Math.abs(n[0]-(l-c)/2)/l<.07,h=Math.abs(n[1]-(l-s)/2)/l<.07;return!(!f||!h)}((a=n.landmarks,u=a[0],c=a[1],s=a[2],l=a[3],f=a[4],h=a[5],p=.5*(u[1]+c[1]),m=p+1.5*(p-l[1]),g=l[1]-1.2*(s[1]-l[1]),v=[u[0],c[0],s[0],l[0],f[0],h[0]],y=Math.min.apply(Math,v),w=Math.max(m,g),M=Math.max.apply(Math,v),S=Math.min(m,g),_=Math.abs(l[0]-f[0])/Math.abs(l[0]-h[0]),k=l[0]-f[0]<0&&h[0]-l[0]>.05*(M-y),l[0]-f[0]>0&&h[0]-l[0]<-.05*(M-y)?(o=.2,i=.1):k?(o=.1,i=.2):_>2||_<.5?(o=.15,i=.15):(o=.05,i=.05),[[y-o*(M-y),w],[M+i*(M-y),S]]),D)||(r=P)}return{error:r,fullFace:n}},checkCardBlur:function(t){var e=t.data,r=t.width,n=t.height,a=function(t,e,r){for(var n=0,a=[],o=1;o<r-1;o++)for(var i=1;i<e-1;i++){var u=t[o-1][i-1],c=t[o][i-1],s=t[o+1][i-1],l=t[o-1][i],f=t[o][i],h=t[o+1][i],p=t[o-1][i+1],m=t[o][i+1],g=t[o+1][i+1],v=Number.parseInt(0*u+1*c+0*s,10),d=Number.parseInt(1*l+-4*f+1*h,10),b=Number.parseInt(0*p+1*m+0*g,10),y=Number.parseInt(Math.abs(v+d+b),10);a.push(y),n+=y}var w=a.length,M=n/w,S=0;a.forEach((function(t){S+=(t-M)*(t-M)}));var _=Math.sqrt(S/w);return{lapAvg:M,lapStd:_}}(function(t,e,r){for(var n=[],a=0;a<r+2;a++)for(var o=0;o<e+2;o++){n[a]||(n[a]=[]),0!==o&&0!==a&&o!==e+1&&a!==r+1||(n[a][o]=1);var i=N(t,e,a-1,o-1),u=i.r,c=i.g,s=i.b,l=Number.parseInt(Math.round(.299*u+.587*c+.114*s),10);n[a][o]=l}n[0]=n[2],n[r+1]=n[r-1];for(var f=0;f<r+2;f++)n[f][0]=n[f][2],n[f][e+1]=n[f][e-1];return n}(e,r,n),r+2,n+2);return function(t,e){return e<=18.553622245788574?e<=11.523502826690674?t<=-.05309182405471802?1:.5:t<=.2395537868142128?.29069767441860467:.8333333333333334:e<=23.69584369659424?e<=23.6335506439209?.10606060606060606:1:e<=33.88881301879883?.03896103896103896:0}(a.lapAvg,a.lapStd)},detectGlare:function(t,e,r){return function(t,e,r){for(var n=0,a=r[1],o=r[3],i=r[0],u=r[2],c=a;c<o;c++)for(var s=i;s<u;s++){var l=N(t,e,c,s),f=l.r,h=l.g,p=l.b;f>=245&&p>=245&&h>245&&(n+=1)}return n}(t,e,function(t,e){var r=Math.floor(.025*t),n=t-r,a=Math.floor(.025*e);return[r,a,n,e-a]}(e,r))/(e*r)>=.001}});']),
 	      e = URL.createObjectURL(t);
 	  return R$1(new Worker(e));
 	}(),
@@ -11415,19 +11415,19 @@
 
 	function G$1(t) {
 	  for (var e = t.data, r = t.reducedWidth, n = t.reducedHeight, a = 0; a < e.length; a += 4) {
-	    var o = (e[a] + e[a + 1] + e[a + 2]) / 3;
-	    e[a] = o;
+	    var i = (e[a] + e[a + 1] + e[a + 2]) / 3;
+	    e[a] = i;
 	  }
 
-	  for (var i = 0, s = 0, u = n - 1, c = r - 1, l = 1; l < u; l++) {
+	  for (var o = 0, s = 0, u = n - 1, c = r - 1, l = 1; l < u; l++) {
 	    for (var h = 1; h < c; h++) {
 	      var A = H$1[0][0] * q$2(e, r, h - 1, l - 1) + H$1[0][1] * q$2(e, r, h, l - 1) + H$1[0][2] * q$2(e, r, h + 1, l - 1) + H$1[1][0] * q$2(e, r, h - 1, l) + H$1[1][1] * q$2(e, r, h, l) + H$1[1][2] * q$2(e, r, h + 1, l) + H$1[2][0] * q$2(e, r, h - 1, l + 1) + H$1[2][1] * q$2(e, r, h, l + 1) + H$1[2][2] * q$2(e, r, h + 1, l + 1);
-	      (A = Math.abs(A)) > 25 && i++, A > 15 && A < 25 && s++;
+	      (A = Math.abs(A)) > 25 && o++, A > 15 && A < 25 && s++;
 	    }
 	  }
 
 	  var f = 0;
-	  return i + s !== 0 && (f = i / (i + s)), f;
+	  return o + s !== 0 && (f = o / (o + s)), f;
 	}
 
 	function N$1(t, e, r, n) {
@@ -11444,17 +11444,17 @@
 	      r = t.width,
 	      n = t.height,
 	      a = function (t, e, r) {
-	    for (var n = 0, a = [], o = 1; o < r - 1; o++) {
-	      for (var i = 1; i < e - 1; i++) {
-	        var s = t[o - 1][i - 1],
-	            u = t[o][i - 1],
-	            c = t[o + 1][i - 1],
-	            l = t[o - 1][i],
-	            h = t[o][i],
-	            A = t[o + 1][i],
-	            f = t[o - 1][i + 1],
-	            g = t[o][i + 1],
-	            d = t[o + 1][i + 1],
+	    for (var n = 0, a = [], i = 1; i < r - 1; i++) {
+	      for (var o = 1; o < e - 1; o++) {
+	        var s = t[i - 1][o - 1],
+	            u = t[i][o - 1],
+	            c = t[i + 1][o - 1],
+	            l = t[i - 1][o],
+	            h = t[i][o],
+	            A = t[i + 1][o],
+	            f = t[i - 1][o + 1],
+	            g = t[i][o + 1],
+	            d = t[i + 1][o + 1],
 	            m = Number.parseInt(0 * s + 1 * u + 0 * c, 10),
 	            p = Number.parseInt(1 * l + -4 * h + 1 * A, 10),
 	            v = Number.parseInt(0 * f + 1 * g + 0 * d, 10),
@@ -11478,14 +11478,14 @@
 	    };
 	  }(function (t, e, r) {
 	    for (var n = [], a = 0; a < r + 2; a++) {
-	      for (var o = 0; o < e + 2; o++) {
-	        n[a] || (n[a] = []), 0 !== o && 0 !== a && o !== e + 1 && a !== r + 1 || (n[a][o] = 1);
-	        var i = N$1(t, e, a - 1, o - 1),
-	            s = i.r,
-	            u = i.g,
-	            c = i.b,
+	      for (var i = 0; i < e + 2; i++) {
+	        n[a] || (n[a] = []), 0 !== i && 0 !== a && i !== e + 1 && a !== r + 1 || (n[a][i] = 1);
+	        var o = N$1(t, e, a - 1, i - 1),
+	            s = o.r,
+	            u = o.g,
+	            c = o.b,
 	            l = Number.parseInt(Math.round(.299 * s + .587 * u + .114 * c), 10);
-	        n[a][o] = l;
+	        n[a][i] = l;
 	      }
 	    }
 
@@ -11508,12 +11508,12 @@
 	      r = t.height,
 	      n = t.getContext("2d"),
 	      a = Math.floor(e / 2.8),
-	      o = Math.floor(r / 2.8),
-	      i = e - a,
-	      s = r - o;
+	      i = Math.floor(r / 2.8),
+	      o = e - a,
+	      s = r - i;
 	  return {
-	    data: n.getImageData(Math.floor(a / 2), Math.floor(o / 2), i, s).data,
-	    reducedWidth: i,
+	    data: n.getImageData(Math.floor(a / 2), Math.floor(i / 2), o, s).data,
+	    reducedWidth: o,
 	    reducedHeight: s
 	  };
 	}
@@ -11557,8 +11557,8 @@
 	  };
 	}
 
-	function X$1() {
-	  return (X$1 = d$1(regeneratorRuntime.mark(function t(e) {
+	function K$1() {
+	  return (K$1 = d$1(regeneratorRuntime.mark(function t(e) {
 	    var r;
 	    return regeneratorRuntime.wrap(function (t) {
 	      for (;;) {
@@ -11583,7 +11583,7 @@
 	  }))).apply(this, arguments);
 	}
 
-	var K$1 = Object.freeze({
+	var X$1 = Object.freeze({
 	  __proto__: null,
 	  BLUR_CARD_THRESHOLD: .29069767441860467,
 	  calculateBlurScore: function calculateBlurScore(t) {
@@ -11594,7 +11594,7 @@
 	    return t - e > r;
 	  },
 	  calculateCardBlurScore: function calculateCardBlurScore(t) {
-	    return X$1.apply(this, arguments);
+	    return K$1.apply(this, arguments);
 	  }
 	});
 
@@ -11603,8 +11603,8 @@
 	      r,
 	      n,
 	      a,
-	      o,
 	      i,
+	      o,
 	      s = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
 	      u = s.x,
 	      c = s.y,
@@ -11616,7 +11616,7 @@
 	      d = window.innerHeight,
 	      m = g / d,
 	      p = A / f;
-	  m < p ? (o = u * (n = A / g), i = (c - (e = (d - g / p) / 2)) * (a = f / (d - 2 * e))) : (o = (u - (r = (g - d * p) / 2)) * (n = A / (g - 2 * r)), i = c * (a = f / d));
+	  m < p ? (i = u * (n = A / g), o = (c - (e = (d - g / p) / 2)) * (a = f / (d - 2 * e))) : (i = (u - (r = (g - d * p) / 2)) * (n = A / (g - 2 * r)), o = c * (a = f / d));
 	  var v = Math.floor(l * n),
 	      w = Math.floor(h * a);
 	  return {
@@ -11624,8 +11624,8 @@
 	    lostY: e,
 	    cropWidth: v,
 	    cropHeight: w,
-	    cropX: o,
-	    cropY: i
+	    cropX: i,
+	    cropY: o
 	  };
 	}
 
@@ -11638,13 +11638,13 @@
 	        n = t.video,
 	        a = t.cropArea;
 	    if (r) e = r;else {
-	      var o = Z$1(n, a),
-	          i = o.cropWidth,
-	          s = o.cropHeight,
-	          u = o.cropX,
-	          c = o.cropY,
+	      var i = Z$1(n, a),
+	          o = i.cropWidth,
+	          s = i.cropHeight,
+	          u = i.cropX,
+	          c = i.cropY,
 	          l = (e = document.createElement("canvas")).getContext("2d");
-	      e.width = i, e.height = s, l.drawImage(n, u, c, i, s, 0, 0, i, s);
+	      e.width = o, e.height = s, l.drawImage(n, u, c, o, s, 0, 0, o, s);
 	    }
 	    return new Promise(function (t) {
 	      e.toBlob(t, "image/jpeg");
@@ -11674,24 +11674,24 @@
 	  var r = w$2(t, 2),
 	      n = r[0],
 	      a = r[1],
-	      o = w$2(e, 2),
-	      i = o[0],
-	      s = o[1],
+	      i = w$2(e, 2),
+	      o = i[0],
+	      s = i[1],
 	      u = [n[0], a[0]],
 	      c = [n[1], a[1]];
-	  return u[0] <= i[0] && s[0] <= u[1] && c[0] <= i[1] && s[1] <= c[1] ? tt.FULL : u[0] <= i[0] || s[0] <= u[1] || c[0] <= i[1] || s[1] <= c[1] ? tt.PARTIAL : tt.NONE;
+	  return u[0] <= o[0] && s[0] <= u[1] && c[0] <= o[1] && s[1] <= c[1] ? tt.FULL : u[0] <= o[0] || s[0] <= u[1] || c[0] <= o[1] || s[1] <= c[1] ? tt.PARTIAL : tt.NONE;
 	}
 
 	function rt(t, e) {
 	  var r = w$2(t, 2),
 	      n = r[0],
 	      a = r[1],
-	      o = w$2(e, 2),
-	      i = o[0],
-	      s = o[1],
+	      i = w$2(e, 2),
+	      o = i[0],
+	      s = i[1],
 	      u = a[0] - n[0],
 	      c = a[1] - n[1],
-	      l = s[0] - i[0];
+	      l = s[0] - o[0];
 	  return u / l < c / l ? u / l : c / l;
 	}
 
@@ -11699,14 +11699,14 @@
 	  var r = w$2(t, 2),
 	      n = r[0],
 	      a = r[1],
-	      o = w$2(e, 2),
-	      i = o[0],
-	      s = o[1],
+	      i = w$2(e, 2),
+	      o = i[0],
+	      s = i[1],
 	      u = a[0] - n[0],
 	      c = a[1] - n[1],
-	      l = s[0] - i[0],
-	      h = Math.abs(n[0] - (l - u) / 2) / l < .2,
-	      A = Math.abs(n[1] - (l - c) / 2) / l < .2;
+	      l = s[0] - o[0],
+	      h = Math.abs(n[0] - (l - u) / 2) / l < .07,
+	      A = Math.abs(n[1] - (l - c) / 2) / l < .07;
 	  return !(!h || !A);
 	}
 
@@ -11718,20 +11718,20 @@
 	    var r = w$2(t, 2),
 	        n = r[0],
 	        a = r[1],
-	        o = w$2(e, 2),
-	        i = o[0],
-	        s = o[1];
-	    return (a[0] - n[0]) * (a[1] - n[1]) / ((s[0] - i[0]) * (s[1] - i[1]));
+	        i = w$2(e, 2),
+	        o = i[0],
+	        s = i[1];
+	    return (a[0] - n[0]) * (a[1] - n[1]) / ((s[0] - o[0]) * (s[1] - o[1]));
 	  },
 	  rectEdgeRatio: rt,
 	  isFaceCenter: nt
 	});
 
-	function ot(t) {
+	function it(t) {
 	  return Math.pow(Math.pow(t[0], 2) + Math.pow(t[1], 2), .5);
 	}
 
-	function it(t, e) {
+	function ot(t, e) {
 	  return [t[0] - e[0], t[1] - e[1]];
 	}
 
@@ -11743,37 +11743,37 @@
 	        r,
 	        n,
 	        a,
-	        o,
 	        i,
+	        o,
 	        s,
 	        u = w$2(t, 4),
 	        c = u[0],
 	        l = u[1],
 	        h = u[2],
 	        A = u[3],
-	        f = it(l, c),
-	        g = ot(f),
+	        f = ot(l, c),
+	        g = it(f),
 	        d = (a = l, e = [(n = c)[0] + a[0], n[1] + a[1]], r = 2, [e[0] / r, e[1] / r]),
-	        m = it(h, d),
-	        p = ot(it(A, h)),
-	        v = it(A, d),
-	        I = ot(v),
+	        m = ot(h, d),
+	        p = it(ot(A, h)),
+	        v = ot(A, d),
+	        I = it(v),
 	        b = (m[0] * v[0] + m[1] * v[1]) / I,
 	        y = p / I;
-	    if (g > .5 * I) o = (m[0] * f[0] + m[1] * f[1]) / g / g;else {
-	      var _ = ot(it(m, function (t, e) {
+	    if (g > .5 * I) i = (m[0] * f[0] + m[1] * f[1]) / g / g;else {
+	      var _ = it(ot(m, function (t, e) {
 	        return [t[0] * e, t[1] * e];
 	      }(v, b / I)));
 
-	      s = v, o = ((i = m)[0] * s[1] - s[0] * i[1] >= 0 ? 1 : -1) * _ / g;
+	      s = v, i = ((o = m)[0] * s[1] - s[0] * o[1] >= 0 ? 1 : -1) * _ / g;
 	    }
 	    return {
-	      left_right_score: o,
+	      left_right_score: i,
 	      up_down_score: y
 	    };
 	  }(e),
-	      o = n.left_right_score,
-	      i = n.up_down_score,
+	      i = n.left_right_score,
+	      o = n.up_down_score,
 	      s = w$2(e, 3),
 	      u = s[0],
 	      c = s[1],
@@ -11781,26 +11781,26 @@
 	      h = c[0] - l[0],
 	      A = u[0] - l[0],
 	      f = r ? .1 : .3,
-	      g = i > .7,
-	      d = i < .42,
-	      m = o >= .35 && o <= .6,
-	      p = o <= -.35 && o >= -.6;
+	      g = o > .7,
+	      d = o < .42,
+	      m = i >= .35 && i <= .6,
+	      p = i <= -.35 && i >= -.6;
 
-	  return i >= .42 && i <= .7 && o > -f && o < f && h * A < 0 ? {
+	  return o >= .42 && o <= .7 && i > -f && i < f && h * A < 0 ? {
 	    gesture: a.FRONTAL,
-	    leftRightScore: o
+	    leftRightScore: i
 	  } : g && !p && !m ? {
 	    gesture: a.UP,
-	    leftRightScore: o
+	    leftRightScore: i
 	  } : d && !p && !m ? {
 	    gesture: a.DOWN,
-	    leftRightScore: o
+	    leftRightScore: i
 	  } : m && !g && !d ? {
 	    gesture: a.RIGHT,
-	    leftRightScore: o
+	    leftRightScore: i
 	  } : p && !g && !d ? {
 	    gesture: a.LEFT,
-	    leftRightScore: o
+	    leftRightScore: i
 	  } : null;
 	}
 
@@ -11808,21 +11808,39 @@
 	  var e,
 	      r,
 	      a,
-	      o = t.predictions,
-	      i = [[0, 0], [t.width, t.height]],
-	      s = o.reduce(function (t, e) {
+	      i,
+	      o,
+	      s,
+	      u,
+	      c,
+	      l,
+	      h,
+	      A,
+	      f,
+	      g,
+	      d,
+	      p,
+	      v,
+	      w,
+	      I,
+	      b,
+	      y,
+	      _,
+	      B,
+	      E = t.predictions,
+	      C = [[0, 0], [t.width, t.height]],
+	      Q = E.reduce(function (t, e) {
 	    var r = e.topLeft,
 	        n = e.bottomRight;
-	    return t[et(i, [r, n])].push(e), t;
+	    return t[et(C, [r, n])].push(e), t;
 	  }, (m$1(e = {}, tt.PARTIAL, []), m$1(e, tt.FULL, []), m$1(e, tt.NONE, []), e)),
-	      u = s[tt.FULL].length,
-	      c = s[tt.PARTIAL].length;
-	  if (0 === u) r = c > 0 ? n$2.partial_face : n$2.no_face;else if (u + c > 1) r = n$2.multiple_faces;else {
-	    var l = a = s[tt.FULL][0],
-	        h = l.topLeft,
-	        A = l.bottomRight,
-	        f = rt([h, A], i);
-	    f < .4 && (r = n$2.face_too_small), f > .61 && (r = n$2.face_too_large), nt([h, A], i) || (r = n$2.face_out_of_box);
+	      M = Q[tt.FULL].length,
+	      S = Q[tt.PARTIAL].length;
+
+	  if (0 === M) r = S > 0 ? n$2.partial_face : n$2.no_face;else if (M + S > 1) r = n$2.multiple_faces;else {
+	    var k = a = Q[tt.FULL][0],
+	        R = rt([k.topLeft, k.bottomRight], C);
+	    R < .4 && (r = n$2.face_too_small), R > .61 && (r = n$2.face_too_large), nt((i = a.landmarks, u = i[0], c = i[1], l = i[2], h = i[3], A = i[4], f = i[5], g = .5 * (u[1] + c[1]), d = g + 1.5 * (g - h[1]), p = h[1] - 1.2 * (l[1] - h[1]), v = [u[0], c[0], l[0], h[0], A[0], f[0]], w = Math.min.apply(Math, v), I = Math.max(d, p), b = Math.max.apply(Math, v), y = Math.min(d, p), _ = Math.abs(h[0] - A[0]) / Math.abs(h[0] - f[0]), B = h[0] - A[0] < 0 && f[0] - h[0] > .05 * (b - w), h[0] - A[0] > 0 && f[0] - h[0] < -.05 * (b - w) ? (o = .2, s = .1) : B ? (o = .1, s = .2) : _ > 2 || _ < .5 ? (o = .15, s = .15) : (o = .05, s = .05), [[w - o * (b - w), I], [b + s * (b - w), y]]), C) || (r = n$2.face_out_of_box);
 	  }
 	  return {
 	    error: r,
@@ -11834,8 +11852,8 @@
 	  var r = e.customInstructions,
 	      n = e.customIcon,
 	      a = e.customDirectionIcon,
-	      o = {};
-	  return null != r && r[t] && (o.instructions = r[t]), null != n && n[t] && (o.icon = n[t]), null != a && a[t] && (o.directionIcon = a[t]), o;
+	      i = {};
+	  return null != r && r[t] && (i.instructions = r[t]), null != n && n[t] && (i.icon = n[t]), null != a && a[t] && (i.directionIcon = a[t]), i;
 	}
 
 	function lt() {
@@ -11895,8 +11913,8 @@
 	        e = t.assetRoot,
 	        r = void 0 === e ? "/" : e,
 	        n = t.customInstructions,
-	        o = t.customIcon,
-	        i = t.customDirectionIcon;
+	        i = t.customIcon,
+	        o = t.customDirectionIcon;
 	    return {
 	      curStepIndex: 0,
 	      steps: [].concat(I$1(J$1([v$2({
@@ -11923,8 +11941,8 @@
 	        directionIconAnimation: "slide-horizontal"
 	      }, ct(a.LEFT, {
 	        customInstructions: n,
-	        customIcon: o,
-	        customDirectionIcon: i
+	        customIcon: i,
+	        customDirectionIcon: o
 	      })), v$2({
 	        name: a.RIGHT,
 	        instructions: {
@@ -11949,8 +11967,8 @@
 	        directionIconAnimation: "slide-horizontal"
 	      }, ct(a.RIGHT, {
 	        customInstructions: n,
-	        customIcon: o,
-	        customDirectionIcon: i
+	        customIcon: i,
+	        customDirectionIcon: o
 	      })), v$2({
 	        name: a.UP,
 	        instructions: {
@@ -11975,8 +11993,8 @@
 	        directionIconAnimation: "slide-vertical"
 	      }, ct(a.UP, {
 	        customInstructions: n,
-	        customIcon: o,
-	        customDirectionIcon: i
+	        customIcon: i,
+	        customDirectionIcon: o
 	      }))])), [v$2({
 	        name: a.FRONTAL,
 	        instructions: {
@@ -12001,8 +12019,8 @@
 	        directionIconAnimation: "blink"
 	      }, ct(a.FRONTAL, {
 	        customInstructions: n,
-	        customIcon: o,
-	        customDirectionIcon: i
+	        customIcon: i,
+	        customDirectionIcon: o
 	      }))])
 	    };
 	  },
@@ -12018,11 +12036,11 @@
 	        r = [],
 	        n = [],
 	        a = [],
-	        o = 0,
-	        i = 0;
+	        i = 0,
+	        o = 0;
 
 	    function s() {
-	      i = o, r = I$1(t), n = I$1(e);
+	      o = i, r = I$1(t), n = I$1(e);
 	    }
 
 	    return function (u, c) {
@@ -12039,11 +12057,11 @@
 	      A.forEach(function (t, e) {
 	        var r = w$2(t, 2);
 	        m[e] = r[0], p[e] = r[1];
-	      }), o = Date.now();
+	      }), i = Date.now();
 	      var v = f[2] - f[0];
 	      if (t = [].concat(m), e = [].concat(p), !r.length && !n.length || c) return s(), {
 	        score: 0,
-	        time: o
+	        time: i
 	      };
 
 	      for (var I = 0; I < 6; I++) {
@@ -12051,7 +12069,7 @@
 	      }
 
 	      for (var b = 0; b < 6; b++) {
-	        a[b] /= (o - i) * v;
+	        a[b] /= (i - o) * v;
 	      }
 
 	      for (var y = 0, _ = 0; _ < 6; _++) {
@@ -12060,7 +12078,7 @@
 
 	      return y /= 6, s(), {
 	        score: y,
-	        time: o
+	        time: i
 	      };
 	    };
 	  }
@@ -12126,9 +12144,9 @@
 	    return !1;
 	  }
 	}() ? Object.assign : function (t, e) {
-	  for (var r, n, a = It(t), o = 1; o < arguments.length; o++) {
-	    for (var i in r = Object(arguments[o])) {
-	      vt.call(r, i) && (a[i] = r[i]);
+	  for (var r, n, a = It(t), i = 1; i < arguments.length; i++) {
+	    for (var o in r = Object(arguments[i])) {
+	      vt.call(r, o) && (a[o] = r[o]);
 	    }
 
 	    if (pt) {
@@ -12144,15 +12162,15 @@
 	},
 	    yt = arguments[3],
 	    _t = arguments[4],
-	    Et = arguments[5],
-	    Bt = JSON.stringify,
+	    Bt = arguments[5],
+	    Et = JSON.stringify,
 	    Ct = function Ct(t, e) {
-	  for (var r, n = Object.keys(Et), a = 0, o = n.length; a < o; a++) {
-	    var i = n[a],
-	        s = Et[i].exports;
+	  for (var r, n = Object.keys(Bt), a = 0, i = n.length; a < i; a++) {
+	    var o = n[a],
+	        s = Bt[o].exports;
 
 	    if (s === t || s && s["default"] === t) {
-	      r = i;
+	      r = o;
 	      break;
 	    }
 	  }
@@ -12161,8 +12179,8 @@
 	    r = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
 	    var u = {};
 
-	    for (a = 0, o = n.length; a < o; a++) {
-	      u[i = n[a]] = i;
+	    for (a = 0, i = n.length; a < i; a++) {
+	      u[o = n[a]] = o;
 	    }
 
 	    _t[r] = ["function(require,module,exports){" + t + "(self); }", u];
@@ -12170,7 +12188,7 @@
 
 	  var c = Math.floor(Math.pow(16, 8) * Math.random()).toString(16),
 	      l = {};
-	  l[r] = r, _t[c] = ["function(require,module,exports){var f = require(" + Bt(r) + ");(f.default ? f.default : f)(self);}", l];
+	  l[r] = r, _t[c] = ["function(require,module,exports){var f = require(" + Et(r) + ");(f.default ? f.default : f)(self);}", l];
 	  var h = {};
 	  !function t(e) {
 	    for (var r in h[e] = !0, _t[e][1]) {
@@ -12179,8 +12197,8 @@
 	    }
 	  }(c);
 	  var A = "(" + yt + ")({" + Object.keys(h).map(function (t) {
-	    return Bt(t) + ":[" + _t[t][0] + "," + Bt(_t[t][1]) + "]";
-	  }).join(",") + "},{},[" + Bt(c) + "])",
+	    return Et(t) + ":[" + _t[t][0] + "," + Et(_t[t][1]) + "]";
+	  }).join(",") + "},{},[" + Et(c) + "])",
 	      f = window.URL || window.webkitURL || window.mozURL || window.msURL,
 	      g = new Blob([A], {
 	    type: "text/javascript"
@@ -12227,13 +12245,13 @@
 	  wasm: !0
 	};
 
-	function jt(t) {
-	  if (!(this instanceof jt)) return new jt(t);
+	function Dt(t) {
+	  if (!(this instanceof Dt)) return new Dt(t);
 	  var e = bt({}, Rt, t || {});
 	  if (this.options = e, this.__cache = {}, this.__init_promise = null, this.__modules = e.modules || {}, this.__memory = null, this.__wasm = {}, this.__isLE = 1 === new Uint32Array(new Uint8Array([1, 0, 0, 0]).buffer)[0], !this.options.js && !this.options.wasm) throw new Error('mathlib: at least "js" or "wasm" should be enabled');
 	}
 
-	jt.prototype.has_wasm = function () {
+	Dt.prototype.has_wasm = function () {
 	  if (void 0 !== St) return St;
 	  if (St = !1, "undefined" == typeof WebAssembly) return St;
 
@@ -12244,9 +12262,9 @@
 	  } catch (t) {}
 
 	  return St;
-	}, jt.prototype.use = function (t) {
+	}, Dt.prototype.use = function (t) {
 	  return this.__modules[t.name] = t, this.options.wasm && this.has_wasm() && t.wasm_fn ? this[t.name] = t.wasm_fn : this[t.name] = t.fn, this;
-	}, jt.prototype.init = function () {
+	}, Dt.prototype.init = function () {
 	  if (this.__init_promise) return this.__init_promise;
 	  if (!this.options.js && this.options.wasm && !this.has_wasm()) return Promise.reject(new Error('mathlib: only "wasm" was enabled, but it\'s not supported'));
 	  var t = this;
@@ -12258,20 +12276,20 @@
 	  })).then(function () {
 	    return t;
 	  }), this.__init_promise;
-	}, jt.prototype.__base64decode = function (t) {
-	  for (var e = t.replace(/[\r\n=]/g, ""), r = e.length, n = new Uint8Array(3 * r >> 2), a = 0, o = 0, i = 0; i < r; i++) {
-	    i % 4 == 0 && i && (n[o++] = a >> 16 & 255, n[o++] = a >> 8 & 255, n[o++] = 255 & a), a = a << 6 | "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(e.charAt(i));
+	}, Dt.prototype.__base64decode = function (t) {
+	  for (var e = t.replace(/[\r\n=]/g, ""), r = e.length, n = new Uint8Array(3 * r >> 2), a = 0, i = 0, o = 0; o < r; o++) {
+	    o % 4 == 0 && o && (n[i++] = a >> 16 & 255, n[i++] = a >> 8 & 255, n[i++] = 255 & a), a = a << 6 | "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(e.charAt(o));
 	  }
 
 	  var s = r % 4 * 6;
-	  return 0 === s ? (n[o++] = a >> 16 & 255, n[o++] = a >> 8 & 255, n[o++] = 255 & a) : 18 === s ? (n[o++] = a >> 10 & 255, n[o++] = a >> 2 & 255) : 12 === s && (n[o++] = a >> 4 & 255), n;
-	}, jt.prototype.__reallocate = function (t) {
+	  return 0 === s ? (n[i++] = a >> 16 & 255, n[i++] = a >> 8 & 255, n[i++] = 255 & a) : 18 === s ? (n[i++] = a >> 10 & 255, n[i++] = a >> 2 & 255) : 12 === s && (n[i++] = a >> 4 & 255), n;
+	}, Dt.prototype.__reallocate = function (t) {
 	  if (!this.__memory) return this.__memory = new WebAssembly.Memory({
 	    initial: Math.ceil(t / 65536)
 	  }), this.__memory;
 	  var e = this.__memory.buffer.byteLength;
 	  return e < t && this.__memory.grow(Math.ceil((t - e) / 65536)), this.__memory;
-	}, jt.prototype.__instance = function (t, e, r) {
+	}, Dt.prototype.__instance = function (t, e, r) {
 	  if (e && this.__reallocate(e), !this.__wasm[t]) {
 	    var n = this.__modules[t];
 	    this.__wasm[t] = new WebAssembly.Module(this.__base64decode(n.wasm_src));
@@ -12293,28 +12311,28 @@
 	  }
 
 	  return this.__cache[t];
-	}, jt.prototype.__align = function (t, e) {
+	}, Dt.prototype.__align = function (t, e) {
 	  var r = t % (e = e || 8);
 	  return t + (r ? e - r : 0);
 	};
-	var Dt,
+	var jt,
 	    Ot,
 	    Ut,
 	    xt,
 	    Lt,
 	    Ft,
-	    Pt = jt;
+	    Pt = Dt;
 
-	function Ht(t, e, r, n, a, o) {
-	  var i, s, u, c, l, h, A, f, g, d, m, p, v, w;
+	function Ht(t, e, r, n, a, i) {
+	  var o, s, u, c, l, h, A, f, g, d, m, p, v, w;
 
-	  for (g = 0; g < o; g++) {
-	    for (A = g, f = 0, c = l = (i = t[h = g * a]) * n[6], m = n[0], p = n[1], v = n[4], w = n[5], d = 0; d < a; d++) {
-	      u = (s = t[h]) * m + i * p + c * v + l * w, l = c, c = u, i = s, r[f] = c, f++, h++;
+	  for (g = 0; g < i; g++) {
+	    for (A = g, f = 0, c = l = (o = t[h = g * a]) * n[6], m = n[0], p = n[1], v = n[4], w = n[5], d = 0; d < a; d++) {
+	      u = (s = t[h]) * m + o * p + c * v + l * w, l = c, c = u, o = s, r[f] = c, f++, h++;
 	    }
 
-	    for (f--, A += o * (a - 1), c = l = (i = t[--h]) * n[7], s = i, m = n[2], p = n[3], d = a - 1; d >= 0; d--) {
-	      u = s * m + i * p + c * v + l * w, l = c, c = u, i = s, s = t[h], e[A] = r[f] + c, h--, f--, A -= o;
+	    for (f--, A += i * (a - 1), c = l = (o = t[--h]) * n[7], s = o, m = n[2], p = n[3], d = a - 1; d >= 0; d--) {
+	      u = s * m + o * p + c * v + l * w, l = c, c = u, o = s, s = t[h], e[A] = r[f] + c, h--, f--, A -= i;
 	    }
 	  }
 	}
@@ -12322,30 +12340,30 @@
 	var qt = function qt(t, e, r, n) {
 	  if (n) {
 	    var a = new Uint16Array(t.length),
-	        o = new Float32Array(Math.max(e, r)),
-	        i = function (t) {
+	        i = new Float32Array(Math.max(e, r)),
+	        o = function (t) {
 	      t < .5 && (t = .5);
 	      var e = Math.exp(.527076) / t,
 	          r = Math.exp(-e),
 	          n = Math.exp(-2 * e),
 	          a = (1 - r) * (1 - r) / (1 + 2 * e * r - n);
-	      return Dt = a, Ot = a * (e - 1) * r, Ut = a * (e + 1) * r, xt = -a * n, Lt = 2 * r, Ft = -n, new Float32Array([Dt, Ot, Ut, xt, Lt, Ft, (Dt + Ot) / (1 - Lt - Ft), (Ut + xt) / (1 - Lt - Ft)]);
+	      return jt = a, Ot = a * (e - 1) * r, Ut = a * (e + 1) * r, xt = -a * n, Lt = 2 * r, Ft = -n, new Float32Array([jt, Ot, Ut, xt, Lt, Ft, (jt + Ot) / (1 - Lt - Ft), (Ut + xt) / (1 - Lt - Ft)]);
 	    }(n);
 
-	    Ht(t, a, o, i, e, r), Ht(a, t, o, i, r, e);
+	    Ht(t, a, i, o, e, r), Ht(a, t, i, o, r, e);
 	  }
 	},
 	    Gt = {
 	  name: "unsharp_mask",
-	  fn: function fn(t, e, r, n, a, o) {
-	    var i, s, u, c, l, h, A, f, g, d, m, p, v;
+	  fn: function fn(t, e, r, n, a, i) {
+	    var o, s, u, c, l, h, A, f, g, d, m, p, v;
 
 	    if (!(0 === n || a < .5)) {
 	      a > 2 && (a = 2);
 
 	      var w = function (t, e, r) {
-	        for (var n, a, o, i, s, u = e * r, c = new Uint16Array(u), l = 0; l < u; l++) {
-	          n = t[4 * l], a = t[4 * l + 1], o = t[4 * l + 2], s = n >= a && n >= o ? n : a >= o && a >= n ? a : o, i = n <= a && n <= o ? n : a <= o && a <= n ? a : o, c[l] = 257 * (s + i) >> 1;
+	        for (var n, a, i, o, s, u = e * r, c = new Uint16Array(u), l = 0; l < u; l++) {
+	          n = t[4 * l], a = t[4 * l + 1], i = t[4 * l + 2], s = n >= a && n >= i ? n : a >= i && a >= n ? a : i, o = n <= a && n <= i ? n : a <= i && a <= n ? a : i, c[l] = 257 * (s + o) >> 1;
 	        }
 
 	        return c;
@@ -12354,19 +12372,19 @@
 
 	      qt(I, e, r, a);
 
-	      for (var b = n / 100 * 4096 + .5 | 0, y = 257 * o | 0, _ = e * r, E = 0; E < _; E++) {
-	        p = 2 * (w[E] - I[E]), Math.abs(p) >= y && (i = t[v = 4 * E], s = t[v + 1], u = t[v + 2], h = 257 * ((f = i >= s && i >= u ? i : s >= i && s >= u ? s : u) + (A = i <= s && i <= u ? i : s <= i && s <= u ? s : u)) >> 1, A === f ? c = l = 0 : (l = h <= 32767 ? 4095 * (f - A) / (f + A) | 0 : 4095 * (f - A) / (510 - f - A) | 0, c = i === f ? 65535 * (s - u) / (6 * (f - A)) | 0 : s === f ? 21845 + (65535 * (u - i) / (6 * (f - A)) | 0) : 43690 + (65535 * (i - s) / (6 * (f - A)) | 0)), (h += b * p + 2048 >> 12) > 65535 ? h = 65535 : h < 0 && (h = 0), 0 === l ? i = s = u = h >> 8 : (g = 2 * h - (d = h <= 32767 ? h * (4096 + l) + 2048 >> 12 : h + ((65535 - h) * l + 2048 >> 12)) >> 8, d >>= 8, i = (m = c + 21845 & 65535) >= 43690 ? g : m >= 32767 ? g + (6 * (d - g) * (43690 - m) + 32768 >> 16) : m >= 10922 ? d : g + (6 * (d - g) * m + 32768 >> 16), s = (m = 65535 & c) >= 43690 ? g : m >= 32767 ? g + (6 * (d - g) * (43690 - m) + 32768 >> 16) : m >= 10922 ? d : g + (6 * (d - g) * m + 32768 >> 16), u = (m = c - 21845 & 65535) >= 43690 ? g : m >= 32767 ? g + (6 * (d - g) * (43690 - m) + 32768 >> 16) : m >= 10922 ? d : g + (6 * (d - g) * m + 32768 >> 16)), t[v] = i, t[v + 1] = s, t[v + 2] = u);
+	      for (var b = n / 100 * 4096 + .5 | 0, y = 257 * i | 0, _ = e * r, B = 0; B < _; B++) {
+	        p = 2 * (w[B] - I[B]), Math.abs(p) >= y && (o = t[v = 4 * B], s = t[v + 1], u = t[v + 2], h = 257 * ((f = o >= s && o >= u ? o : s >= o && s >= u ? s : u) + (A = o <= s && o <= u ? o : s <= o && s <= u ? s : u)) >> 1, A === f ? c = l = 0 : (l = h <= 32767 ? 4095 * (f - A) / (f + A) | 0 : 4095 * (f - A) / (510 - f - A) | 0, c = o === f ? 65535 * (s - u) / (6 * (f - A)) | 0 : s === f ? 21845 + (65535 * (u - o) / (6 * (f - A)) | 0) : 43690 + (65535 * (o - s) / (6 * (f - A)) | 0)), (h += b * p + 2048 >> 12) > 65535 ? h = 65535 : h < 0 && (h = 0), 0 === l ? o = s = u = h >> 8 : (g = 2 * h - (d = h <= 32767 ? h * (4096 + l) + 2048 >> 12 : h + ((65535 - h) * l + 2048 >> 12)) >> 8, d >>= 8, o = (m = c + 21845 & 65535) >= 43690 ? g : m >= 32767 ? g + (6 * (d - g) * (43690 - m) + 32768 >> 16) : m >= 10922 ? d : g + (6 * (d - g) * m + 32768 >> 16), s = (m = 65535 & c) >= 43690 ? g : m >= 32767 ? g + (6 * (d - g) * (43690 - m) + 32768 >> 16) : m >= 10922 ? d : g + (6 * (d - g) * m + 32768 >> 16), u = (m = c - 21845 & 65535) >= 43690 ? g : m >= 32767 ? g + (6 * (d - g) * (43690 - m) + 32768 >> 16) : m >= 10922 ? d : g + (6 * (d - g) * m + 32768 >> 16)), t[v] = o, t[v + 1] = s, t[v + 2] = u);
 	      }
 	    }
 	  },
-	  wasm_fn: function wasm_fn(t, e, r, n, a, o) {
+	  wasm_fn: function wasm_fn(t, e, r, n, a, i) {
 	    if (!(0 === n || a < .5)) {
 	      a > 2 && (a = 2);
 
-	      var i = e * r,
-	          s = 4 * i,
-	          u = 2 * i,
-	          c = 2 * i,
+	      var o = e * r,
+	          s = 4 * o,
+	          u = 2 * o,
+	          c = 2 * o,
 	          l = 4 * Math.max(e, r),
 	          h = s,
 	          A = h + u,
@@ -12380,7 +12398,7 @@
 
 	      new Uint32Array(this.__memory.buffer).set(p);
 	      var v = m.exports.hsl_l16 || m.exports._hsl_l16;
-	      v(0, h, e, r), (v = m.exports.blurMono16 || m.exports._blurMono16)(h, A, f, g, d, e, r, a), (v = m.exports.unsharp || m.exports._unsharp)(0, 0, h, A, e, r, n, o), p.set(new Uint32Array(this.__memory.buffer, 0, i));
+	      v(0, h, e, r), (v = m.exports.blurMono16 || m.exports._blurMono16)(h, A, f, g, d, e, r, a), (v = m.exports.unsharp || m.exports._unsharp)(0, 0, h, A, e, r, n, i), p.set(new Uint32Array(this.__memory.buffer, 0, o));
 	    }
 	  },
 	  wasm_src: "AGFzbQEAAAABMQZgAXwBfGACfX8AYAZ/f39/f38AYAh/f39/f39/fQBgBH9/f38AYAh/f39/f39/fwACGQIDZW52A2V4cAAAA2VudgZtZW1vcnkCAAEDBgUBAgMEBQQEAXAAAAdMBRZfX2J1aWxkX2dhdXNzaWFuX2NvZWZzAAEOX19nYXVzczE2X2xpbmUAAgpibHVyTW9ubzE2AAMHaHNsX2wxNgAEB3Vuc2hhcnAABQkBAAqJEAXZAQEGfAJAIAFE24a6Q4Ia+z8gALujIgOaEAAiBCAEoCIGtjgCECABIANEAAAAAAAAAMCiEAAiBbaMOAIUIAFEAAAAAAAA8D8gBKEiAiACoiAEIAMgA6CiRAAAAAAAAPA/oCAFoaMiArY4AgAgASAEIANEAAAAAAAA8L+gIAKioiIHtjgCBCABIAQgA0QAAAAAAADwP6AgAqKiIgO2OAIIIAEgBSACoiIEtow4AgwgASACIAegIAVEAAAAAAAA8D8gBqGgIgKjtjgCGCABIAMgBKEgAqO2OAIcCwu3AwMDfwR9CHwCQCADKgIUIQkgAyoCECEKIAMqAgwhCyADKgIIIQwCQCAEQX9qIgdBAEgiCA0AIAIgAC8BALgiDSADKgIYu6IiDiAJuyIQoiAOIAq7IhGiIA0gAyoCBLsiEqIgAyoCALsiEyANoqCgoCIPtjgCACACQQRqIQIgAEECaiEAIAdFDQAgBCEGA0AgAiAOIBCiIA8iDiARoiANIBKiIBMgAC8BALgiDaKgoKAiD7Y4AgAgAkEEaiECIABBAmohACAGQX9qIgZBAUoNAAsLAkAgCA0AIAEgByAFbEEBdGogAEF+ai8BACIIuCINIAu7IhGiIA0gDLsiEqKgIA0gAyoCHLuiIg4gCrsiE6KgIA4gCbsiFKKgIg8gAkF8aioCALugqzsBACAHRQ0AIAJBeGohAiAAQXxqIQBBACAFQQF0ayEHIAEgBSAEQQF0QXxqbGohBgNAIAghAyAALwEAIQggBiANIBGiIAO4Ig0gEqKgIA8iECAToqAgDiAUoqAiDyACKgIAu6CrOwEAIAYgB2ohBiAAQX5qIQAgAkF8aiECIBAhDiAEQX9qIgRBAUoNAAsLCwvfAgIDfwZ8AkAgB0MAAAAAWw0AIARE24a6Q4Ia+z8gB0MAAAA/l7ujIgyaEAAiDSANoCIPtjgCECAEIAxEAAAAAAAAAMCiEAAiDraMOAIUIAREAAAAAAAA8D8gDaEiCyALoiANIAwgDKCiRAAAAAAAAPA/oCAOoaMiC7Y4AgAgBCANIAxEAAAAAAAA8L+gIAuioiIQtjgCBCAEIA0gDEQAAAAAAADwP6AgC6KiIgy2OAIIIAQgDiALoiINtow4AgwgBCALIBCgIA5EAAAAAAAA8D8gD6GgIgujtjgCGCAEIAwgDaEgC6O2OAIcIAYEQCAFQQF0IQogBiEJIAIhCANAIAAgCCADIAQgBSAGEAIgACAKaiEAIAhBAmohCCAJQX9qIgkNAAsLIAVFDQAgBkEBdCEIIAUhAANAIAIgASADIAQgBiAFEAIgAiAIaiECIAFBAmohASAAQX9qIgANAAsLC7wBAQV/IAMgAmwiAwRAQQAgA2shBgNAIAAoAgAiBEEIdiIHQf8BcSECAn8gBEH/AXEiAyAEQRB2IgRB/wFxIgVPBEAgAyIIIAMgAk8NARoLIAQgBCAHIAIgA0kbIAIgBUkbQf8BcQshCAJAIAMgAk0EQCADIAVNDQELIAQgByAEIAMgAk8bIAIgBUsbQf8BcSEDCyAAQQRqIQAgASADIAhqQYECbEEBdjsBACABQQJqIQEgBkEBaiIGDQALCwvTBgEKfwJAIAazQwAAgEWUQwAAyEKVu0QAAAAAAADgP6CqIQ0gBSAEbCILBEAgB0GBAmwhDgNAQQAgAi8BACADLwEAayIGQQF0IgdrIAcgBkEASBsgDk8EQCAAQQJqLQAAIQUCfyAALQAAIgYgAEEBai0AACIESSIJRQRAIAYiCCAGIAVPDQEaCyAFIAUgBCAEIAVJGyAGIARLGwshCAJ/IAYgBE0EQCAGIgogBiAFTQ0BGgsgBSAFIAQgBCAFSxsgCRsLIgogCGoiD0GBAmwiEEEBdiERQQAhDAJ/QQAiCSAIIApGDQAaIAggCmsiCUH/H2wgD0H+AyAIayAKayAQQYCABEkbbSEMIAYgCEYEQCAEIAVrQf//A2wgCUEGbG0MAQsgBSAGayAGIARrIAQgCEYiBhtB//8DbCAJQQZsbUHVqgFBqtUCIAYbagshCSARIAcgDWxBgBBqQQx1aiIGQQAgBkEAShsiBkH//wMgBkH//wNIGyEGAkACfwJAIAxB//8DcSIFBEAgBkH//wFKDQEgBUGAIGogBmxBgBBqQQx2DAILIAZBCHYiBiEFIAYhBAwCCyAFIAZB//8Dc2xBgBBqQQx2IAZqCyIFQQh2IQcgBkEBdCAFa0EIdiIGIQQCQCAJQdWqAWpB//8DcSIFQanVAksNACAFQf//AU8EQEGq1QIgBWsgByAGa2xBBmxBgIACakEQdiAGaiEEDAELIAchBCAFQanVAEsNACAFIAcgBmtsQQZsQYCAAmpBEHYgBmohBAsCfyAGIgUgCUH//wNxIghBqdUCSw0AGkGq1QIgCGsgByAGa2xBBmxBgIACakEQdiAGaiAIQf//AU8NABogByIFIAhBqdUASw0AGiAIIAcgBmtsQQZsQYCAAmpBEHYgBmoLIQUgCUGr1QJqQf//A3EiCEGp1QJLDQAgCEH//wFPBEBBqtUCIAhrIAcgBmtsQQZsQYCAAmpBEHYgBmohBgwBCyAIQanVAEsEQCAHIQYMAQsgCCAHIAZrbEEGbEGAgAJqQRB2IAZqIQYLIAEgBDoAACABQQFqIAU6AAAgAUECaiAGOgAACyADQQJqIQMgAkECaiECIABBBGohACABQQRqIQEgC0F/aiILDQALCwsL"
@@ -12421,8 +12439,8 @@
 	}
 
 	var zt = function zt(t, e, r, n, a) {
-	  var o,
-	      i,
+	  var i,
+	      o,
 	      s,
 	      u,
 	      c,
@@ -12440,16 +12458,16 @@
 	      b,
 	      y = Nt[t].filter,
 	      _ = 1 / n,
-	      E = Math.min(1, n),
-	      B = Nt[t].win / E,
-	      C = Math.floor(2 * (B + 1)),
+	      B = Math.min(1, n),
+	      E = Nt[t].win / B,
+	      C = Math.floor(2 * (E + 1)),
 	      Q = new Int16Array((C + 2) * r),
 	      M = 0,
 	      S = !Q.subarray || !Q.set;
 
-	  for (o = 0; o < r; o++) {
-	    for (i = (o + .5) * _ + a, s = Math.max(0, Math.floor(i - B)), c = (u = Math.min(e - 1, Math.ceil(i + B))) - s + 1, l = new Float32Array(c), h = new Int16Array(c), A = 0, f = s, g = 0; f <= u; f++, g++) {
-	      A += d = y((f + .5 - i) * E), l[g] = d;
+	  for (i = 0; i < r; i++) {
+	    for (o = (i + .5) * _ + a, s = Math.max(0, Math.floor(o - E)), c = (u = Math.min(e - 1, Math.ceil(o + E))) - s + 1, l = new Float32Array(c), h = new Int16Array(c), A = 0, f = s, g = 0; f <= u; f++, g++) {
+	      A += d = y((f + .5 - o) * B), l[g] = d;
 	    }
 
 	    for (m = 0, g = 0; g < l.length; g++) {
@@ -12478,8 +12496,8 @@
 	  return t < 0 ? 0 : t > 255 ? 255 : t;
 	}
 
-	var Yt = function Yt(t, e, r, n, a, o) {
-	  var i,
+	var Yt = function Yt(t, e, r, n, a, i) {
+	  var o,
 	      s,
 	      u,
 	      c,
@@ -12495,18 +12513,18 @@
 
 	  for (g = 0; g < n; g++) {
 	    for (l = 0, d = 0; d < a; d++) {
-	      for (h = o[l++], A = o[l++], f = p + 4 * h | 0, i = s = u = c = 0; A > 0; A--) {
-	        c = c + (m = o[l++]) * t[f + 3] | 0, u = u + m * t[f + 2] | 0, s = s + m * t[f + 1] | 0, i = i + m * t[f] | 0, f = f + 4 | 0;
+	      for (h = i[l++], A = i[l++], f = p + 4 * h | 0, o = s = u = c = 0; A > 0; A--) {
+	        c = c + (m = i[l++]) * t[f + 3] | 0, u = u + m * t[f + 2] | 0, s = s + m * t[f + 1] | 0, o = o + m * t[f] | 0, f = f + 4 | 0;
 	      }
 
-	      e[v + 3] = Tt(c + 8192 >> 14), e[v + 2] = Tt(u + 8192 >> 14), e[v + 1] = Tt(s + 8192 >> 14), e[v] = Tt(i + 8192 >> 14), v = v + 4 * n | 0;
+	      e[v + 3] = Tt(c + 8192 >> 14), e[v + 2] = Tt(u + 8192 >> 14), e[v + 1] = Tt(s + 8192 >> 14), e[v] = Tt(o + 8192 >> 14), v = v + 4 * n | 0;
 	    }
 
 	    v = 4 * (g + 1) | 0, p = (g + 1) * r * 4 | 0;
 	  }
 	},
-	    Xt = function Xt(t, e, r, n, a, o) {
-	  var i,
+	    Kt = function Kt(t, e, r, n, a, i) {
+	  var o,
 	      s,
 	      u,
 	      c,
@@ -12522,25 +12540,25 @@
 
 	  for (g = 0; g < n; g++) {
 	    for (l = 0, d = 0; d < a; d++) {
-	      for (h = o[l++], A = o[l++], f = p + 4 * h | 0, i = s = u = c = 0; A > 0; A--) {
-	        c = c + (m = o[l++]) * t[f + 3] | 0, u = u + m * t[f + 2] | 0, s = s + m * t[f + 1] | 0, i = i + m * t[f] | 0, f = f + 4 | 0;
+	      for (h = i[l++], A = i[l++], f = p + 4 * h | 0, o = s = u = c = 0; A > 0; A--) {
+	        c = c + (m = i[l++]) * t[f + 3] | 0, u = u + m * t[f + 2] | 0, s = s + m * t[f + 1] | 0, o = o + m * t[f] | 0, f = f + 4 | 0;
 	      }
 
-	      e[v + 3] = Tt(c + 8192 >> 14), e[v + 2] = Tt(u + 8192 >> 14), e[v + 1] = Tt(s + 8192 >> 14), e[v] = Tt(i + 8192 >> 14), v = v + 4 * n | 0;
+	      e[v + 3] = Tt(c + 8192 >> 14), e[v + 2] = Tt(u + 8192 >> 14), e[v + 1] = Tt(s + 8192 >> 14), e[v] = Tt(o + 8192 >> 14), v = v + 4 * n | 0;
 	    }
 
 	    v = 4 * (g + 1) | 0, p = (g + 1) * r * 4 | 0;
 	  }
 	};
 
-	var Kt = !0;
+	var Xt = !0;
 
 	try {
-	  Kt = 1 === new Uint32Array(new Uint8Array([1, 0, 0, 0]).buffer)[0];
+	  Xt = 1 === new Uint32Array(new Uint8Array([1, 0, 0, 0]).buffer)[0];
 	} catch (t) {}
 
 	function Zt(t, e, r) {
-	  if (Kt) e.set(function (t) {
+	  if (Xt) e.set(function (t) {
 	    return new Uint8Array(t.buffer, 0, t.byteLength);
 	  }(t), r);else for (var _n2 = r, _a2 = 0; _a2 < t.length; _a2++) {
 	    var _r5 = t[_a2];
@@ -12555,41 +12573,41 @@
 	        r = t.width,
 	        n = t.height,
 	        a = t.toWidth,
-	        o = t.toHeight,
-	        i = t.scaleX || t.toWidth / t.width,
+	        i = t.toHeight,
+	        o = t.scaleX || t.toWidth / t.width,
 	        s = t.scaleY || t.toHeight / t.height,
 	        u = t.offsetX || 0,
 	        c = t.offsetY || 0,
-	        l = t.dest || new Uint8Array(a * o * 4),
+	        l = t.dest || new Uint8Array(a * i * 4),
 	        h = void 0 === t.quality ? 3 : t.quality,
 	        A = t.alpha || !1,
-	        f = zt(h, r, a, i, u),
-	        g = zt(h, n, o, s, c),
+	        f = zt(h, r, a, o, u),
+	        g = zt(h, n, i, s, c),
 	        d = new Uint8Array(a * n * 4);
-	    return Yt(e, d, r, n, a, f), Xt(d, l, n, a, o, g), A || function (t, e, r) {
+	    return Yt(e, d, r, n, a, f), Kt(d, l, n, a, i, g), A || function (t, e, r) {
 	      var n = 3,
 	          a = e * r * 4 | 0;
 
 	      for (; n < a;) {
 	        t[n] = 255, n = n + 4 | 0;
 	      }
-	    }(l, a, o), l;
+	    }(l, a, i), l;
 	  },
 	  wasm_fn: function wasm_fn(t) {
 	    var e = t.src,
 	        r = t.width,
 	        n = t.height,
 	        a = t.toWidth,
-	        o = t.toHeight,
-	        i = t.scaleX || t.toWidth / t.width,
+	        i = t.toHeight,
+	        o = t.scaleX || t.toWidth / t.width,
 	        s = t.scaleY || t.toHeight / t.height,
 	        u = t.offsetX || 0,
 	        c = t.offsetY || 0,
-	        l = t.dest || new Uint8Array(a * o * 4),
+	        l = t.dest || new Uint8Array(a * i * 4),
 	        h = void 0 === t.quality ? 3 : t.quality,
 	        A = t.alpha || !1,
-	        f = zt(h, r, a, i, u),
-	        g = zt(h, n, o, s, c),
+	        f = zt(h, r, a, o, u),
+	        g = zt(h, n, i, s, c),
 	        d = this.__align(0 + Math.max(e.byteLength, l.byteLength)),
 	        m = this.__align(d + n * a * 4),
 	        p = this.__align(m + f.byteLength),
@@ -12601,16 +12619,16 @@
 
 	    b.set(y), Zt(f, I, m), Zt(g, I, p);
 
-	    (w.exports.convolveHV || w.exports._convolveHV)(m, p, d, r, n, a, o);
+	    (w.exports.convolveHV || w.exports._convolveHV)(m, p, d, r, n, a, i);
 
-	    return new Uint32Array(l.buffer).set(new Uint32Array(this.__memory.buffer, 0, o * a)), A || function (t, e, r) {
+	    return new Uint32Array(l.buffer).set(new Uint32Array(this.__memory.buffer, 0, i * a)), A || function (t, e, r) {
 	      var n = 3,
 	          a = e * r * 4 | 0;
 
 	      for (; n < a;) {
 	        t[n] = 255, n = n + 4 | 0;
 	      }
-	    }(l, a, o), l;
+	    }(l, a, i), l;
 	  },
 	  wasm_src: "AGFzbQEAAAABFAJgBn9/f39/fwBgB39/f39/f38AAg8BA2VudgZtZW1vcnkCAAEDAwIAAQQEAXAAAAcZAghjb252b2x2ZQAACmNvbnZvbHZlSFYAAQkBAArmAwLBAwEQfwJAIANFDQAgBEUNACAFQQRqIRVBACEMQQAhDQNAIA0hDkEAIRFBACEHA0AgB0ECaiESAn8gBSAHQQF0IgdqIgZBAmouAQAiEwRAQQAhCEEAIBNrIRQgFSAHaiEPIAAgDCAGLgEAakECdGohEEEAIQlBACEKQQAhCwNAIBAoAgAiB0EYdiAPLgEAIgZsIAtqIQsgB0H/AXEgBmwgCGohCCAHQRB2Qf8BcSAGbCAKaiEKIAdBCHZB/wFxIAZsIAlqIQkgD0ECaiEPIBBBBGohECAUQQFqIhQNAAsgEiATagwBC0EAIQtBACEKQQAhCUEAIQggEgshByABIA5BAnRqIApBgMAAakEOdSIGQf8BIAZB/wFIG0EQdEGAgPwHcUEAIAZBAEobIAtBgMAAakEOdSIGQf8BIAZB/wFIG0EYdEEAIAZBAEobciAJQYDAAGpBDnUiBkH/ASAGQf8BSBtBCHRBgP4DcUEAIAZBAEobciAIQYDAAGpBDnUiBkH/ASAGQf8BSBtB/wFxQQAgBkEAShtyNgIAIA4gA2ohDiARQQFqIhEgBEcNAAsgDCACaiEMIA1BAWoiDSADRw0ACwsLIQACQEEAIAIgAyAEIAUgABAAIAJBACAEIAUgBiABEAALCw=="
 	};
@@ -12673,10 +12691,10 @@
 	    ae = function ae(t) {
 	  return "[object HTMLImageElement]" === re$1(t);
 	},
-	    oe = function oe(t) {
+	    ie = function ie(t) {
 	  return "[object ImageBitmap]" === re$1(t);
 	},
-	    ie = function ie(t) {
+	    oe = function oe(t) {
 	  var e = 0,
 	      r = [];
 
@@ -12685,12 +12703,12 @@
 	  }
 
 	  return function (t) {
-	    return new Promise(function (a, o) {
+	    return new Promise(function (a, i) {
 	      r.push(function () {
 	        t().then(function (t) {
 	          a(t), e--, n();
 	        }, function (t) {
-	          o(t), e--, n();
+	          i(t), e--, n();
 	        });
 	      }), n();
 	    });
@@ -12795,7 +12813,7 @@
 	  if (!(this instanceof Ie)) return new Ie(t);
 	  this.options = bt({}, de, t || {});
 	  var e = "lk_".concat(this.options.concurrency);
-	  this.__limit = Ae[e] || ie(this.options.concurrency), Ae[e] || (Ae[e] = this.__limit), this.features = {
+	  this.__limit = Ae[e] || oe(this.options.concurrency), Ae[e] || (Ae[e] = this.__limit), this.features = {
 	    js: !1,
 	    wasm: !1,
 	    cib: !1,
@@ -12840,15 +12858,15 @@
 	  }), n.toWidth = e.width, n.toHeight = e.height, n.width = t.naturalWidth || t.width, n.height = t.naturalHeight || t.height, 0 === e.width || 0 === e.height) return Promise.reject(new Error("Invalid output size: ".concat(e.width, "x").concat(e.height)));
 	  n.unsharpRadius > 2 && (n.unsharpRadius = 2);
 	  var a = !1,
-	      o = null;
-	  n.cancelToken && (o = n.cancelToken.then(function (t) {
+	      i = null;
+	  n.cancelToken && (i = n.cancelToken.then(function (t) {
 	    throw a = !0, t;
 	  }, function (t) {
 	    throw a = !0, t;
 	  }));
-	  var i = Math.ceil(Math.max(3, 2.5 * n.unsharpRadius | 0));
+	  var o = Math.ceil(Math.max(3, 2.5 * n.unsharpRadius | 0));
 	  return this.init().then(function () {
-	    if (a) return o;
+	    if (a) return i;
 
 	    if (_this5.features.cib) {
 	      var _r6 = e.getContext("2d", {
@@ -12860,19 +12878,19 @@
 	        resizeHeight: n.toHeight,
 	        resizeQuality: se(n.quality)
 	      }).then(function (t) {
-	        if (a) return o;
+	        if (a) return i;
 	        if (!n.unsharpAmount) return _r6.drawImage(t, 0, 0), t.close(), _r6 = null, _this5.debug("Finished!"), e;
 
 	        _this5.debug("Unsharp result");
 
-	        var i = _this5.options.createCanvas(n.toWidth, n.toHeight),
-	            s = i.getContext("2d", {
+	        var o = _this5.options.createCanvas(n.toWidth, n.toHeight),
+	            s = o.getContext("2d", {
 	          alpha: Boolean(n.alpha)
 	        });
 
 	        s.drawImage(t, 0, 0), t.close();
 	        var u = s.getImageData(0, 0, n.toWidth, n.toHeight);
-	        return _this5.__mathlib.unsharp_mask(u.data, n.toWidth, n.toHeight, n.unsharpAmount, n.unsharpRadius, n.unsharpThreshold), _r6.putImageData(u, 0, 0), i.width = i.height = 0, u = s = i = _r6 = null, _this5.debug("Finished!"), e;
+	        return _this5.__mathlib.unsharp_mask(u.data, n.toWidth, n.toHeight, n.unsharpAmount, n.unsharpRadius, n.unsharpThreshold), _r6.putImageData(u, 0, 0), o.width = o.height = 0, u = s = o = _r6 = null, _this5.debug("Finished!"), e;
 	      });
 	    }
 
@@ -12883,7 +12901,7 @@
 	        return _this5.features.ww ? new Promise(function (e, r) {
 	          var n = _this5.__workersPool.acquire();
 
-	          o && o["catch"](function (t) {
+	          i && i["catch"](function (t) {
 	            return r(t);
 	          }), n.value.onmessage = function (t) {
 	            n.release(), t.data.err ? r(t.data.err) : e(t.data.result);
@@ -12905,9 +12923,9 @@
 
 	      var h = function h(e) {
 	        return _this5.__limit(function () {
-	          if (a) return o;
-	          var i;
-	          if (ne(t)) _this5.debug("Get tile pixel data"), i = n.getImageData(e.x, e.y, e.width, e.height);else {
+	          if (a) return i;
+	          var o;
+	          if (ne(t)) _this5.debug("Get tile pixel data"), o = n.getImageData(e.x, e.y, e.width, e.height);else {
 	            _this5.debug("Draw tile imageBitmap/image to temporary canvas");
 
 	            var _n3 = _this5.options.createCanvas(e.width, e.height),
@@ -12915,10 +12933,10 @@
 	              alpha: Boolean(r.alpha)
 	            });
 
-	            _a3.globalCompositeOperation = "copy", _a3.drawImage(u || t, e.x, e.y, e.width, e.height, 0, 0, e.width, e.height), _this5.debug("Get tile pixel data"), i = _a3.getImageData(0, 0, e.width, e.height), _n3.width = _n3.height = 0, _a3 = _n3 = null;
+	            _a3.globalCompositeOperation = "copy", _a3.drawImage(u || t, e.x, e.y, e.width, e.height, 0, 0, e.width, e.height), _this5.debug("Get tile pixel data"), o = _a3.getImageData(0, 0, e.width, e.height), _n3.width = _n3.height = 0, _a3 = _n3 = null;
 	          }
 	          var l = {
-	            src: i.data,
+	            src: o.data,
 	            width: e.width,
 	            height: e.height,
 	            toWidth: e.toWidth,
@@ -12936,9 +12954,9 @@
 	          return _this5.debug("Invoke resize math"), Promise.resolve().then(function () {
 	            return s(l);
 	          }).then(function (t) {
-	            if (a) return o;
+	            if (a) return i;
 	            var r;
-	            if (i = null, _this5.debug("Convert raw rgba tile result to ImageData"), pe) r = new ImageData(new Uint8ClampedArray(t), e.toWidth, e.toHeight);else if (r = c.createImageData(e.toWidth, e.toHeight), r.data.set) r.data.set(t);else for (var _e5 = r.data.length - 1; _e5 >= 0; _e5--) {
+	            if (o = null, _this5.debug("Convert raw rgba tile result to ImageData"), pe) r = new ImageData(new Uint8ClampedArray(t), e.toWidth, e.toHeight);else if (r = c.createImageData(e.toWidth, e.toHeight), r.data.set) r.data.set(t);else for (var _e5 = r.data.length - 1; _e5 >= 0; _e5--) {
 	              r.data[_e5] = t[_e5];
 	            }
 	            return _this5.debug("Draw tile"), fe ? c.putImageData(r, e.toX, e.toY, e.toInnerX - e.toX, e.toInnerY - e.toY, e.toInnerWidth + 1e-5, e.toInnerHeight + 1e-5) : c.putImageData(r, e.toX, e.toY, e.toInnerX - e.toX, e.toInnerY - e.toY, e.toInnerWidth, e.toInnerHeight), null;
@@ -12952,7 +12970,7 @@
 	        }), ne(t)) return n = t.getContext("2d", {
 	          alpha: Boolean(r.alpha)
 	        }), null;
-	        if (oe(t)) return u = t, l = !0, null;
+	        if (ie(t)) return u = t, l = !0, null;
 	        if (ae(t)) return ve ? (_this5.debug("Decode image via createImageBitmap"), createImageBitmap(t).then(function (t) {
 	          u = t;
 	        })["catch"](function (t) {
@@ -12960,7 +12978,7 @@
 	        })) : null;
 	        throw new Error('Pica: ".from" should be Image, Canvas or ImageBitmap');
 	      }).then(function () {
-	        if (a) return o;
+	        if (a) return i;
 
 	        _this5.debug("Calculate tiles");
 
@@ -12969,8 +12987,8 @@
 	              r,
 	              n,
 	              a,
-	              o,
 	              i,
+	              o,
 	              s = t.toWidth / t.width,
 	              u = t.toHeight / t.height,
 	              c = le(t.srcTileSize * s) - 2 * t.destTileBorder,
@@ -12981,11 +12999,11 @@
 
 	          for (a = 0; a < t.toHeight; a += l) {
 	            for (n = 0; n < t.toWidth; n += c) {
-	              (e = n - t.destTileBorder) < 0 && (e = 0), e + (o = n + c + t.destTileBorder - e) >= t.toWidth && (o = t.toWidth - e), (r = a - t.destTileBorder) < 0 && (r = 0), r + (i = a + l + t.destTileBorder - r) >= t.toHeight && (i = t.toHeight - r), h = {
+	              (e = n - t.destTileBorder) < 0 && (e = 0), e + (i = n + c + t.destTileBorder - e) >= t.toWidth && (i = t.toWidth - e), (r = a - t.destTileBorder) < 0 && (r = 0), r + (o = a + l + t.destTileBorder - r) >= t.toHeight && (o = t.toHeight - r), h = {
 	                toX: e,
 	                toY: r,
-	                toWidth: o,
-	                toHeight: i,
+	                toWidth: i,
+	                toHeight: o,
 	                toInnerX: n,
 	                toInnerY: a,
 	                toInnerWidth: c,
@@ -12996,8 +13014,8 @@
 	                scaleY: u,
 	                x: le(e / s),
 	                y: le(r / u),
-	                width: he(o / s),
-	                height: he(i / u)
+	                width: he(i / s),
+	                height: he(o / u)
 	              }, A.push(h);
 	            }
 	          }
@@ -13009,7 +13027,7 @@
 	          srcTileSize: _this5.options.tile,
 	          toWidth: r.toWidth,
 	          toHeight: r.toHeight,
-	          destTileBorder: i
+	          destTileBorder: o
 	        }).map(function (t) {
 	          return h(t);
 	        });
@@ -13026,9 +13044,9 @@
 	      });
 	    },
 	        c = function c(t, e, r, n) {
-	      if (a) return o;
+	      if (a) return i;
 
-	      var i,
+	      var o,
 	          _t$shift = t.shift(),
 	          _t$shift2 = _slicedToArray(_t$shift, 2),
 	          s = _t$shift2[0],
@@ -13039,31 +13057,31 @@
 	        toWidth: s,
 	        toHeight: l,
 	        quality: h ? n.quality : Math.min(1, n.quality)
-	      }), h || (i = _this5.options.createCanvas(s, l)), u(e, h ? r : i, n).then(function () {
-	        return h ? r : (n.width = s, n.height = l, c(t, i, r, n));
+	      }), h || (o = _this5.options.createCanvas(s, l)), u(e, h ? r : o, n).then(function () {
+	        return h ? r : (n.width = s, n.height = l, c(t, o, r, n));
 	      }).then(function (t) {
-	        return i && (i.width = i.height = 0), t;
+	        return o && (o.width = o.height = 0), t;
 	      });
 	    };
 
-	    var l = function (t, e, r, n, a, o) {
-	      var i = r / t,
+	    var l = function (t, e, r, n, a, i) {
+	      var o = r / t,
 	          s = n / e,
-	          u = (2 * o + 2 + 1) / a;
+	          u = (2 * i + 2 + 1) / a;
 	      if (u > .5) return [[r, n]];
-	      var c = Math.ceil(Math.log(Math.min(i, s)) / Math.log(u));
+	      var c = Math.ceil(Math.log(Math.min(o, s)) / Math.log(u));
 	      if (c <= 1) return [[r, n]];
 	      var l = [];
 
 	      for (var _a4 = 0; _a4 < c; _a4++) {
-	        var _o = Math.round(Math.pow(Math.pow(t, c - _a4 - 1) * Math.pow(r, _a4 + 1), 1 / c)),
-	            _i = Math.round(Math.pow(Math.pow(e, c - _a4 - 1) * Math.pow(n, _a4 + 1), 1 / c));
+	        var _i = Math.round(Math.pow(Math.pow(t, c - _a4 - 1) * Math.pow(r, _a4 + 1), 1 / c)),
+	            _o = Math.round(Math.pow(Math.pow(e, c - _a4 - 1) * Math.pow(n, _a4 + 1), 1 / c));
 
-	        l.push([_o, _i]);
+	        l.push([_i, _o]);
 	      }
 
 	      return l;
-	    }(n.width, n.height, n.toWidth, n.toHeight, _this5.options.tile, i);
+	    }(n.width, n.height, n.toWidth, n.toHeight, _this5.options.tile, o);
 
 	    return c(l, t, e, n);
 	  });
@@ -13084,14 +13102,14 @@
 	      quality: r
 	    }));
 	    var a = atob(t.toDataURL(e, r).split(",")[1]),
-	        o = a.length,
-	        i = new Uint8Array(o);
+	        i = a.length,
+	        o = new Uint8Array(i);
 
-	    for (var _t4 = 0; _t4 < o; _t4++) {
-	      i[_t4] = a.charCodeAt(_t4);
+	    for (var _t4 = 0; _t4 < i; _t4++) {
+	      o[_t4] = a.charCodeAt(_t4);
 	    }
 
-	    n(new Blob([i], {
+	    n(new Blob([o], {
 	      type: e
 	    }));
 	  });
@@ -13102,13 +13120,13 @@
 	  var r = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
 	      n = r.minSize,
 	      a = void 0 === n ? 720 : n,
-	      o = t / e;
+	      i = t / e;
 	  return t > e ? {
-	    desW: Math.floor(a * o),
+	    desW: Math.floor(a * i),
 	    desH: a
 	  } : {
 	    desW: a,
-	    desH: Math.floor(a / o)
+	    desH: Math.floor(a / i)
 	  };
 	},
 	    _e = Object.freeze({
@@ -13121,7 +13139,7 @@
 	      var r = URL.createObjectURL(t),
 	          a = new Image();
 	      a.src = r;
-	      var o = document.createElement("canvas");
+	      var i = document.createElement("canvas");
 
 	      a.onload = function () {
 	        if (a.width && a.height && (a.width < n || a.height < n)) {
@@ -13129,8 +13147,8 @@
 	            minSize: n
 	          }),
 	              r = t.desW,
-	              i = t.desH;
-	          o.width = r, o.height = i, be.resize(a, o).then(function (t) {
+	              o = t.desH;
+	          i.width = r, i.height = o, be.resize(a, i).then(function (t) {
 	            return be.toBlob(t, "image/jpeg");
 	          }).then(function (t) {
 	            return e(t);
@@ -13141,10 +13159,10 @@
 	  }
 	});
 
-	function Ee(t, e, r) {
+	function Be(t, e, r) {
 	  return function (t, e, r) {
-	    for (var n = 0, a = r[1], o = r[3], i = r[0], s = r[2], u = a; u < o; u++) {
-	      for (var c = i; c < s; c++) {
+	    for (var n = 0, a = r[1], i = r[3], o = r[0], s = r[2], u = a; u < i; u++) {
+	      for (var c = o; c < s; c++) {
 	        var l = N$1(t, e, u, c),
 	            h = l.r,
 	            A = l.g,
@@ -13162,8 +13180,8 @@
 	  }(e, r)) / (e * r) >= .001;
 	}
 
-	function Be() {
-	  return (Be = d$1(regeneratorRuntime.mark(function t(e) {
+	function Ee() {
+	  return (Ee = d$1(regeneratorRuntime.mark(function t(e) {
 	    var r, n, a;
 	    return regeneratorRuntime.wrap(function (t) {
 	      for (;;) {
@@ -13174,7 +13192,7 @@
 	              break;
 	            }
 
-	            return t.abrupt("return", Ee(a, n.width, n.heigh));
+	            return t.abrupt("return", Be(a, n.width, n.heigh));
 
 	          case 5:
 	            return t.abrupt("return", P$1.detectGlare(a, n.width, n.height));
@@ -13191,7 +13209,7 @@
 	var Ce = Object.freeze({
 	  __proto__: null,
 	  isCardGlare: function isCardGlare(t) {
-	    return Be.apply(this, arguments);
+	    return Ee.apply(this, arguments);
 	  }
 	});
 
@@ -14966,7 +14984,7 @@
 	  }, e;
 	}
 
-	var Q$3 = o.Errors,
+	var Q$3 = i.Errors,
 	    Z$3 = 1e3,
 	    J$3 = qe.div(Y$3(), 1e3, function (e) {
 	  return e.checkCameraMode && "opacity: 0;";
@@ -65017,13 +65035,13 @@
 
 	var Vv,
 	    Uv = At.faceTracker(),
-	    Hv = o.Mode,
-	    Gv = o.FaceDirection,
-	    jv = o.Errors;
+	    Hv = i.Mode,
+	    Gv = i.FaceDirection,
+	    jv = i.Errors;
 
 	function qv() {
 	  var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-	      i = e.apiCheck,
+	      i$1 = e.apiCheck,
 	      u = e.mode,
 	      l = e.bgCameraMask,
 	      c = e.bgCameraMaskRed,
@@ -65041,47 +65059,47 @@
 	      O = void 0 === F ? 500 : F,
 	      M = e.captureFrameData,
 	      P = void 0 !== M && M,
-	      L = e.frameRate,
-	      B = void 0 === L ? 1 : L,
-	      z = react.useState(!1),
-	      W = C$3(z, 2),
-	      V = W[0],
-	      U = W[1],
-	      H = react.useState(!1),
-	      G = C$3(H, 2),
-	      j = G[0],
-	      q = G[1],
-	      K = react.useRef(null),
-	      X = c$1.useSDKSettings(),
-	      Y = X.lang,
-	      Q = X.assetRoot,
-	      Z = X.apiClient,
-	      J = u === Hv.ACTIVE,
-	      ee = react.useReducer(function (e) {
+	      L = react.useState(!1),
+	      B = C$3(L, 2),
+	      z = B[0],
+	      W = B[1],
+	      V = react.useState(!1),
+	      U = C$3(V, 2),
+	      H = U[0],
+	      G = U[1],
+	      j = react.useRef(null),
+	      q = c$1.useSDKSettings(),
+	      K = q.lang,
+	      X = q.assetRoot,
+	      Y = q.apiClient,
+	      Q = u === Hv.ACTIVE,
+	      Z = react.useReducer(function (e) {
 	    return e + 1;
 	  }, 0),
-	      te = C$3(ee, 2),
-	      ne = (te[0], te[1]),
-	      re = react.useRef(null),
-	      ae = react.useRef(!1),
-	      oe = react.useRef(null);
-	  null === oe.current && (oe.current = At.initFaceVerificationData({
-	    assetRoot: Q,
+	      J = C$3(Z, 2),
+	      ee = (J[0], J[1]),
+	      te = react.useRef(null),
+	      ne = react.useRef(!1),
+	      re = react.useRef(null);
+	  null === re.current && (re.current = At.initFaceVerificationData({
+	    assetRoot: X,
 	    customInstructions: k,
 	    customIcon: I,
 	    customDirectionIcon: E
 	  }));
 
-	  var se = react.useState(""),
-	      ie = C$3(se, 2),
-	      ue = ie[0],
-	      le = ie[1],
+	  var ae = react.useState(""),
+	      oe = C$3(ae, 2),
+	      se = oe[0],
+	      ie = oe[1],
+	      ue = react.useRef([]),
+	      le = react.useRef(),
 	      ce = react.useRef([]),
-	      de = react.useRef(),
-	      pe = react.useRef([]),
-	      fe = react.useRef(-1),
-	      he = react.useRef(B),
-	      me = react.useRef(["image/jpeg", .4]),
+	      de = react.useRef(-1),
+	      pe = react.useRef(1),
+	      fe = react.useRef(["image/jpeg", .4]),
+	      he = 500,
+	      me = react.useRef(0),
 	      ge = react.useCallback(function (e) {
 	    var t,
 	        n,
@@ -65095,14 +65113,14 @@
 	    var c = Math.floor((o - t) / 2) + i,
 	        d = 5 + u,
 	        p = l;
-	    re.current = {
+	    te.current = {
 	      x: c,
 	      y: d,
 	      width: t,
 	      height: n,
 	      image: p,
 	      surroundStyle: f
-	    }, "object" === x$6(v) ? re.current = N$3(N$3({}, re.current), v) : "function" == typeof v && (re.current = N$3(N$3({}, re.current), v({
+	    }, "object" === x$6(v) ? te.current = N$3(N$3({}, te.current), v) : "function" == typeof v && (te.current = N$3(N$3({}, te.current), v({
 	      clientWidth: r,
 	      clientHeight: a,
 	      videoAreaWidth: o,
@@ -65112,7 +65130,7 @@
 	      isMobile: D$3.isMobile,
 	      width: t,
 	      height: n
-	    }))), ne(), U(!0);
+	    }))), ee(), W(!0);
 	  }, [l, f, v]),
 	      ye = react.useState(3),
 	      be = C$3(ye, 2),
@@ -65134,13 +65152,13 @@
 	        if (e - 1 == 0) {
 	          clearInterval(Ce.current);
 	          var t = Se.current,
-	              n = ce.current.map(function (e) {
+	              n = ue.current.map(function (e) {
 	            return e.blob;
 	          });
 
-	          if (i) {
+	          if (i$1) {
 	            var r = t.map(function (e) {
-	              return Z.uploadImage({
+	              return Y.uploadImage({
 	                file: e.blob,
 	                label: "portrait",
 	                metadata: JSON.stringify({
@@ -65149,7 +65167,7 @@
 	                })
 	              });
 	            }).concat(n.map(function (e) {
-	              return Z.uploadFile({
+	              return Y.uploadFile({
 	                file: e,
 	                label: "video"
 	              });
@@ -65161,7 +65179,7 @@
 	                  r = e.filter(function (e, n) {
 	                return n >= t.length;
 	              });
-	              return Z.verifyFaceLiveness({
+	              return Y.verifyFaceLiveness({
 	                images: n.map(function (e) {
 	                  return {
 	                    id: e.data.image_id
@@ -65192,14 +65210,14 @@
 	        return e - 1;
 	      });
 	    }, 1e3);
-	  }, [Te, i, T, Z, _]);
+	  }, [Te, i$1, T, Y, _]);
 
 	  react.useEffect(function () {
-	    ue && (clearInterval(Ce.current), Te(!1));
-	  }, [ue, Te]), react.useEffect(function () {
+	    se && (clearInterval(Ce.current), Te(!1));
+	  }, [se, Te]), react.useEffect(function () {
 	    var e,
 	        t,
-	        n = K.current,
+	        n = j.current,
 	        r = function () {
 	      var e = w$6(regeneratorRuntime.mark(function e() {
 	        var t, n, r;
@@ -65207,11 +65225,11 @@
 	          for (;;) {
 	            switch (e.prev = e.next) {
 	              case 0:
-	                return t = oe.current.steps, n = [], t.forEach(function (e) {
+	                return t = re.current.steps, n = [], t.forEach(function (e) {
 	                  var t = e.name,
 	                      r = e.image,
 	                      a = e.frontalFaceImage;
-	                  t !== Gv.FRONTAL ? n.push(Z.uploadImage({
+	                  t !== Gv.FRONTAL ? n.push(Y.uploadImage({
 	                    file: r.blob,
 	                    label: "portrait",
 	                    metadata: JSON.stringify({
@@ -65222,7 +65240,7 @@
 	                    data: {
 	                      image_id: null
 	                    }
-	                  })), a.blob ? n.push(Z.uploadImage({
+	                  })), a.blob ? n.push(Y.uploadImage({
 	                    file: a.blob,
 	                    label: "portrait",
 	                    metadata: JSON.stringify({
@@ -65262,11 +65280,11 @@
 	                return e.prev = 0, e.next = 3, r();
 
 	              case 3:
-	                t = oe.current.steps, 0 === (n = t.filter(function (e) {
+	                t = re.current.steps, 0 === (n = t.filter(function (e) {
 	                  return e.frontalFaceImage.imageId;
 	                })).length ? T({
 	                  error: "wrong_face_movement"
-	                }) : Z.verifyFaceLiveness({
+	                }) : Y.verifyFaceLiveness({
 	                  images: n.map(function (e) {
 	                    return {
 	                      id: e.frontalFaceImage.imageId
@@ -65283,11 +65301,11 @@
 	                    };
 	                  }),
 	                  videos: [{
-	                    frames: pe.current
+	                    frames: ce.current
 	                  }],
 	                  metadata: P ? {
 	                    sdk_logs: {
-	                      tracking_frames: pe.current.map(function (e) {
+	                      tracking_frames: ce.current.map(function (e) {
 	                        return {
 	                          index: e.index,
 	                          landmarks: e.landmarks,
@@ -65332,7 +65350,7 @@
 	          for (;;) {
 	            switch (e.prev = e.next) {
 	              case 0:
-	                if (t = oe.current.steps, oe.current.curStepIndex++, oe.current.curStepIndex !== t.length) {
+	                if (t = re.current.steps, re.current.curStepIndex++, re.current.curStepIndex !== t.length) {
 	                  e.next = 26;
 	                  break;
 	                }
@@ -65342,15 +65360,15 @@
 	                  break;
 	                }
 
-	                return e.next = 6, de.current.stopVideoRecording();
+	                return e.next = 6, le.current.stopVideoRecording();
 
 	              case 6:
-	                if (he.current = 0, !T) {
+	                if (pe.current = 0, !T) {
 	                  e.next = 26;
 	                  break;
 	                }
 
-	                if (i) {
+	                if (i$1) {
 	                  e.next = 24;
 	                  break;
 	                }
@@ -65392,7 +65410,9 @@
 	                l = e.t0, u && s.push(u), T({
 	                  steps: o,
 	                  frontalFaces: s,
-	                  videoRecord: pe.current,
+	                  videoRecord: ue.current.map(function (e) {
+	                    return e.blob;
+	                  }),
 	                  frontalScaledImage: l
 	                }), e.next = 26;
 	                break;
@@ -65401,7 +65421,7 @@
 	                return e.next = 26, a();
 
 	              case 26:
-	                ne();
+	                ee();
 
 	              case 27:
 	              case "end":
@@ -65416,14 +65436,13 @@
 	    }(),
 	        s = Ze(function (e, t) {
 	      var n = e[t],
-	          r = e.length - 2,
-	          a = null !== n.image.blob,
-	          s = null !== n.frontalFaceImage.blob,
-	          i = e.filter(function (e) {
+	          r = null !== n.image.blob,
+	          a = null !== n.frontalFaceImage.blob,
+	          s = e.filter(function (e) {
 	        return e.frontalFaceImage.blob;
 	      }).length,
-	          u = !1;
-	      return a && (s || t < r || i >= 1) ? (ae.current = !1, o(), u = !0) : ae.current = !(!a || s), q(!1), u;
+	          i = !1;
+	      return r && (a || 1 !== t || s >= 1) ? (ne.current = !1, o(), i = !0) : ne.current = !(!r || a), G(!1), i;
 	    }, O);
 
 	    function u(e, t, n, r) {
@@ -65437,12 +65456,12 @@
 	          for (;;) {
 	            switch (e.prev = e.next) {
 	              case 0:
-	                if (o = oe.current, i = o.curStepIndex, u = o.steps, !(i < u.length)) {
+	                if (o = re.current, i = o.curStepIndex, u = o.steps, !(i < u.length)) {
 	                  e.next = 23;
 	                  break;
 	                }
 
-	                if (l = u[i], t !== Gv.FRONTAL || null !== l.frontalFaceImage.blurScore && !K$1.hasBetterBlurScore(r, l.frontalFaceImage.blurScore)) {
+	                if (l = u[i], t !== Gv.FRONTAL || null !== l.frontalFaceImage.blurScore && !X$1.hasBetterBlurScore(r, l.frontalFaceImage.blurScore)) {
 	                  e.next = 12;
 	                  break;
 	                }
@@ -65460,12 +65479,12 @@
 	                return e.abrupt("return");
 
 	              case 12:
-	                if (l.name !== t || null !== l.image.blurScore && !K$1.hasBetterBlurScore(r, l.image.blurScore)) {
+	                if (l.name !== t || null !== l.image.blurScore && !X$1.hasBetterBlurScore(r, l.image.blurScore)) {
 	                  e.next = 23;
 	                  break;
 	                }
 
-	                return q(!0), l.image.blurScore = r, e.next = 17, V$1.takePicture({
+	                return G(!0), l.image.blurScore = r, e.next = 17, V$1.takePicture({
 	                  canvas: n
 	                });
 
@@ -65498,7 +65517,7 @@
 	                    blob: e,
 	                    leftRightScore: r
 	                  });
-	                }), 2 === Se.current.length && A && de.current.stopVideoRecording());
+	                }), 2 === Se.current.length && A && le.current.stopVideoRecording());
 
 	              case 1:
 	              case "end":
@@ -65510,7 +65529,7 @@
 	    }
 
 	    function x(e, t, n) {
-	      if (fe.current++, P && fe.current % he.current == 0) {
+	      if (de.current++, P && de.current % pe.current == 0) {
 	        var r = e.topLeft,
 	            a = e.bottomRight,
 	            o = [].concat(S$3(r), S$3(a)),
@@ -65518,11 +65537,11 @@
 	        [r, a].forEach(function (e) {
 	          s = [].concat(S$3(s), [e[0] / mt.SIZE * t.width, e[1] / mt.SIZE * t.height]);
 	        });
-	        var i = Uv(e, 0 === pe.current.length),
+	        var i = Uv(e, 0 === ce.current.length),
 	            u = i.score,
 	            l = i.time,
-	            c = t.toDataURL.apply(t, S$3(me.current));
-	        pe.current.push({
+	            c = t.toDataURL.apply(t, S$3(fe.current));
+	        ce.current.push({
 	          label: "portrait",
 	          base64: c.split(",")[1],
 	          landmarks: n,
@@ -65531,7 +65550,7 @@
 	          }),
 	          score: u,
 	          time: l,
-	          index: pe.current.length,
+	          index: ce.current.length,
 	          bbox: o,
 	          original_bbox: s
 	        });
@@ -65550,7 +65569,7 @@
 	          for (;;) {
 	            switch (r.prev = r.next) {
 	              case 0:
-	                return s = a.cropX, i = a.cropY, d = a.cropWidth, f = a.cropHeight, o.getContext("2d").drawImage(n, s, i, d, f, 0, 0, d, f), r.next = 5, K$1.calculateBlurScore(o);
+	                return s = a.cropX, i = a.cropY, d = a.cropWidth, f = a.cropHeight, o.getContext("2d").drawImage(n, s, i, d, f, 0, 0, d, f), r.next = 5, X$1.calculateBlurScore(o);
 
 	              case 5:
 	                return h = r.sent, r.next = 8, mt.getModelPredictions({
@@ -65566,12 +65585,12 @@
 	                });
 
 	              case 11:
-	                if (w = r.sent, k = w.error, I = w.fullFace, E = "", re.current.image = l, N = null, T = null, C = null, !I) {
+	                if (w = r.sent, k = w.error, I = w.fullFace, E = "", te.current.image = l, N = null, T = null, C = null, !I) {
 	                  r.next = 27;
 	                  break;
 	                }
 
-	                return S = oe.current, _ = S.curStepIndex, $ = S.steps, R = $[_], C = I.landmarks, r.next = 25, At.calculateFaceDirection({
+	                return S = re.current, _ = S.curStepIndex, $ = S.steps, R = $[_], C = I.landmarks, r.next = 25, At.calculateFaceDirection({
 	                  landmarks: C,
 	                  getPerfectFrontal: R && R.name === Gv.FRONTAL
 	                });
@@ -65585,7 +65604,7 @@
 	                  break;
 	                }
 
-	                if (!J) {
+	                if (!Q) {
 	                  r.next = 34;
 	                  break;
 	                }
@@ -65604,10 +65623,10 @@
 	                break;
 
 	              case 38:
-	                E = k.msg[Y], re.current.image = c;
+	                E = k.msg[K], te.current.image = c;
 
 	              case 40:
-	                le(E), -1 !== t && (t = requestAnimationFrame(function () {
+	                Date.now() - me.current > he && (me.current = Date.now(), ie(E)), -1 !== t && (t = requestAnimationFrame(function () {
 	                  return v(a, o);
 	                }));
 
@@ -65656,17 +65675,17 @@
 	                  break;
 	                }
 
-	                le(jv.unable_to_load_model.msg[Y]), _(jv.unable_to_load_model), t.next = 44;
+	                ie(jv.unable_to_load_model.msg[K]), _(jv.unable_to_load_model), t.next = 44;
 	                break;
 
 	              case 29:
 	                return t.next = 31, vd();
 
 	              case 31:
-	                e = t.sent, a = V$1.analyzeVideoAndWindowSizes(n, re.current), o = a.cropWidth, s = a.cropHeight, (i = document.createElement("canvas")).width = o, i.height = s, (u = i.getContext("2d")).translate(o, 0), u.scale(-1, 1), l = A ? Wv({
+	                e = t.sent, a = V$1.analyzeVideoAndWindowSizes(n, te.current), o = a.cropWidth, s = a.cropHeight, (i = document.createElement("canvas")).width = o, i.height = s, (u = i.getContext("2d")).translate(o, 0), u.scale(-1, 1), l = A ? Wv({
 	                  canvas: i,
-	                  resultsOutput: ce.current
-	                }) : {}, c = l.mediaRecorder, de.current = c, de.current && de.current.start(), v(a, i);
+	                  resultsOutput: ue.current
+	                }) : {}, c = l.mediaRecorder, le.current = c, le.current && le.current.start(), v(a, i);
 
 	              case 44:
 	              case "end":
@@ -65677,40 +65696,40 @@
 	      }))).apply(this, arguments);
 	    }
 
-	    return V && function () {
+	    return z && function () {
 	      I.apply(this, arguments);
 	    }(), function () {
 	      cancelAnimationFrame(t), t = -1;
 	    };
-	  }, [V, Y, J, Z, i, l, c, T, _, A, $, O, P]);
-	  var $e = oe.current,
+	  }, [z, K, Q, Y, i$1, l, c, T, _, A, $, O, P]);
+	  var $e = re.current,
 	      Re = $e.curStepIndex,
 	      Ae = $e.steps,
 	      Fe = react.useMemo(function () {
 	    return Ae.find(function (e) {
-	      return e.name === o.FaceDirection.FRONTAL;
+	      return e.name === i.FaceDirection.FRONTAL;
 	    });
 	  }, [Ae]),
-	      Oe = ae.current ? Fe : Ae[Re],
-	      De = Oe ? Oe.instructions[Y] : null,
+	      Oe = ne.current ? Fe : Ae[Re],
+	      De = Oe ? Oe.instructions[K] : null,
 	      Me = Oe ? Oe.directionIcon : "",
 	      Pe = Oe ? Oe.directionIconAnimation : "";
 	  return {
 	    countdownToTakePicture: xe,
-	    cropArea: re,
+	    cropArea: te,
 	    curStepIndex: Re,
 	    directionIcon: Me,
 	    directionIconAnimation: Pe,
-	    faceDetectionError: ue,
+	    faceDetectionError: se,
 	    handleTriggerPassiveMode: _e$1,
 	    handleVideoPlayed: ge,
 	    instructions: De,
-	    isActiveMode: J,
-	    refVideo: K,
+	    isActiveMode: Q,
+	    refVideo: j,
 	    showCountdown: Ie,
 	    steps: Ae,
-	    videoPlayed: V,
-	    activeCapturing: j
+	    videoPlayed: z,
+	    activeCapturing: H
 	  };
 	}
 
@@ -65771,9 +65790,9 @@
 	  cf = t;
 	}("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@2.7.0/dist/");
 	var ew,
-	    tw = (k$5(Vv = {}, o.FaceDirection.LEFT, 90), k$5(Vv, o.FaceDirection.RIGHT, 270), k$5(Vv, o.FaceDirection.UP, 180), k$5(Vv, o.FaceDirection.DOWN, 0), Vv),
+	    tw = (k$5(Vv = {}, i.FaceDirection.LEFT, 90), k$5(Vv, i.FaceDirection.RIGHT, 270), k$5(Vv, i.FaceDirection.UP, 180), k$5(Vv, i.FaceDirection.DOWN, 0), Vv),
 	    nw = We(["0%{opacity:0.15;}50%{opacity:0.3;}100%{opacity:1;}"]),
-	    rw = qe.div(Jv(), tw[o.FaceDirection.DOWN], tw[o.FaceDirection.LEFT], tw[o.FaceDirection.UP], tw[o.FaceDirection.RIGHT]),
+	    rw = qe.div(Jv(), tw[i.FaceDirection.DOWN], tw[i.FaceDirection.LEFT], tw[i.FaceDirection.UP], tw[i.FaceDirection.RIGHT]),
 	    aw = qe.div(Zv(), function (e) {
 	  var t,
 	      n = e.direction;
@@ -65786,7 +65805,7 @@
 
 	function lw(t) {
 	  var n = t.type;
-	  return n !== o.FaceDirection.FRONTAL ? /*#__PURE__*/react.createElement(aw, {
+	  return n !== i.FaceDirection.FRONTAL ? /*#__PURE__*/react.createElement(aw, {
 	    direction: n
 	  }, /*#__PURE__*/react.createElement(sw, null), /*#__PURE__*/react.createElement(iw, null), /*#__PURE__*/react.createElement(uw, null)) : /*#__PURE__*/react.createElement(rw, null, /*#__PURE__*/react.createElement(aw, {
 	    className: "top"
@@ -65870,9 +65889,9 @@
 	}
 
 	lw.propTypes = {
-	  type: propTypes.oneOf([o.FaceDirection.LEFT, o.FaceDirection.RIGHT, o.FaceDirection.UP, o.FaceDirection.FRONTAL])
+	  type: propTypes.oneOf([i.FaceDirection.LEFT, i.FaceDirection.RIGHT, i.FaceDirection.UP, i.FaceDirection.FRONTAL])
 	}, lw.defaultProps = {
-	  type: o.FaceDirection.LEFT
+	  type: i.FaceDirection.LEFT
 	};
 
 	var vw = qe.div(xw(), 1020),
@@ -65922,107 +65941,105 @@
 	      l = n.onError,
 	      c = n.enableRecording,
 	      d = n.captureFrameData,
-	      p = n.frameRate,
-	      h = n.frontCamera,
-	      m = n.customDirectionIcon,
-	      g = A$2.useAsset("bg_camera_mask.png"),
-	      y = A$2.useAsset("bg_camera_mask_red.png"),
-	      b = C$3(react.useState({}), 2),
-	      x = b[0],
-	      v = b[1],
-	      w = x.yFaceDetectionError,
-	      k = x.yFaceVerificationStepsWrapper,
-	      I = C$3(react.useState(!1), 2),
-	      E = I[0],
-	      N = I[1],
-	      T = react.useCallback(function (e) {
+	      p = n.frontCamera,
+	      h = n.customDirectionIcon,
+	      m = A$2.useAsset("bg_camera_mask.png"),
+	      g = A$2.useAsset("bg_camera_mask_red.png"),
+	      y = C$3(react.useState({}), 2),
+	      b = y[0],
+	      x = y[1],
+	      v = b.yFaceDetectionError,
+	      w = b.yFaceVerificationStepsWrapper,
+	      k = C$3(react.useState(!1), 2),
+	      I = k[0],
+	      E = k[1],
+	      N = react.useCallback(function (e) {
 	    var t = e.lostY,
 	        n = e.height,
 	        r = t + 10,
 	        a = r + 35;
-	    return v({
+	    return x({
 	      yFaceDetectionError: r,
 	      yFaceVerificationStepsWrapper: a + n + 40
 	    }), {
 	      y: a
 	    };
 	  }, []),
-	      S = qv({
+	      T = qv({
 	    apiCheck: o,
 	    mode: s,
-	    bgCameraMask: g,
-	    bgCameraMaskRed: y,
+	    bgCameraMask: m,
+	    bgCameraMaskRed: g,
 	    surroundStyle: Aw,
 	    onLivenessDetectionDone: i,
 	    onError: l,
-	    cropAreaDimension: T,
+	    cropAreaDimension: N,
 	    enableRecording: c,
 	    captureFrameData: d,
-	    frameRate: p,
-	    customDirectionIcon: m
+	    customDirectionIcon: h
 	  }),
-	      _ = S.countdownToTakePicture,
-	      $ = S.cropArea,
-	      R = S.curStepIndex,
-	      A = S.directionIcon,
-	      F = S.faceDetectionError,
-	      O = S.handleTriggerPassiveMode,
-	      D = S.handleVideoPlayed,
-	      M = S.instructions,
-	      P = S.isActiveMode,
-	      L = S.refVideo,
-	      B = S.showCountdown,
-	      z = S.steps,
-	      W = S.videoPlayed,
-	      V = S.activeCapturing;
+	      S = T.countdownToTakePicture,
+	      _ = T.cropArea,
+	      $ = T.curStepIndex,
+	      R = T.directionIcon,
+	      A = T.faceDetectionError,
+	      F = T.handleTriggerPassiveMode,
+	      O = T.handleVideoPlayed,
+	      D = T.instructions,
+	      M = T.isActiveMode,
+	      P = T.refVideo,
+	      L = T.showCountdown,
+	      B = T.steps,
+	      z = T.videoPlayed,
+	      W = T.activeCapturing;
 	  return react.useEffect(function () {
-	    Promise.all(z.map(function (e) {
+	    Promise.all(B.map(function (e) {
 	      return t = e.directionIcon, new Promise(function (e) {
 	        var n = new Image();
 	        n.onload = e, n.onerror = e, n.src = t;
 	      });
 	      var t;
 	    })).then(function () {
-	      return N(!0);
+	      return E(!0);
 	    });
-	  }, [z]), /*#__PURE__*/react.createElement(he$2, {
-	    frontCamera: h,
-	    onVideoPlayed: D,
+	  }, [B]), /*#__PURE__*/react.createElement(he$2, {
+	    frontCamera: p,
+	    onVideoPlayed: O,
 	    onClose: u,
-	    flipHorizontal: h,
-	    ref: L,
+	    flipHorizontal: p,
+	    ref: P,
 	    videoSettings: Rw,
 	    onError: l
-	  }, W && E ? /*#__PURE__*/react.createElement(react.Fragment, null, F ? /*#__PURE__*/react.createElement(ww, {
-	    top: w,
+	  }, z && I ? /*#__PURE__*/react.createElement(react.Fragment, null, A ? /*#__PURE__*/react.createElement(ww, {
+	    top: v,
 	    className: "face-detection-error"
-	  }, F) : null, $.current ? /*#__PURE__*/react.createElement(Ee$2, {
-	    x: "".concat($.current.x, "px"),
-	    y: "".concat($.current.y, "px"),
-	    width: "".concat($.current.width, "px"),
-	    height: "".concat($.current.height, "px"),
-	    surroundStyle: $.current.surroundStyle
+	  }, A) : null, _.current ? /*#__PURE__*/react.createElement(Ee$2, {
+	    x: "".concat(_.current.x, "px"),
+	    y: "".concat(_.current.y, "px"),
+	    width: "".concat(_.current.width, "px"),
+	    height: "".concat(_.current.height, "px"),
+	    surroundStyle: _.current.surroundStyle
 	  }, /*#__PURE__*/react.createElement(Ne$1, {
-	    src: $.current.image,
-	    width: $.current.width
-	  }), B ? /*#__PURE__*/react.createElement(Cw, null, _) : null, P ? /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(Sw, null, A), V && /*#__PURE__*/react.createElement($w, null)) : null) : null, P ? /*#__PURE__*/react.createElement(react.Fragment, null, M ? /*#__PURE__*/react.createElement(kw, {
-	    top: k - 30,
+	    src: _.current.image,
+	    width: _.current.width
+	  }), L ? /*#__PURE__*/react.createElement(Cw, null, S) : null, M ? /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(Sw, null, R), W && /*#__PURE__*/react.createElement($w, null)) : null) : null, M ? /*#__PURE__*/react.createElement(react.Fragment, null, D ? /*#__PURE__*/react.createElement(kw, {
+	    top: w - 30,
 	    className: "instructions"
-	  }, M) : null, /*#__PURE__*/react.createElement(Iw, {
-	    top: k
-	  }, z.map(function (t, n) {
+	  }, D) : null, /*#__PURE__*/react.createElement(Iw, {
+	    top: w
+	  }, B.map(function (t, n) {
 	    var r = t.name,
 	        a = t.image.objUrl;
 	    return /*#__PURE__*/react.createElement(Ew, {
 	      key: r,
-	      active: R >= n,
+	      active: $ >= n,
 	      className: "step-item"
 	    }, a ? /*#__PURE__*/react.createElement("img", {
 	      src: a,
 	      alt: ""
 	    }) : /*#__PURE__*/react.createElement("span", null, n + 1));
-	  }))) : /*#__PURE__*/react.createElement(react.Fragment, null, F ? null : /*#__PURE__*/react.createElement(Nw, null, /*#__PURE__*/react.createElement(Tw, {
-	    onClick: O
+	  }))) : /*#__PURE__*/react.createElement(react.Fragment, null, A ? null : /*#__PURE__*/react.createElement(Nw, null, /*#__PURE__*/react.createElement(Tw, {
+	    onClick: F
 	  }, /*#__PURE__*/react.createElement(Te$1, null))))) : null);
 	}
 
@@ -66034,7 +66051,6 @@
 	  onError: propTypes.func,
 	  enableRecording: propTypes.bool,
 	  captureFrameData: propTypes.bool,
-	  frameRate: propTypes.number,
 	  frontCamera: propTypes.bool,
 	  customDirectionIcon: propTypes.shape({})
 	}, Fw.defaultProps = {
@@ -66045,16 +66061,15 @@
 	  onError: function onError() {},
 	  enableRecording: !1,
 	  captureFrameData: !1,
-	  frameRate: 1,
 	  frontCamera: !0,
-	  customDirectionIcon: (ew = {}, k$5(ew, o.FaceDirection.LEFT, /*#__PURE__*/react.createElement(lw, {
-	    type: o.FaceDirection.LEFT
-	  })), k$5(ew, o.FaceDirection.RIGHT, /*#__PURE__*/react.createElement(lw, {
-	    type: o.FaceDirection.RIGHT
-	  })), k$5(ew, o.FaceDirection.UP, /*#__PURE__*/react.createElement(lw, {
-	    type: o.FaceDirection.UP
-	  })), k$5(ew, o.FaceDirection.FRONTAL, /*#__PURE__*/react.createElement(lw, {
-	    type: o.FaceDirection.FRONTAL
+	  customDirectionIcon: (ew = {}, k$5(ew, i.FaceDirection.LEFT, /*#__PURE__*/react.createElement(lw, {
+	    type: i.FaceDirection.LEFT
+	  })), k$5(ew, i.FaceDirection.RIGHT, /*#__PURE__*/react.createElement(lw, {
+	    type: i.FaceDirection.RIGHT
+	  })), k$5(ew, i.FaceDirection.UP, /*#__PURE__*/react.createElement(lw, {
+	    type: i.FaceDirection.UP
+	  })), k$5(ew, i.FaceDirection.FRONTAL, /*#__PURE__*/react.createElement(lw, {
+	    type: i.FaceDirection.FRONTAL
 	  })), ew)
 	};
 	var Ow = Object.freeze({
@@ -73239,7 +73254,7 @@
 	  cropArea: function cropArea() {},
 	  errorMessage: ""
 	};
-	var WA = o.Errors;
+	var WA = i.Errors;
 
 	function VA(e) {
 	  return UA.apply(this, arguments);
@@ -73279,7 +73294,7 @@
 	  }))).apply(this, arguments);
 	}
 
-	var HA = o.Errors;
+	var HA = i.Errors;
 
 	function GA(e) {
 	  return jA.apply(this, arguments);
@@ -73615,7 +73630,7 @@
 	  var r = null == e ? void 0 : tO(e, t);
 	  return void 0 === r ? n : r;
 	},
-	    rO = o.Errors;
+	    rO = i.Errors;
 
 	function aO(e) {
 	  return oO.apply(this, arguments);
@@ -73698,9 +73713,9 @@
 	  }))).apply(this, arguments);
 	}
 
-	var sO = o.IDCardSide,
-	    iO = o.IDCardType,
-	    uO = o.Errors;
+	var sO = i.IDCardSide,
+	    iO = i.IDCardType,
+	    uO = i.Errors;
 
 	function lO(t) {
 	  var n = t.cardType,
@@ -74491,7 +74506,7 @@
 
 	var TrustVisionAPI = /*@__PURE__*/getDefaultExportFromCjs(trustvisionSdk_umd);
 
-	var Mode = o.Mode;
+	var Mode = i.Mode;
 	var defaultAssetRoot = "https://unpkg.com/@tsocial/tvweb-sdk@latest/assets";
 
 	var TVWebSDK = /*#__PURE__*/function () {
@@ -74672,11 +74687,11 @@
 	exports.AssetUtils = A$2;
 	exports.AsyncUtils = f$9;
 	exports.BASE_Z_INDEX = Z$3;
-	exports.BlurUtils = K$1;
+	exports.BlurUtils = X$1;
 	exports.Camera = he$2;
 	exports.CameraUtils = V$1;
 	exports.CommonUtils = $;
-	exports.Constants = o;
+	exports.Constants = i;
 	exports.CoordinateUtils = at;
 	exports.CropAreaOverlayWrapper = Ee$2;
 	exports.DefaultCamera = zA;
