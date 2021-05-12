@@ -4,6 +4,56 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta name="description" content="Vanilla JS demo" />
+    <style>
+      .dot-windmill {
+        position: relative;
+        top: -10px;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: #9880ff;
+        color: #9880ff;
+        transform-origin: 5px 15px;
+        animation: dotWindmill 2s infinite linear;
+        margin-left: 100px;
+        margin-top: -10px;
+      }
+
+      .dot-windmill::before, .dot-windmill::after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+      }
+
+      .dot-windmill::before {
+        left: -8.66px;
+        top: 15px;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: #9880ff;
+        color: #9880ff;
+      }
+
+      .dot-windmill::after {
+        left: 8.66px;
+        top: 15px;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: #9880ff;
+        color: #9880ff;
+      }
+
+      @keyframes dotWindmill {
+        0% {
+          transform: rotateZ(0deg) translate3d(0, 0, 0);
+        }
+        100% {
+          transform: rotateZ(720deg) translate3d(0, 0, 0);
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -78,7 +128,11 @@
         <!-- <option value="true">true</option> -->
       </select>
     </div>
-    <button onclick="startLivenessDetection()">Liveness detection</button>
+    <button onclick="startLivenessDetection()" id="start-liveness">Liveness detection</button>
+    <div id="liveness-loading" style="padding-top: 10px; display: none;">
+      Api checking
+      <div class="dot-windmill"></div>
+    </div>
     <div id="result-liveness-detection"></div>
     <script src="/web-sdk/build/tvweb-sdk.standalone.min.js"></script>
     <script>
@@ -182,8 +236,24 @@
           onLivenessDetectionDone: handleLivenessDetectionDone,
           enableRecording: enableRecording,
           captureFrameData: true,
-          onError: (e) => console.error(e),
-          frontCamera: cameraSelected.value === "true"
+          onError: (e) => {
+            document.getElementById('liveness-loading').style.display = "none";
+            document.getElementById('start-liveness').disabled = false;
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode(`${JSON.stringify(e, null, "\t")}`)
+            );
+          },
+          frontCamera: cameraSelected.value === "true",
+          onApiCheck: () => {
+            document.getElementById('liveness-loading').style.display = "block";
+            document.getElementById('start-liveness').disabled = true;
+
+            resultLivenessDetectionEl.innerHTML = "";
+
+            setTimeout(() => {
+              tv.destroyView();
+            }, 250);
+          }
         });
       }
 
@@ -247,7 +317,8 @@
             }
           }, 500);
         } else {
-          tv.destroyView();
+          document.getElementById('liveness-loading').style.display = "none";
+          document.getElementById('start-liveness').disabled = false;
           resultLivenessDetectionEl.appendChild(
             document.createTextNode(`apiCheckPassed: ${apiCheckPassed}`)
           );
