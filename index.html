@@ -48,49 +48,12 @@
     </div>
 
     <hr />
-    <h4>Extract ID Info</h4>
-    <div style="margin-bottom: 10px">
-      Card side:
-      <select id="select-card-side"></select>
-    </div>
-    <div style="margin-bottom: 10px">
-      Front card Id:
-      <input id="input-cardInfo-front-card-id" style="width: 500px" />
-    </div>
-    <div>
-      <div>Settings (notice that if <strong>Api check: true</strong>, settings from api will overwrite these settings):</div>
-      <textarea cols="55" rows="15" id="id-card-settings"></textarea>
-    </div>
-    <div style="margin-bottom: 10px">
-      <button onclick="runWarmUpReadIDCard()">Warm up</button>
-      <span id="status-warmup-read-id-card"></span>
-    </div>
-    <button onclick="startExtractIDInfo()">Start Extract ID Info</button>
-    <pre id="result-extract-id-info"></pre>
-    <div id="read-id-card-loading" style="margin-top: 10px; display: none;">
-      Api checking
-      <div class="dot-windmill"></div>
-    </div>
-
-    <hr />
-
     <h4>Liveness detection</h4>
     <div>
       Mode:
       <select id="select-mode"></select>
     </div>
-    <div>
-      Camera:
-      <select id="select-camera">
-        <option value="true">Front</option>
-        <option value="false">Back</option>
-      </select>
-    </div>
-    <div>
-      <div>Custom step time constraints (ms):</div>
-      <textarea cols="25" rows="15" id="custom-step-time-constraints"></textarea>
-    </div>
-    <button onclick="startLivenessDetection()" id="btn-start-liveness">
+    <button onclick="startLivenessDetection()" id="start-liveness">
       Liveness detection
     </button>
     <div id="liveness-loading" style="padding-top: 10px; display: none;">
@@ -98,7 +61,8 @@
       <div class="dot-windmill"></div>
     </div>
     <div id="result-liveness-detection"></div>
-    <script src="/web-sdk/build/tvweb-sdk.vib.standalone.min.js"></script>
+    <script src="/web-sdk/build/tvweb-sdk.tiki.standalone.min.js"></script>
+    <!-- <script src="/build/tvweb-sdk.tiki.standalone.min.js"></script> -->
     <script>
       const keys = [
         {
@@ -125,7 +89,7 @@
       const tv = new TVWebSDK.SDK({
         container: document.getElementById("container"),
         lang: "vi",
-        assetRoot: "https://unpkg.com/@tsocial/tvweb-sdk@latest/assets",
+        assetRoot: "https://unpkg.com/@tsocial/tvweb-sdk.vib@latest/assets",
       });
       window.tv = tv;
       const resultExtractIdInfoEl = document.getElementById(
@@ -134,19 +98,15 @@
       const resultLivenessDetectionEl = document.getElementById(
         "result-liveness-detection"
       );
+      // resultLivenessDetectionEl.appendChild(
+      //   document.createTextNode("inner: " + window.innerWidth + "/" + window.innerHeight + ", outer: " + window.outerWidth + "/" + window.outerHeight + ", screen: " + screen.width + "/" + screen.height)
+      // );
       const selectModeEl = document.getElementById("select-mode");
       const selectApiCheckEl = document.getElementById("select-api-check");
       const selectCardSideEl = document.getElementById("select-card-side");
       const inputAccessKey = document.getElementById("access-key");
       const inputSecretKey = document.getElementById("secret-key");
       const inputApiUrl = document.getElementById("api-url");
-      const inputFrontIdEl = document.getElementById("input-cardInfo-front-card-id");
-      const readIdCardLoadingEl = document.getElementById("read-id-card-loading");
-      const customStepTimeConstraintsEl = document.getElementById("custom-step-time-constraints");
-      const statusWarmupReadIDCardEl = document.getElementById("status-warmup-read-id-card");
-      const livenessLoadingEl = document.getElementById("liveness-loading");
-      const startLivenessBtn = document.getElementById("btn-start-liveness");
-      const idCardSettingsEl = document.getElementById("id-card-settings");
       inputAccessKey.value = "f051dfd3-8a6e-4a15-a4e8-7ea8cdc84a31";
       inputSecretKey.value = "vgiKCenoKvhPq79KABbFmxCBu6WX1tdw";
       inputApiUrl.value = "https://tv-testing.trustingsocial.com/api";
@@ -158,124 +118,33 @@
         selectModeEl.appendChild(option);
       });
 
-      Object.keys(TVWebSDK.Constants.IDCardSide).forEach((k) => {
-        const option = document.createElement("option");
-        option.appendChild(document.createTextNode(k));
-        option.setAttribute("value", TVWebSDK.Constants.IDCardSide[k]);
-        selectCardSideEl.appendChild(option);
-      });
-
-      const customStepTimeConstraintsData = {
-        [TVWebSDK.Constants.FaceDirection.UP]: { delayTime: 1000 },
-        [TVWebSDK.Constants.FaceDirection.LEFT]: { delayTime: 1000 },
-        [TVWebSDK.Constants.FaceDirection.RIGHT]: { delayTime: 1000 },
-        [TVWebSDK.Constants.FaceDirection.FRONTAL]: { delayTime: 2000 },
-      };
-      const defaultIdCardSettings = {
-        data: {
-          settings: {
-            sdk_settings: {
-              id_detection_settings: {
-                auto_capture: {
-                  enable: true,
-                  show_capture_button: true,
-                  wait_for_best_image_time_ms: 3000,
-                },
-                blur_check: {
-                  enable: true,
-                  threshold: 0.82,
-                },
-                disable_capture_button_if_alert: true,
-                id_detection: {
-                  enable: true,
-                },
-                limit_time_settings: {
-                  enable: true,
-                  limit_time_second: 30,
-                  video_partial_length_seconds: 15,
-                },
-                save_frame_settings: {
-                  enable: false,
-                  frames_interval_ms: 190,
-                  quality_web: 80,
-                },
-                scan_qr_settings: {
-                  enable: true,
-                  limit_time_second: 20,
-                },
-              },
-            },
-          },
-        },
-      };
-      customStepTimeConstraintsEl.value = JSON.stringify(customStepTimeConstraintsData, null, 2);
-      idCardSettingsEl.value = JSON.stringify(defaultIdCardSettings, null, 2);
-
-      function runWarmUpReadIDCard() {
-        statusWarmupReadIDCardEl.innerHTML = "..."
-        tv.runWarmUpReadIDCard().then(function() {
-          statusWarmupReadIDCardEl.innerHTML = "...done"
-        })
-      }
-
-      function startExtractIDInfo() {
-        const cardSide = selectCardSideEl.value;
-        const apiCheck = selectApiCheckEl.value === "true";
-        resultExtractIdInfoEl.innerHTML = "";
-
-        tv.readIDCard({
-          apiCheck: apiCheck,
-          accessKey: inputAccessKey.value,
-          secretKey: inputSecretKey.value,
-          apiUrl: inputApiUrl.value,
-          frontCamera: false,
-          cardSide: cardSide,
-          frontCardId: inputFrontIdEl.value,
-          clientSettings: JSON.parse(idCardSettingsEl.value),
-          title:
-            cardSide === TVWebSDK.Constants.IDCardSide.FRONT
-              ? "Mặt trước CMND/CCCD"
-              : "Mặt sau CMND/CCCD",
-          description:
-            cardSide === TVWebSDK.Constants.IDCardSide.FRONT
-              ? "Căn mặt trước CMND/CCCD vào khung"
-              : "Căn mặt sau CMND/CCCD vào khung",
-          onSuccess: handleReadIDCardResult,
-          onError: (e) => {
-            resultExtractIdInfoEl.appendChild(
-              document.createTextNode(`${JSON.stringify(e, null, 2)}`)
-            );
-            tv.destroyView();
-            readIdCardLoadingEl.style.display = 'none';
-          },
-        });
-      }
-
       function startLivenessDetection() {
         const livenessDetectionMode = selectModeEl.value;
         const apiCheck = selectApiCheckEl.value === "true";
         const cameraSelected = document.getElementById("select-camera");
 
+        // clear previous result
+        resultLivenessDetectionEl.innerHTML = "";
+
         tv.livenessDetection({
           apiCheck: apiCheck,
           mode: livenessDetectionMode,
-          accessKey: inputAccessKey.value,
-          secretKey: inputSecretKey.value,
-          apiUrl: inputApiUrl.value,
+          apiCredentials: {
+            accessKey: inputAccessKey.value,
+            secretKey: inputSecretKey.value,
+            apiUrl: inputApiUrl.value,
+          },
           onLivenessDetectionDone: handleLivenessDetectionDone,
-          customStepTimeConstraints: JSON.parse(customStepTimeConstraintsEl.value),
-          captureFrameData: true,
           onError: (e) => {
-            livenessLoadingEl.style.display = "none";
-            startLivenessBtn.disabled = false;
+            document.getElementById("liveness-loading").style.display = "none";
+            document.getElementById("start-liveness").disabled = false;
             resultLivenessDetectionEl.appendChild(
-              document.createTextNode(`${JSON.stringify(e, null, 2)}`)
+              document.createTextNode(`${JSON.stringify(e, null, "\t")}`)
             );
           },
-          frontCamera: cameraSelected.value === "true",
           onProcessing: () => {
-            livenessLoadingEl.style.display = "block";
-            startLivenessBtn.disabled = true;
+            document.getElementById("liveness-loading").style.display = "block";
+            document.getElementById("start-liveness").disabled = true;
 
             resultLivenessDetectionEl.innerHTML = "";
 
@@ -286,79 +155,79 @@
         });
       }
 
-      function handleReadIDCardResult({ image, recordedVideos, apiResult }) {
+      function handleReadIDCardResult(img) {
         const apiCheck = selectApiCheckEl.value === "true";
 
-        const imgEl = document.createElement("img");
-        imgEl.width = "200";
-        imgEl.src = URL.createObjectURL(image);
-        resultExtractIdInfoEl.appendChild(imgEl);
-        resultExtractIdInfoEl.appendChild(document.createElement("br"));
-        resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
-
-        if (apiCheck) {
-          resultExtractIdInfoEl.appendChild(document.createTextNode("API Result:\n"));
+        if (apiCheck === false) {
+          const imgEl = document.createElement("img");
+          imgEl.width = "200";
+          imgEl.src = URL.createObjectURL(img);
+          resultExtractIdInfoEl.appendChild(imgEl);
+        } else {
           resultExtractIdInfoEl.appendChild(
-            document.createTextNode(`${JSON.stringify(apiResult, null, 2)}`)
+            document.createTextNode(`${JSON.stringify(img, null, "\t")}`)
           );
-          const cardSide = selectCardSideEl.value;
-          if (cardSide === TVWebSDK.Constants.IDCardSide.FRONT) {
-            const frontCardId = apiResult.cardInfo.image1.id;
-            inputFrontIdEl.value = frontCardId;
-          }
         }
 
         tv.destroyView();
-        readIdCardLoadingEl.style.display = 'none';
       }
 
       function handleLivenessDetectionDone(result) {
-        const { frontalFaces, apiCheckPassed, steps, videoRecord } = result;
+        const { frontalFaces, apiCheckPassed, steps, capturedFrames, error, batchCount } = result;
         const apiCheck = selectApiCheckEl.value === "true";
-        resultLivenessDetectionEl.innerHTML = "";
+
+        document.getElementById("liveness-loading").style.display = "none";
+        document.getElementById("start-liveness").disabled = false;
+
+        if (error && error === 'network_error') {
+          resultLivenessDetectionEl.appendChild(
+            document.createTextNode("PLEASE CHECK YOUR NETWORK CONNECTION AND TRY AGAIN!")
+          );
+          return;
+        }
 
         if (apiCheck === false) {
-          livenessLoadingEl.style.display = "none";
-          startLivenessBtn.disabled = false;
-          resultLivenessDetectionEl.appendChild(
-            document.createTextNode("Random frontal faces detected: ")
-          );
-          frontalFaces.forEach((blob) => {
-            const imgEl = document.createElement("img");
-            imgEl.width = "200";
-            imgEl.style.marginRight = "5px";
-            imgEl.src = URL.createObjectURL(blob);
-            resultLivenessDetectionEl.appendChild(imgEl);
-          });
-          resultLivenessDetectionEl.appendChild(document.createElement("br"));
-          resultLivenessDetectionEl.appendChild(document.createElement("br"));
-          resultLivenessDetectionEl.appendChild(
-            document.createTextNode("Directional faces:")
-          );
-          steps.forEach((s) => {
-            const imgEl = document.createElement("img");
-            imgEl.width = "200";
-            imgEl.style.marginRight = "5px";
-            imgEl.src = URL.createObjectURL(s.image.blob);
-            resultLivenessDetectionEl.appendChild(imgEl);
-          });
-          resultLivenessDetectionEl.appendChild(document.createElement("br"));
-          resultLivenessDetectionEl.appendChild(document.createElement("br"));
-          resultLivenessDetectionEl.appendChild(
-            document.createTextNode("Video:")
-          );
-          if (videoRecord.length) {
-            const videoEl = document.createElement("video");
-            videoEl.width = "200";
-            videoEl.controls = "controls";
-            videoEl.src = URL.createObjectURL(videoRecord[0]);
-            resultLivenessDetectionEl.appendChild(videoEl);
-          }
+          setTimeout(function () {
+            tv.destroyView();
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode("Random frontal faces detected: ")
+            );
+            frontalFaces.forEach((blob) => {
+              const imgEl = document.createElement("img");
+              imgEl.width = "200";
+              imgEl.style.marginRight = "5px";
+              imgEl.src = URL.createObjectURL(blob);
+              resultLivenessDetectionEl.appendChild(imgEl);
+            });
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode("Directional faces:")
+            );
+
+            if (steps) {
+              steps.forEach((s) => {
+                const imgEl = document.createElement("img");
+                imgEl.width = "200";
+                imgEl.style.marginRight = "5px";
+                imgEl.src = URL.createObjectURL(s.image.blob);
+                resultLivenessDetectionEl.appendChild(imgEl);
+              });
+            }
+            
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(document.createElement("br"));
+            resultLivenessDetectionEl.appendChild(
+              document.createTextNode("Sequence frames: ")
+            );
+          }, 500);
         } else {
-          livenessLoadingEl.style.display = "none";
-          startLivenessBtn.disabled = false;
           resultLivenessDetectionEl.appendChild(
             document.createTextNode(`apiCheckPassed: ${apiCheckPassed}`)
+          );
+          resultLivenessDetectionEl.appendChild(document.createElement("br"));
+          resultLivenessDetectionEl.appendChild(
+            document.createTextNode("Sequence frames: " + batchCount + " batch")
           );
         }
       }
