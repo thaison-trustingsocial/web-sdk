@@ -1,3 +1,6 @@
+html {
+  font-family: 'Inter', sans-serif;
+}
 .dot-windmill {
   position: relative;
   top: -10px;
