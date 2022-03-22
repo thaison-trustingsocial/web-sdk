@@ -117,10 +117,19 @@
       <div class="dot-windmill"></div>
     </div>
     <div id="result-liveness-detection"></div>
+
+    <hr />
+    <h4>Biz License OCR</h4>
+
+    <button onclick="startBizLicenseOCR()" id="btn-start-biz-ocr">
+      Start
+    </button>
+    <div id="result-biz-ocr"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
-    <script src="/web-sdk/build/tvweb-sdk.tiki.standalone.min.js"></script>
-    <!-- <script src="/build/tvweb-sdk.tiki.standalone.min.js"></script> -->
+    <script src="/web-sdk/build/tvweb-sdk.standalone.min.js"></script>
+    <!-- <script src="/build/tvweb-sdk.standalone.min.js"></script> -->
     <script>
       const keys = [
         {
@@ -423,6 +432,32 @@
             document.createTextNode(`apiCheckPassed: ${apiCheckPassed}`)
           );
         }
+      }
+
+      function startBizLicenseOCR() {
+        const bizOCRRs = document.getElementById("result-biz-ocr");
+        bizOCRRs.innerHTML = "";
+        tv.bizLicenseOCR({
+          onFinish: (rs) => {
+            tv.destroyView();
+            rs.map(item => {
+              const imgEl = document.createElement("img");
+              imgEl.width = "200";
+              imgEl.style.marginRight = "5px";
+              imgEl.src = URL.createObjectURL(item.imageBlob);
+              bizOCRRs.appendChild(imgEl);
+              bizOCRRs.appendChild(document.createElement("br"));
+              bizOCRRs.appendChild(
+                document.createTextNode(`${JSON.stringify(item.coordinates, null, 2)}`)
+              );
+            });
+          },
+          onError: (err) => {
+            bizOCRRs.appendChild(
+              document.createTextNode(err)
+            );
+          }
+        });
       }
     </script>
   </body>
