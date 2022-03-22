@@ -70,8 +70,8 @@
       <textarea cols="55" rows="8" id="tracking-config"></textarea>
     </div>
 
-    <hr />
-    <h4>Extract ID Info</h4>
+    <hr style="display: none;" />
+    <h4 style="display: none;">Extract ID Info</h4>
     <div style="display: none; margin-right: 20px;">
       <div>Settings (notice that if <strong>Api check: true</strong>, settings from api will overwrite these settings)</div>
       <textarea cols="55" rows="15" id="id-card-settings"></textarea>
@@ -84,21 +84,21 @@
       <button onclick="runWarmUpReadIDCard()">Warm up</button>
       <span id="status-warmup-read-id-card"></span>
     </div>
-    <button onclick="startExtractIDInfo()">Start</button>
+    <button style="display: none;" onclick="startExtractIDInfo()">Start</button>
     <pre id="result-extract-id-info"></pre>
     <div id="read-id-card-loading" style="margin-top: 10px; display: none;">
       Api checking
       <div class="dot-windmill"></div>
     </div>
 
-    <hr />
+    <hr style="display: none;" />
 
-    <h4>Liveness detection</h4>
-    <div>
+    <h4 style="display: none;">Liveness detection</h4>
+    <div style="display: none;">
       Mode:
       <select id="select-mode"></select>
     </div>
-    <div>
+    <div style="display: none;">
       Camera:
       <select id="select-camera">
         <option value="true">Front</option>
@@ -109,7 +109,7 @@
       <div>Custom step time constraints (ms):</div>
       <textarea cols="25" rows="15" id="custom-step-time-constraints"></textarea>
     </div>
-    <button onclick="startLivenessDetection()" id="btn-start-liveness">
+    <button style="display: none;" onclick="startLivenessDetection()" id="btn-start-liveness">
       Liveness detection
     </button>
     <div id="liveness-loading" style="padding-top: 10px; display: none;">
