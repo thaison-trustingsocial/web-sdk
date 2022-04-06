@@ -128,8 +128,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
-    <script src="/web-sdk/build/tvweb-sdk.standalone.min.js"></script>
-    <!-- <script src="/build/tvweb-sdk.standalone.min.js"></script> -->
+    <!-- <script src="/web-sdk/build/tvweb-sdk.standalone.min.js"></script> -->
+    <script src="./build/tvweb-sdk.standalone.min.js"></script>
     <script>
       const keys = [
         {
@@ -439,23 +439,35 @@
         bizOCRRs.innerHTML = "";
         tv.bizLicenseOCR({
           onFinish: (rs) => {
-            tv.destroyView();
-            rs.map(item => {
-              const imgEl = document.createElement("img");
-              imgEl.width = "200";
-              imgEl.style.marginRight = "5px";
-              imgEl.src = URL.createObjectURL(item.imageBlob);
-              bizOCRRs.appendChild(imgEl);
-              bizOCRRs.appendChild(document.createElement("br"));
-              bizOCRRs.appendChild(
-                document.createTextNode(`${JSON.stringify(item.coordinates, null, 2)}`)
-              );
-            });
+            // tv.destroyView();
+            // rs.map(item => {
+            //   const imgEl = document.createElement("img");
+            //   imgEl.width = "200";
+            //   imgEl.style.marginRight = "5px";
+            //   imgEl.src = URL.createObjectURL(item.imageBlob);
+            //   bizOCRRs.appendChild(imgEl);
+            //   bizOCRRs.appendChild(document.createElement("br"));
+            //   bizOCRRs.appendChild(
+            //     document.createTextNode(`${JSON.stringify(item.coordinates, null, 2)}`)
+            //   );
+            // });
+            livenessLoadingEl.style.display = "none";
+            bizOCRRs.appendChild(
+              document.createTextNode(`Done. Please check the result on dashboard!`)
+            );
           },
           onError: (err) => {
+            livenessLoadingEl.style.display = "none";
+            bizOCRRs.appendChild(
+              document.createTextNode(`${JSON.stringify(err, null, 2)}`)
+            );
             bizOCRRs.appendChild(
               document.createTextNode(err)
             );
+          },
+          onLoading: () => {
+            livenessLoadingEl.style.display = "block";
+            tv.destroyView();
           }
         });
       }
