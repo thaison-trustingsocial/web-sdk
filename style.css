@@ -55,3 +55,6 @@ html {
   margin-top: 20px;
 }
 
+#result-biz-ocr {
+  white-space: pre;
+}

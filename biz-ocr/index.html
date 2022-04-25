@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css"  />
+    <link rel="stylesheet" href="../style.css"  />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -453,7 +453,7 @@
             // });
             livenessLoadingEl.style.display = "none";
             bizOCRRs.appendChild(
-              document.createTextNode(`Done. Please check the result on dashboard!`)
+              document.createTextNode(`${JSON.stringify(rs, null, 2)}`)
             );
           },
           onError: (err) => {
