@@ -121,6 +121,14 @@
     <hr />
     <h4>Biz License OCR</h4>
 
+    <div>
+      Model:
+      <select id="select-model">
+        <option value="M-LSD_512_tiny_fp16.tflite" selected>M-LSD_512_tiny_fp16.tflite</option>
+        <option value="M-LSD_320_tiny_fp16.tflite">M-LSD_320_tiny_fp16.tflite</option>
+      </select>
+    </div>
+
     <button onclick="startBizLicenseOCR()" id="btn-start-biz-ocr">
       Start
     </button>
@@ -436,8 +444,11 @@
 
       function startBizLicenseOCR() {
         const bizOCRRs = document.getElementById("result-biz-ocr");
+        const modelType = document.getElementById("select-model").value;
+
         bizOCRRs.innerHTML = "";
         tv.bizLicenseOCR({
+          modelType,
           onFinish: (rs) => {
             // tv.destroyView();
             // rs.map(item => {
