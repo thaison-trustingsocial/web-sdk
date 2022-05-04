@@ -125,7 +125,7 @@
 <div id="result-liveness-detection"></div>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
-<script src="./build/tvweb-sdk.standalone.min.js"></script>
+<script src="./build/tvweb-sdk.tcb.bss.standalone.min.js"></script>
 <script>
   const keys = [
     {
@@ -166,7 +166,8 @@
   const tv = new TVWebSDK.SDK({
     container: document.getElementById("container"),
     lang: lang || "vi",
-    assetRoot: "https://unpkg.com/@tsocial/tvweb-sdk@5.7.7/assets",
+    assetRoot: "/web-sdk/assets/tcb.bss",
+    // assetRoot: "./assets/tcb.bss",
     enableAntiDebug: false,
   });
   window.tv = tv;
