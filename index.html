@@ -7,122 +7,125 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css"  />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <h2>Extract ID Info & Liveness detection</h2>
 <div id="container"></div>
 
-<div style="margin-bottom: 10px">
-  Language
-  <select id="select-lang" onchange="onSelectLang()">
-    <option value="vi" selected>vi</option>
-    <option value="en">en</option>
-  </select>
-</div>
-<div style="margin-bottom: 10px">
-  <label>
-    Keys:
-    <select id="select-api-key" onchange="onSelectKey()">
-      <option value="0" selected>Web face tracking (..a31)</option>
-      <option value="1">QA (..217)</option>
-      <option value="2">Labeller test real data (..3b2)</option>
-      <option value="3">Labeller test fake data (..ac4)</option>
-    </select>
-  </label>
-</div>
-<div style="margin-bottom: 10px">
-  <label>
-    Access key
-    <input id="access-key" style="width: 500px" />
-  </label>
-</div>
-<div style="margin-bottom: 10px">
-  <label>
-    Secret key
-    <input id="secret-key" style="width: 500px" />
-  </label>
-</div>
-<div style="margin-bottom: 10px">
-  <label>
-    API URL
-    <input id="api-url" style="width: 500px" />
-  </label>
-</div>
-<div>
-  Api check
-  <select id="select-api-check">
-    <option value="false">false</option>
-    <option value="true" selected>true</option>
-  </select>
-</div>
-
-<div style="margin-top: 10px;">
-  <label>
-    Cached User ID
-    <input id="user-id" readonly style="width: 300px" />
-  </label>
-  <button onclick="clearUserId()">Clear user id (x-request-id)</button>
-</div>
-
-<div style="display: inline-block; margin-top: 10px;">
-  <div>
-    Tracking config
-    <select id="select-tracking-config-template" onchange="onSelectTrackingConfigTemplate()">
-      <option value="0" selected>default</option>
-      <option value="1">Engineering test (...9fe5)</option>
+<div id="content">
+  <div style="margin-bottom: 10px">
+    Language
+    <select id="select-lang" onchange="onSelectLang()">
+      <option value="vi" selected>vi</option>
+      <option value="en">en</option>
     </select>
   </div>
-  <textarea cols="55" rows="8" id="tracking-config"></textarea>
+  <div style="margin-bottom: 10px">
+    <label>
+      Keys:
+      <select id="select-api-key" onchange="onSelectKey()">
+        <option value="0" selected>Web face tracking (..a31)</option>
+        <option value="1">QA (..217)</option>
+        <option value="2">Labeller test real data (..3b2)</option>
+        <option value="3">Labeller test fake data (..ac4)</option>
+      </select>
+    </label>
+  </div>
+  <div style="margin-bottom: 10px">
+    <label>
+      Access key
+      <input id="access-key" style="width: 500px" />
+    </label>
+  </div>
+  <div style="margin-bottom: 10px">
+    <label>
+      Secret key
+      <input id="secret-key" style="width: 500px" />
+    </label>
+  </div>
+  <div style="margin-bottom: 10px">
+    <label>
+      API URL
+      <input id="api-url" style="width: 500px" />
+    </label>
+  </div>
+  <div>
+    Api check
+    <select id="select-api-check">
+      <option value="false">false</option>
+      <option value="true" selected>true</option>
+    </select>
+  </div>
+  
+  <div style="margin-top: 10px;">
+    <label>
+      Cached User ID
+      <input id="user-id" readonly style="width: 300px" />
+    </label>
+    <button onclick="clearUserId()">Clear user id (x-request-id)</button>
+  </div>
+  
+  <div style="display: inline-block; margin-top: 10px;">
+    <div>
+      Tracking config
+      <select id="select-tracking-config-template" onchange="onSelectTrackingConfigTemplate()">
+        <option value="0" selected>default</option>
+        <option value="1">Engineering test (...9fe5)</option>
+      </select>
+    </div>
+    <textarea cols="55" rows="8" id="tracking-config"></textarea>
+  </div>
+  
+  <hr />
+  <h4>Extract ID Info</h4>
+  <div style="display: inline-block; margin-right: 20px;">
+    <div>Settings (notice that if <strong>Api check: true</strong>, settings from api will overwrite these settings)</div>
+    <textarea cols="55" rows="15" id="id-card-settings"></textarea>
+  </div>
+  <div style="display: inline-block">
+    <div>Steps</div>
+    <textarea cols="55" rows="15" id="id-card-steps"></textarea>
+  </div>
+  <div style="margin-bottom: 10px">
+    <button onclick="runPreloadEKYCResources()">Preload Resources</button>
+  </div>
+  <div style="margin-bottom: 10px">
+    <button onclick="runWarmUpReadIDCard()">Warm up</button>
+    <span id="status-warmup-read-id-card"></span>
+  </div>
+  <button onclick="startExtractIDInfo()">Start</button>
+  <pre id="result-extract-id-info"></pre>
+  <div id="read-id-card-loading" style="margin-top: 10px; display: none;">
+    Api checking
+    <div class="dot-windmill"></div>
+  </div>
+  
+  <hr />
+  
+  <h4>Liveness detection</h4>
+  <div>
+    Mode:
+    <select id="select-mode"></select>
+  </div>
+  <div>
+    Camera:
+    <select id="select-camera">
+      <option value="true">Front</option>
+      <option value="false">Back</option>
+    </select>
+  </div>
+  <button onclick="startLivenessDetection()" id="btn-start-liveness">
+    Liveness detection
+  </button>
+  <div id="liveness-loading" style="padding-top: 10px; display: none;">
+    Api checking
+    <div class="dot-windmill"></div>
+  </div>
+  <div id="result-liveness-detection"></div>
 </div>
 
-<hr />
-<h4>Extract ID Info</h4>
-<div style="display: inline-block; margin-right: 20px;">
-  <div>Settings (notice that if <strong>Api check: true</strong>, settings from api will overwrite these settings)</div>
-  <textarea cols="55" rows="15" id="id-card-settings"></textarea>
-</div>
-<div style="display: inline-block">
-  <div>Steps</div>
-  <textarea cols="55" rows="15" id="id-card-steps"></textarea>
-</div>
-<div style="margin-bottom: 10px">
-  <button onclick="runPreloadEKYCResources()">Preload Resources</button>
-</div>
-<div style="margin-bottom: 10px">
-  <button onclick="runWarmUpReadIDCard()">Warm up</button>
-  <span id="status-warmup-read-id-card"></span>
-</div>
-<button onclick="startExtractIDInfo()">Start</button>
-<pre id="result-extract-id-info"></pre>
-<div id="read-id-card-loading" style="margin-top: 10px; display: none;">
-  Api checking
-  <div class="dot-windmill"></div>
-</div>
-
-<hr />
-
-<h4>Liveness detection</h4>
-<div>
-  Mode:
-  <select id="select-mode"></select>
-</div>
-<div>
-  Camera:
-  <select id="select-camera">
-    <option value="true">Front</option>
-    <option value="false">Back</option>
-  </select>
-</div>
-<button onclick="startLivenessDetection()" id="btn-start-liveness">
-  Liveness detection
-</button>
-<div id="liveness-loading" style="padding-top: 10px; display: none;">
-  Api checking
-  <div class="dot-windmill"></div>
-</div>
-<div id="result-liveness-detection"></div>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
 <script src="./build/tvweb-sdk.tcb.bss.standalone.min.js"></script>
@@ -273,6 +276,8 @@
 
     // all steps done
     if (stepNumber === steps.length - 1) {
+      const content = document.getElementById("content");
+      content.style.display = "block";
       tv.destroyView();
       readIdCardLoadingEl.style.display = 'none';
     }
@@ -298,6 +303,8 @@
   function startExtractIDInfo() {
     const apiCheck = selectApiCheckEl.value === "true";
     resultExtractIdInfoEl.innerHTML = "";
+    const content = document.getElementById("content");
+    content.style.display = "none";
 
     const commonProps = {
       onError: (e) => {
@@ -305,7 +312,12 @@
           document.createTextNode(`Error:\n${JSON.stringify(e, null, 2)}`)
         );
         tv.destroyView();
+        content.style.display = "block";
         readIdCardLoadingEl.style.display = 'none';
+      },
+      onClose: () => {
+        content.style.display = "block";
+        tv.destroyView();
       },
       clientSettings: JSON.parse(idCardSettingsEl.value),
       detectIdCard: handleDetectIdCard,
@@ -335,7 +347,8 @@
     const livenessDetectionMode = selectModeEl.value;
     const apiCheck = selectApiCheckEl.value === "true";
     const cameraSelected = document.getElementById("select-camera");
-
+    const content = document.getElementById("content");
+    content.style.display = "none";
     tv.livenessDetection({
       apiCheck: apiCheck,
       mode: livenessDetectionMode,
@@ -363,11 +376,12 @@
         startLivenessBtn.disabled = true;
 
         resultLivenessDetectionEl.innerHTML = "";
-
+        content.style.display = "block";
         setTimeout(() => {
           tv.destroyView();
         }, 250);
       },
+      onClose: () => { tv.destroyView(); content.style.display = "block"; },
     });
   }
 
