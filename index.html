@@ -277,8 +277,6 @@
 
     // all steps done
     if (stepNumber === steps.length - 1) {
-      const content = document.getElementById("content");
-      content.style.display = "block";
       tv.destroyView();
       readIdCardLoadingEl.style.display = 'none';
     }
@@ -304,8 +302,7 @@
   function startExtractIDInfo() {
     const apiCheck = selectApiCheckEl.value === "true";
     resultExtractIdInfoEl.innerHTML = "";
-    const content = document.getElementById("content");
-    content.style.display = "none";
+    document.body.style.height = 0;
 
     const commonProps = {
       onError: (e) => {
@@ -313,11 +310,11 @@
           document.createTextNode(`Error:\n${JSON.stringify(e, null, 2)}`)
         );
         tv.destroyView();
-        content.style.display = "block";
+        document.body.style.height = 'auto';
         readIdCardLoadingEl.style.display = 'none';
       },
       onClose: () => {
-        content.style.display = "block";
+        document.body.style.height = 'auto';
         tv.destroyView();
       },
       clientSettings: JSON.parse(idCardSettingsEl.value),
@@ -348,8 +345,8 @@
     const livenessDetectionMode = selectModeEl.value;
     const apiCheck = selectApiCheckEl.value === "true";
     const cameraSelected = document.getElementById("select-camera");
-    const content = document.getElementById("content");
-    content.style.display = "none";
+    document.body.style.height = 0;
+
     tv.livenessDetection({
       apiCheck: apiCheck,
       mode: livenessDetectionMode,
@@ -377,12 +374,12 @@
         startLivenessBtn.disabled = true;
 
         resultLivenessDetectionEl.innerHTML = "";
-        content.style.display = "block";
+        document.body.style.height = 'auto';
         setTimeout(() => {
           tv.destroyView();
         }, 250);
       },
-      onClose: () => { tv.destroyView(); content.style.display = "block"; },
+      onClose: () => { document.body.style.height = 'auto'; tv.destroyView(); },
     });
   }
 

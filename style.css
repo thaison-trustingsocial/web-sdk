@@ -1,17 +1,16 @@
 html {
-  overflow: hidden;
+  /* overflow: hidden; */
   font-family: 'Inter', sans-serif;
-  width: 100%;
+  /* width: 100%; */
 }
 
-body {
+/* body {
   height: 100%;
   width: 100%;
   position: fixed;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  /* iOS velocity scrolling */
-}
+} */
 .dot-windmill {
   position: relative;
   top: -10px;
