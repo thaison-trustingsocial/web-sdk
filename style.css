@@ -1,16 +1,7 @@
 html {
-  /* overflow: hidden; */
   font-family: 'Inter', sans-serif;
-  /* width: 100%; */
 }
 
-/* body {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-} */
 .dot-windmill {
   position: relative;
   top: -10px;
@@ -59,10 +50,6 @@ html {
   100% {
     transform: rotateZ(720deg) translate3d(0, 0, 0);
   }
-}
-
-#btn-start-liveness {
-  margin-top: 20px;
 }
 
 #result-biz-ocr {
