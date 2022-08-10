@@ -53,6 +53,13 @@
 
     <hr />
 
+    <div>
+      Camera:
+      <select id="select-camera">
+        <option value="true">Front</option>
+        <option value="false">Back</option>
+      </select>
+    </div>
     <button onclick="startFaceAuthen()" id="btn-start-biz-ocr">
       Start
     </button>
@@ -102,6 +109,7 @@
       });
       window.tv = tv;
       function startFaceAuthen() {
+        const cameraSelected = document.getElementById("select-camera");
         tv.faceAuthen({
           onDone: () => {
             tv.destroyView();
@@ -111,6 +119,7 @@
             secretKey: inputSecretKey.value,
             apiUrl: inputApiUrl.value,
           },
+          frontCamera: cameraSelected.value === "true",
         });
       }
     </script>
