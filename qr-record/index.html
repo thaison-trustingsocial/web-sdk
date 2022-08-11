@@ -240,7 +240,7 @@
         resultExtractIdInfoEl.appendChild(document.createElement("br"));
         resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
 
-        if (qrScannedResult) {
+        if (qrScannedResult && qrScannedResult.image && qrScannedResult.result) {
           const { result, image } = qrScannedResult
 
           const qrImgEl = document.createElement("img");
