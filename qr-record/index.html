@@ -84,16 +84,6 @@
       <button onclick="runWarmUpReadIDCard()">Warm up</button>
       <span id="status-warmup-read-id-card"></span>
     </div>
-    <div style="margin-bottom: 10px">
-      QR Size
-      <select id="select-qr-size">
-        <option value="1" selected>1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </div>
     <button onclick="startExtractIDInfo()">Start</button>
     <pre id="result-extract-id-info"></pre>
     <div id="read-id-card-loading" style="margin-top: 10px; display: none;">
@@ -162,8 +152,8 @@
       const tv = new TVWebSDK.SDK({
         container: document.getElementById("container"),
         lang: "vi",
-        // assetRoot: "/web-sdk/assets",
-        assetRoot: "../assets",
+        assetRoot: "/web-sdk/assets",
+        // assetRoot: "../assets",
         enableAntiDebug: false,
       });
       window.tv = tv;
@@ -297,8 +287,6 @@
         const apiCheck = selectApiCheckEl.value === "true";
         resultExtractIdInfoEl.innerHTML = "";
 
-        const qrSize = document.getElementById("select-qr-size").value;
-
         const commonProps = {
           onError: (e) => {
             resultExtractIdInfoEl.appendChild(
@@ -323,11 +311,10 @@
               apiUrl: inputApiUrl.value,
             },
             ...commonProps,
-            qrSize: +qrSize,
           })
         } else {
           console.log('UI only')
-          tv.readIDCardUIOnly({ ...commonProps, qrSize: +qrSize, })
+          tv.readIDCardUIOnly({ ...commonProps })
         }
       }
 
@@ -437,32 +424,6 @@
             document.createTextNode(`apiCheckPassed: ${apiCheckPassed}`)
           );
         }
-      }
-
-      function startBizLicenseOCR() {
-        const bizOCRRs = document.getElementById("result-biz-ocr");
-        bizOCRRs.innerHTML = "";
-        tv.bizLicenseOCR({
-          onFinish: (rs) => {
-            tv.destroyView();
-            rs.map(item => {
-              const imgEl = document.createElement("img");
-              imgEl.width = "200";
-              imgEl.style.marginRight = "5px";
-              imgEl.src = URL.createObjectURL(item.imageBlob);
-              bizOCRRs.appendChild(imgEl);
-              bizOCRRs.appendChild(document.createElement("br"));
-              bizOCRRs.appendChild(
-                document.createTextNode(`${JSON.stringify(item.coordinates, null, 2)}`)
-              );
-            });
-          },
-          onError: (err) => {
-            bizOCRRs.appendChild(
-              document.createTextNode(err)
-            );
-          }
-        });
       }
     </script>
   </body>
