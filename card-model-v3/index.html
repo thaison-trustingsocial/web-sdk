@@ -149,6 +149,7 @@
       secretKey: "CkoyKslrfBGv4m53LIlH0Q8yJYf4O56e",
     },
   ];
+  let listObjUrls = [];
   function onSelectKey() {
     const selectedKey = document.getElementById("select-api-key").value;
     const { accessKey, secretKey } = keys[selectedKey];
@@ -159,6 +160,16 @@
     const langEle = document.getElementById("select-lang");
     localStorage.setItem('lang', langEle?.value);
     location.reload();
+  }
+  function createObjectURL(blob) {
+    const objUrl = URL.createObjectURL(blob);
+    listObjUrls.push(objUrl);
+    return objUrl;
+  }
+  function revokeObjectURL() {
+    if (listObjUrls.length === 0) return;
+    listObjUrls.map((item) => URL.revokeObjectURL(item));
+    listObjUrls = [];
   }
 </script>
 <script type="text/javascript">
@@ -251,7 +262,7 @@
 
     const imgEl = document.createElement("img");
     imgEl.width = "300";
-    imgEl.src = URL.createObjectURL(image.blob);
+    imgEl.src = createObjectURL(image.blob);
     resultExtractIdInfoEl.appendChild(imgEl);
     resultExtractIdInfoEl.appendChild(document.createElement("br"));
     resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
@@ -261,7 +272,7 @@
 
       const qrImgEl = document.createElement("img");
       qrImgEl.width = "200";
-      qrImgEl.src = URL.createObjectURL(image.blob);
+      qrImgEl.src = createObjectURL(image.blob);
       resultExtractIdInfoEl.appendChild(qrImgEl);
       resultExtractIdInfoEl.appendChild(document.createTextNode(`\n${result}\n`));
     }
@@ -300,6 +311,7 @@
   }
 
   function startExtractIDInfo() {
+    revokeObjectURL();
     const apiCheck = selectApiCheckEl.value === "true";
     resultExtractIdInfoEl.innerHTML = "";
     document.body.style.height = 0;
@@ -322,7 +334,6 @@
       onStepDone: handleStepDoneIDCard,
       steps: JSON.parse(idCardStepsEl.value),
       tracking: JSON.parse(trackingConfigEl.value),
-      outputEncryptionSettings: { key: 'abc123' },
     }
 
     if (apiCheck) {
@@ -342,6 +353,7 @@
   }
 
   function startLivenessDetection() {
+    revokeObjectURL();
     const livenessDetectionMode = selectModeEl.value;
     const apiCheck = selectApiCheckEl.value === "true";
     const cameraSelected = document.getElementById("select-camera");
@@ -361,7 +373,6 @@
         framesIntervalTime: 180,
         framesBatchLength: 15,
       },
-      outputEncryptionSettings: { key: 'abc123' },
       onError: (e) => {
         livenessLoadingEl.style.display = "none";
         startLivenessBtn.disabled = false;
@@ -389,7 +400,7 @@
 
     const imgEl = document.createElement("img");
     imgEl.width = "200";
-    imgEl.src = URL.createObjectURL(image);
+    imgEl.src = createObjectURL(image);
     resultExtractIdInfoEl.appendChild(imgEl);
     resultExtractIdInfoEl.appendChild(document.createElement("br"));
     resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
@@ -424,7 +435,7 @@
         const imgEl = document.createElement("img");
         imgEl.width = "200";
         imgEl.style.marginRight = "5px";
-        imgEl.src = URL.createObjectURL(blob);
+        imgEl.src = createObjectURL(blob);
         resultLivenessDetectionEl.appendChild(imgEl);
       });
       resultLivenessDetectionEl.appendChild(document.createElement("br"));
@@ -436,7 +447,7 @@
         const imgEl = document.createElement("img");
         imgEl.width = "200";
         imgEl.style.marginRight = "5px";
-        imgEl.src = URL.createObjectURL(s.image.blob);
+        imgEl.src = createObjectURL(s.image.blob);
         resultLivenessDetectionEl.appendChild(imgEl);
       });
       resultLivenessDetectionEl.appendChild(document.createElement("br"));
