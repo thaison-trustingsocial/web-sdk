@@ -89,13 +89,6 @@
     <div>Steps</div>
     <textarea cols="55" rows="15" id="id-card-steps"></textarea>
   </div>
-  <div style="margin-bottom: 10px">
-    <button onclick="runPreloadEKYCResources()">Preload Resources</button>
-  </div>
-  <div style="margin-bottom: 10px">
-    <button onclick="runWarmUpReadIDCard()">Warm up</button>
-    <span id="status-warmup-read-id-card"></span>
-  </div>
   <button onclick="startExtractIDInfo()">Start</button>
   <pre id="result-extract-id-info"></pre>
   <div id="read-id-card-loading" style="margin-top: 10px; display: none;">
@@ -186,6 +179,7 @@
     enableAntiDebug: false,
   });
   window.tv = tv;
+  tv.runPreloadEKYCResources();
   const resultExtractIdInfoEl = document.getElementById(
     "result-extract-id-info"
   );
@@ -239,17 +233,6 @@
   function clearUserId() {
     window.localStorage.removeItem('user-id');
     userIdEl.value = JSON.parse(localStorage.getItem("user-id"));
-  }
-
-  function runWarmUpReadIDCard() {
-    statusWarmupReadIDCardEl.innerHTML = "..."
-    tv.runWarmUpReadIDCard().then(function() {
-      statusWarmupReadIDCardEl.innerHTML = "...done"
-    })
-  }
-
-  function runPreloadEKYCResources() {
-    tv.runPreloadEKYCResources();
   }
 
   function handleStepDoneIDCard ({ stepNumber, image, qrScannedResult, recordedVideos, apiResult }) {
