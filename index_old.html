@@ -89,6 +89,13 @@
     <div>Steps</div>
     <textarea cols="55" rows="15" id="id-card-steps"></textarea>
   </div>
+  <div style="margin-bottom: 10px">
+    <button onclick="runPreloadEKYCResources()">Preload Resources</button>
+  </div>
+  <div style="margin-bottom: 10px">
+    <button onclick="runWarmUpReadIDCard()">Warm up</button>
+    <span id="status-warmup-read-id-card"></span>
+  </div>
   <button onclick="startExtractIDInfo()">Start</button>
   <pre id="result-extract-id-info"></pre>
   <div id="read-id-card-loading" style="margin-top: 10px; display: none;">
@@ -122,7 +129,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
-<script src="./build/tvweb-sdk.standalone.min.js"></script>
+<script src="./build/tvweb-sdk.tcb.bss.standalone.min.js"></script>
 <script>
   const keys = [
     {
@@ -142,7 +149,6 @@
       secretKey: "CkoyKslrfBGv4m53LIlH0Q8yJYf4O56e",
     },
   ];
-  let listObjUrls = [];
   function onSelectKey() {
     const selectedKey = document.getElementById("select-api-key").value;
     const { accessKey, secretKey } = keys[selectedKey];
@@ -154,16 +160,6 @@
     localStorage.setItem('lang', langEle?.value);
     location.reload();
   }
-  function createObjectURL(blob) {
-    const objUrl = URL.createObjectURL(blob);
-    listObjUrls.push(objUrl);
-    return objUrl;
-  }
-  function revokeObjectURL() {
-    if (listObjUrls.length === 0) return;
-    listObjUrls.map((item) => URL.revokeObjectURL(item));
-    listObjUrls = [];
-  }
 </script>
 <script type="text/javascript">
   const lang = localStorage.getItem('lang');
@@ -174,12 +170,11 @@
   const tv = new TVWebSDK.SDK({
     container: document.getElementById("container"),
     lang: lang || "vi",
-    assetRoot: "/web-sdk/assets",
-    // assetRoot: "../assets",
+    assetRoot: "/web-sdk/assets/tcb.bss",
+    // assetRoot: "./assets/tcb.bss",
     enableAntiDebug: false,
   });
   window.tv = tv;
-  tv.runPreloadEKYCResources();
   const resultExtractIdInfoEl = document.getElementById(
     "result-extract-id-info"
   );
@@ -235,6 +230,17 @@
     userIdEl.value = JSON.parse(localStorage.getItem("user-id"));
   }
 
+  function runWarmUpReadIDCard() {
+    statusWarmupReadIDCardEl.innerHTML = "..."
+    tv.runWarmUpReadIDCard().then(function() {
+      statusWarmupReadIDCardEl.innerHTML = "...done"
+    })
+  }
+
+  function runPreloadEKYCResources() {
+    tv.runPreloadEKYCResources();
+  }
+
   function handleStepDoneIDCard ({ stepNumber, image, qrScannedResult, recordedVideos, apiResult }) {
     const steps = JSON.parse(idCardStepsEl.value)
     console.log('image', image)
@@ -245,7 +251,7 @@
 
     const imgEl = document.createElement("img");
     imgEl.width = "300";
-    imgEl.src = createObjectURL(image.blob);
+    imgEl.src = URL.createObjectURL(image.blob);
     resultExtractIdInfoEl.appendChild(imgEl);
     resultExtractIdInfoEl.appendChild(document.createElement("br"));
     resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
@@ -255,7 +261,7 @@
 
       const qrImgEl = document.createElement("img");
       qrImgEl.width = "200";
-      qrImgEl.src = createObjectURL(image.blob);
+      qrImgEl.src = URL.createObjectURL(image.blob);
       resultExtractIdInfoEl.appendChild(qrImgEl);
       resultExtractIdInfoEl.appendChild(document.createTextNode(`\n${result}\n`));
     }
@@ -294,7 +300,6 @@
   }
 
   function startExtractIDInfo() {
-    revokeObjectURL();
     const apiCheck = selectApiCheckEl.value === "true";
     resultExtractIdInfoEl.innerHTML = "";
     document.body.style.height = 0;
@@ -317,6 +322,7 @@
       onStepDone: handleStepDoneIDCard,
       steps: JSON.parse(idCardStepsEl.value),
       tracking: JSON.parse(trackingConfigEl.value),
+      outputEncryptionSettings: { key: 'abc123' },
     }
 
     if (apiCheck) {
@@ -336,7 +342,6 @@
   }
 
   function startLivenessDetection() {
-    revokeObjectURL();
     const livenessDetectionMode = selectModeEl.value;
     const apiCheck = selectApiCheckEl.value === "true";
     const cameraSelected = document.getElementById("select-camera");
@@ -356,6 +361,7 @@
         framesIntervalTime: 180,
         framesBatchLength: 15,
       },
+      outputEncryptionSettings: { key: 'abc123' },
       onError: (e) => {
         livenessLoadingEl.style.display = "none";
         startLivenessBtn.disabled = false;
@@ -383,7 +389,7 @@
 
     const imgEl = document.createElement("img");
     imgEl.width = "200";
-    imgEl.src = createObjectURL(image);
+    imgEl.src = URL.createObjectURL(image);
     resultExtractIdInfoEl.appendChild(imgEl);
     resultExtractIdInfoEl.appendChild(document.createElement("br"));
     resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
@@ -418,7 +424,7 @@
         const imgEl = document.createElement("img");
         imgEl.width = "200";
         imgEl.style.marginRight = "5px";
-        imgEl.src = createObjectURL(blob);
+        imgEl.src = URL.createObjectURL(blob);
         resultLivenessDetectionEl.appendChild(imgEl);
       });
       resultLivenessDetectionEl.appendChild(document.createElement("br"));
@@ -430,7 +436,7 @@
         const imgEl = document.createElement("img");
         imgEl.width = "200";
         imgEl.style.marginRight = "5px";
-        imgEl.src = createObjectURL(s.image.blob);
+        imgEl.src = URL.createObjectURL(s.image.blob);
         resultLivenessDetectionEl.appendChild(imgEl);
       });
       resultLivenessDetectionEl.appendChild(document.createElement("br"));
