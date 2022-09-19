@@ -2,6 +2,15 @@ html {
   font-family: 'Inter', sans-serif;
 }
 
+#result-extract-id-info {
+  max-width: 100%;
+  white-space: break-spaces;
+}
+.key-input {
+  max-width: 500px;
+  width: calc(100% - 8px);
+}
+
 .dot-windmill {
   position: relative;
   top: -10px;

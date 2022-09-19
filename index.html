@@ -37,19 +37,19 @@
   <div style="margin-bottom: 10px">
     <label>
       Access key
-      <input id="access-key" style="width: 500px" />
+      <input id="access-key" class="key-input" />
     </label>
   </div>
   <div style="margin-bottom: 10px">
     <label>
       Secret key
-      <input id="secret-key" style="width: 500px" />
+      <input id="secret-key" class="key-input" />
     </label>
   </div>
   <div style="margin-bottom: 10px">
     <label>
       API URL
-      <input id="api-url" style="width: 500px" />
+      <input id="api-url" class="key-input" />
     </label>
   </div>
   <div>
@@ -76,18 +76,18 @@
         <option value="1">Engineering test (...9fe5)</option>
       </select>
     </div>
-    <textarea cols="55" rows="8" id="tracking-config"></textarea>
+    <textarea cols="40" rows="8" id="tracking-config"></textarea>
   </div>
   
   <hr />
   <h4>Extract ID Info</h4>
   <div style="display: none; margin-right: 20px;">
     <div>Settings (notice that if <strong>Api check: true</strong>, settings from api will overwrite these settings)</div>
-    <textarea cols="55" rows="15" id="id-card-settings"></textarea>
+    <textarea cols="40" rows="15" id="id-card-settings"></textarea>
   </div>
   <div style="display: none">
     <div>Steps</div>
-    <textarea cols="55" rows="15" id="id-card-steps"></textarea>
+    <textarea cols="40" rows="15" id="id-card-steps"></textarea>
   </div>
   <button onclick="startExtractIDInfo()">Start</button>
   <pre id="result-extract-id-info"></pre>
