@@ -253,10 +253,12 @@
     if (qrScannedResult) {
       const { result, image } = qrScannedResult
 
-      const qrImgEl = document.createElement("img");
-      qrImgEl.width = "200";
-      qrImgEl.src = createObjectURL(image.blob);
-      resultExtractIdInfoEl.appendChild(qrImgEl);
+      if (image && image.blob) {
+        const qrImgEl = document.createElement("img");
+        qrImgEl.width = "200";
+        qrImgEl.src = URL.createObjectURL(image.blob);
+        resultExtractIdInfoEl.appendChild(qrImgEl);
+      }
       resultExtractIdInfoEl.appendChild(document.createTextNode(`\n${result}\n`));
     }
 
