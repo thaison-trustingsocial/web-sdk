@@ -239,87 +239,83 @@
   }
 
   function startExtractIDInfo() {
-    TVWebSDK.requestMotionPermission().then(() => {
-      revokeObjectURL();
-      resultExtractIdInfoEl.innerHTML = "";
-      document.body.style.height = 0;
+    revokeObjectURL();
+    resultExtractIdInfoEl.innerHTML = "";
+    document.body.style.height = 0;
 
-      const commonProps = {
-        onError: (e) => {
-          resultExtractIdInfoEl.appendChild(
-            document.createTextNode(`Error:\n${JSON.stringify(e, null, 2)}`)
-          );
-          tv.destroyView();
-          document.body.style.height = 'auto';
-          readIdCardLoadingEl.style.display = 'none';
-        },
-        onClose: () => {
-          document.body.style.height = 'auto';
-          tv.destroyView();
-        },
-        detectIdCard: handleDetectIdCard,
-        onStepDone: handleStepDoneIDCard,
-        tracking: JSON.parse(trackingConfigEl.value),
-      }
+    const commonProps = {
+      onError: (e) => {
+        resultExtractIdInfoEl.appendChild(
+          document.createTextNode(`Error:\n${JSON.stringify(e, null, 2)}`)
+        );
+        tv.destroyView();
+        document.body.style.height = 'auto';
+        readIdCardLoadingEl.style.display = 'none';
+      },
+      onClose: () => {
+        document.body.style.height = 'auto';
+        tv.destroyView();
+      },
+      detectIdCard: handleDetectIdCard,
+      onStepDone: handleStepDoneIDCard,
+      tracking: JSON.parse(trackingConfigEl.value),
+    }
 
-      if (inputAccessKey.value) {
-        console.log('With api call')
-        tv.readIDCardWithApiCall({
-          apiCredentials: {
-            accessKey: inputAccessKey.value,
-            secretKey: inputSecretKey.value,
-            apiUrl: inputApiUrl.value,
-          },
-          ...commonProps,
-        })
-      } else {
-        console.log('UI only')
-        tv.readIDCardUIOnly(commonProps)
-      }
-    });
-  }
-
-  function startLivenessDetection() {
-    TVWebSDK.requestMotionPermission().then(() => {
-      revokeObjectURL();
-      const livenessDetectionMode = selectModeEl.value;
-      const cameraSelected = document.getElementById("select-camera");
-      document.body.style.height = 0;
-
-      tv.livenessDetection({
-        apiCheck: !!inputAccessKey.value,
-        mode: livenessDetectionMode,
+    if (inputAccessKey.value) {
+      console.log('With api call')
+      tv.readIDCardWithApiCall({
         apiCredentials: {
           accessKey: inputAccessKey.value,
           secretKey: inputSecretKey.value,
           apiUrl: inputApiUrl.value,
         },
-        onLivenessDetectionDone: handleLivenessDetectionDone,
-        captureFrameSettings: {
-          enable: true,
-          framesIntervalTime: 180,
-          framesBatchLength: 15,
-        },
-        onError: (e) => {
-          livenessLoadingEl.style.display = "none";
-          startLivenessBtn.disabled = false;
-          resultLivenessDetectionEl.appendChild(
-            document.createTextNode(`${JSON.stringify(e, null, 2)}`)
-          );
-        },
-        frontCamera: cameraSelected.value === "true",
-        onProcessing: () => {
-          livenessLoadingEl.style.display = "block";
-          startLivenessBtn.disabled = true;
+        ...commonProps,
+      })
+    } else {
+      console.log('UI only')
+      tv.readIDCardUIOnly(commonProps)
+    }
+  }
 
-          resultLivenessDetectionEl.innerHTML = "";
-          document.body.style.height = 'auto';
-          setTimeout(() => {
-            tv.destroyView();
-          }, 250);
-        },
-        onClose: () => { document.body.style.height = 'auto'; tv.destroyView(); },
-      });
+  function startLivenessDetection() {
+    revokeObjectURL();
+    const livenessDetectionMode = selectModeEl.value;
+    const cameraSelected = document.getElementById("select-camera");
+    document.body.style.height = 0;
+
+    tv.livenessDetection({
+      apiCheck: !!inputAccessKey.value,
+      mode: livenessDetectionMode,
+      apiCredentials: {
+        accessKey: inputAccessKey.value,
+        secretKey: inputSecretKey.value,
+        apiUrl: inputApiUrl.value,
+      },
+      onLivenessDetectionDone: handleLivenessDetectionDone,
+      captureFrameSettings: {
+        enable: true,
+        framesIntervalTime: 180,
+        framesBatchLength: 15,
+      },
+      onError: (e) => {
+        livenessLoadingEl.style.display = "none";
+        startLivenessBtn.disabled = false;
+        resultLivenessDetectionEl.appendChild(
+          document.createTextNode(`${JSON.stringify(e, null, 2)}`)
+        );
+      },
+      frontCamera: cameraSelected.value === "true",
+      onProcessing: () => {
+        livenessLoadingEl.style.display = "block";
+        startLivenessBtn.disabled = true;
+
+        resultLivenessDetectionEl.innerHTML = "";
+        document.body.style.height = 'auto';
+        setTimeout(() => {
+          tv.destroyView();
+        }, 250);
+      },
+      onClose: () => { document.body.style.height = 'auto'; tv.destroyView(); },
     });
   }
 
