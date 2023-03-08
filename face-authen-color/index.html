@@ -86,6 +86,9 @@
     tv.faceAuthen({
       colorKeyLength: parseInt(keyL),
       splashDuration: parseInt(key2),
+      onDone: () => {
+        tv.destroyView()
+      }
     });
   }
 
