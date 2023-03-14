@@ -35,6 +35,9 @@
   <br />
   <label for="key-length">Key2: </label>
   <input id="key-duration" value="4" />
+  <br />
+  <label for="key-default">Key1 default: </label>
+  <input id="key-default" />
   <br /><br />
   <button onclick="startFaceAuthen()">Start</button>
 
@@ -83,12 +86,15 @@
   function startFaceAuthen() {
     const keyL = document.getElementById('key-length').value;
     const key2 = document.getElementById('key-duration').value;
+    const keyDf = document.getElementById('key-default').value;
+
     tv.faceAuthen({
       colorKeyLength: parseInt(keyL),
       splashDuration: parseInt(key2),
       onDone: () => {
         tv.destroyView()
-      }
+      },
+      defaultSplashColor: keyDf,
     });
   }
 
