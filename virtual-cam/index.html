@@ -49,6 +49,8 @@
   
   <hr />
   <h4>Extract ID Info</h4>
+  <lable>Virtual cam padding</lable>
+  <input placeholder="Virtual cam padding" id="v-cam-padding-input" value="15" />
   <div style="display: none; margin-right: 20px;">
     <div>Settings (notice that if <strong>Api check: true</strong>, settings from api will overwrite these settings)</div>
     <textarea cols="40" rows="15" id="id-card-settings"></textarea>
@@ -266,6 +268,7 @@
     revokeObjectURL();
     resultExtractIdInfoEl.innerHTML = "";
     document.body.style.height = 0;
+    const vCamPadding = document.getElementById("v-cam-padding-input").value;
 
     const commonProps = {
       onError: (e) => {
@@ -283,6 +286,7 @@
       detectIdCard: handleDetectIdCard,
       onStepDone: handleStepDoneIDCard,
       tracking: JSON.parse(trackingConfigEl.value),
+      virtualCamPadding: parseInt(vCamPadding),
     }
 
     if (inputAccessKey.value) {
