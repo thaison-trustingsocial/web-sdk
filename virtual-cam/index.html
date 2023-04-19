@@ -286,7 +286,7 @@
       detectIdCard: handleDetectIdCard,
       onStepDone: handleStepDoneIDCard,
       tracking: JSON.parse(trackingConfigEl.value),
-      virtualCamPadding: parseInt(vCamPadding),
+      virtualCamPadding: vCamPadding ? parseInt(vCamPadding) : 50,
     }
 
     if (inputAccessKey.value) {
