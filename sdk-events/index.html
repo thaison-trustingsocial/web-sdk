@@ -282,6 +282,17 @@
     const cameraSelected = document.getElementById("select-camera");
     document.body.style.height = 0;
 
+    let logCredentials = {};
+    if (logInputAccessKey.value) {
+      logCredentials = {
+        logCredentials: {
+          accessKey: logInputAccessKey.value,
+          secretKey: logInputSecretKey.value,
+          apiUrl: logInputApiUrl.value,
+        },
+      };
+    }
+
     tv.livenessDetection({
       apiCheck: !!inputAccessKey.value,
       mode: livenessDetectionMode,
@@ -315,6 +326,7 @@
         }, 250);
       },
       onClose: () => { document.body.style.height = 'auto'; tv.destroyView(); },
+      ...logCredentials,
     });
   }
 
