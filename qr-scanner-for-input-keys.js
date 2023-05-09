@@ -15,8 +15,12 @@ var loadingMessage = document.getElementById('loadingMessage');
 
 var videoStream;
 
+var keyType = 'api';
+
 // eslint-disable-next-line no-unused-vars
-function startQRScan() {
+function startQRScan(type) {
+  if (typeof type === 'string') keyType = type;
+
   loadingMessage.hidden = false;
   loadingMessage.innerText = '⌛ Loading video...';
   const keyParsedPlaceholder = document.getElementById('key-parse');
@@ -47,8 +51,12 @@ function onScanQRDone(qr) {
     track.stop();
   });
   canvasElement.hidden = true;
-  // eslint-disable-next-line no-undef
-  importKeys(qr);
+  if (keyType === 'log') {
+    importLogKeys(qr);
+  } else {
+    // eslint-disable-next-line no-undef
+    importKeys(qr); 
+  }
 }
 
 function tick() {
