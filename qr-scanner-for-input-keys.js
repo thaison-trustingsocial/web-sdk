@@ -19,11 +19,15 @@ var keyType = 'api';
 
 // eslint-disable-next-line no-unused-vars
 function startQRScan(type) {
-  if (typeof type === 'string') keyType = type;
+  if (typeof type === 'string') {
+    keyType = type;
+  } else {
+    keyType = null;
+  }
 
   loadingMessage.hidden = false;
   loadingMessage.innerText = '⌛ Loading video...';
-  const keyParsedPlaceholder = document.getElementById('key-parse');
+  const keyParsedPlaceholder = keyType ? document.getElementById('logKey-parse') : document.getElementById('key-parse');
   keyParsedPlaceholder.innerHTML = '';
   // Use facingMode: environment to attemt to get the front camera on phones
   navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function (stream) {
