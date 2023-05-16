@@ -141,6 +141,7 @@
     lang: lang || "vi",
     assetRoot: "https://unpkg.com/@tsocial/tvweb-sdk@latest/assets",
     enableAntiDebug: false,
+    country: 'ph',
   });
   window.tv = tv;
   tv.runPreloadEKYCResources();
@@ -260,7 +261,6 @@
       detectIdCard: handleDetectIdCard,
       onStepDone: handleStepDoneIDCard,
       tracking: JSON.parse(trackingConfigEl.value),
-      country: 'ph',
     }
 
     if (inputAccessKey.value) {
