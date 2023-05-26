@@ -607,6 +607,7 @@
 
   function startFullFlow() {
     revokeObjectURL();
+    resultFullFlowEl.innerHTML = "";
     const livenessDetectionMode = selectModeFullFlowEl.value;
     document.body.style.height = 0;
     tv.ekycFullFlow({
