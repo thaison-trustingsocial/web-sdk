@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css" />
   <style>
-    .collapsible_liveness, .collapsible_id {
+    .collapsible_liveness, .collapsible_id, .collapsible_fullflow {
       cursor: pointer;
       padding: 8px;
       border: none;
@@ -20,7 +20,7 @@
       display: block;
     }
 
-    .content_liveness, .content_id {
+    .content_liveness, .content_id, .content_fullflow {
       padding: 0 18px;
       display: none;
       overflow: hidden;
@@ -31,7 +31,7 @@
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <h2>Simplify SDK Integration</h2>
-<h3>Build: 23May 15:00</h3>
+<h3>Build: 26May 14:30</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -197,9 +197,129 @@
     <div id="result-liveness-detection"></div>
   </div>
 
+  <hr />
+  <h4>Full Flow</h4>
+  <div>
+    Liveness mode:
+    <select id="select-mode-fullflow"></select>
+    <br />
+    <button onclick="startFullFlow()" id="btn-start-fullflow" style="margin: 10px 0">
+      Full flow
+    </button>
+    <button class="collapsible_fullflow">Sample code</button>
+    <div class="content_fullflow">
+      <pre>
+        <code>
+          // override simplify integration interfaces
+          const uploadImageSimp = async (params) => {
+            return apiClient.uploadImage(params);
+          };
+          const uploadFilesSimp = async (params) => {
+            return apiClient.fileService.request(params);
+          };
+          const requestVerifyIDCardSimp = async (params) => {
+            return apiClient.requestVerifyIDCard(params);
+          };
+          const detectIDTamperingSimp = async (params) => {
+            return apiClient.detectIDTampering(params);
+          };
+          const readIDCardSimp = async (params) => {
+            return apiClient.readIDCard(params);
+          };
+          const requestVerifyPortraitSimp = async (params) => {
+            return apiClient.requestVerifyPortrait(params);
+          };
+          const verifyFaceLivenessSimp = async (params) => {
+            return apiClient.verifyFaceLiveness(params);
+          };
+          const compareFacesSimp = async (params) => {
+            return apiClient.compareFaces(params);
+          };
+          const searchFacesSimp = async (params) => {
+            return apiClient.searchFaces(params);
+          };
+          const indexFacesSimp = async (params) => {
+            return apiClient.indexFaces(params);
+          };
+
+          class MySimplify extends TVWebSDK.SimplifyIntegration {
+            async uploadImage(params) {
+              const result = await uploadImageSimp(params);
+              return result;
+            }
+        
+            async uploadFiles(params) {
+              const result = await uploadFilesSimp(params);
+              return result;
+            }
+        
+            async requestVerifyIDCard(params) {
+              const result = await requestVerifyIDCardSimp(params);
+              return result;
+            }
+        
+            async detectIDTampering(params) {
+              const result = await detectIDTamperingSimp(params);
+              return result;
+            }
+        
+            async readIDCard(params) {
+              const result = await readIDCardSimp(params);
+              return result;
+            }
+            
+            async requestVerifyPortrait(params) {
+              const result = await requestVerifyPortraitSimp(params);
+              return result;
+            }
+        
+            async verifyFaceLiveness(params) {
+              const result = await verifyFaceLivenessSimp(params);
+              return result;
+          }
+           
+            async compareFaces(params) {
+              const result = await compareFacesSimp(params);
+              return result;
+            }
+        
+            async searchFaces(params) {
+              const result = await searchFacesSimp(params);
+              return result;
+            }
+        
+            async indexFaces(params) {
+              const result = await indexFacesSimp(params);
+              return result;
+            }  
+          }
+          const simplify = new MySimplify();
+
+          // then pass simplify to ekycFullFlow
+          tv.ekycFullFlow({
+            simplifyIntegration: simplify,
+            livenessDetectionProps: {
+              mode: livenessDetectionMode,
+              apiCheck: true,
+            },
+            readIDCardProps={{}}
+            onDoneEkyc: console.log,
+            onError: console.log,
+            onClose: () => { tv.destroyView(); },
+          });
+        </code>
+      </pre>
+    </div>
+    <div id="fullflow-loading" style="padding-top: 10px; display: none;">
+      Api checking
+      <div class="dot-windmill"></div>
+    </div>
+    <div id="result-fullflow"></div>
+  </div>
+  <br />
+
+<script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
 <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"></script>
-<!-- <script src="../qr-scanner-for-input-keys.js"></script> -->
-<!-- <script src="../keys-input.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
 <script src="./tvweb-sdk.standalone.min.js"></script>
@@ -259,7 +379,10 @@
   const resultLivenessDetectionEl = document.getElementById(
     "result-liveness-detection"
   );
+  const resultFullFlowEl = document.getElementById("result-fullflow");
+
   const selectModeEl = document.getElementById("select-mode");
+  const selectModeFullFlowEl = document.getElementById("select-mode-fullflow");
 
   // SIMPLIFY INTEGRATION
   const apiCredentials = {
@@ -289,6 +412,15 @@
   };
   const verifyFaceLivenessSimp = async (params) => {
     return apiClient.verifyFaceLiveness(params);
+  };
+  const compareFacesSimp = async (params) => {
+    return apiClient.compareFaces(params);
+  };
+  const searchFacesSimp = async (params) => {
+    return apiClient.searchFaces(params);
+  };
+  const indexFacesSimp = async (params) => {
+    return apiClient.indexFaces(params);
   };
   class MySimplify extends TVWebSDK.SimplifyIntegration {
     async uploadImage(params) {
@@ -325,6 +457,21 @@
       const result = await verifyFaceLivenessSimp(params);
       return result;
   }
+   
+    async compareFaces(params) {
+      const result = await compareFacesSimp(params);
+      return result;
+    }
+
+    async searchFaces(params) {
+      const result = await searchFacesSimp(params);
+      return result;
+    }
+
+    async indexFaces(params) {
+      const result = await indexFacesSimp(params);
+      return result;
+    }  
   }
   const simplify = new MySimplify();
 
@@ -344,6 +491,7 @@
     option.appendChild(document.createTextNode(k));
     option.setAttribute("value", TVWebSDK.Constants.Mode[k]);
     selectModeEl.appendChild(option);
+    selectModeFullFlowEl.appendChild(option.cloneNode(true));
   });
 
   idCardSettingsEl.value = JSON.stringify(TVWebSDK.defaultClientSettings, null, 2);
@@ -357,7 +505,6 @@
 
   function handleStepDoneIDCard ({ stepNumber, image, qrScannedResult, recordedVideos, apiResult }) {
     const steps = JSON.parse(idCardStepsEl.value)
-    console.log('image', image)
 
     resultExtractIdInfoEl.appendChild(document.createTextNode(`\n-----------------------------------------\n`))
     resultExtractIdInfoEl.appendChild(document.createTextNode(`\nSTEP NUMBER ${stepNumber}:\n`));
@@ -379,16 +526,12 @@
         qrImgEl.src = URL.createObjectURL(image.blob);
         resultExtractIdInfoEl.appendChild(qrImgEl);
       }
-      resultExtractIdInfoEl.appendChild(document.createTextNode(`\n${result}\n`));
+      resultExtractIdInfoEl.appendChild(renderjson(result));
     }
 
     if (apiResult) {
       resultExtractIdInfoEl.appendChild(document.createTextNode("API Result:\n"));
-      const apiResultEl = document.createElement('textarea');
-      apiResultEl.value = JSON.stringify(apiResult, null, 2);
-      apiResultEl.cols = 55
-      apiResultEl.rows = 15
-      resultExtractIdInfoEl.appendChild(apiResultEl);
+      resultExtractIdInfoEl.appendChild(renderjson(apiResult));
     }
 
     // all steps done
@@ -462,18 +605,35 @@
         );
       },
       frontCamera: cameraSelected.value === "true",
-      onProcessing: () => {
-        livenessLoadingEl.style.display = "block";
-        startLivenessBtn.disabled = true;
-
-        resultLivenessDetectionEl.innerHTML = "";
-        document.body.style.height = 'auto';
-        setTimeout(() => {
-          tv.destroyView();
-        }, 250);
-      },
       onClose: () => { document.body.style.height = 'auto'; tv.destroyView(); },
     });
+  }
+
+  function startFullFlow() {
+    revokeObjectURL();
+    const livenessDetectionMode = selectModeFullFlowEl.value;
+    document.body.style.height = 0;
+    tv.ekycFullFlow({
+      simplifyIntegration: simplify,
+      livenessDetectionProps: {
+        mode: livenessDetectionMode,
+        apiCheck: true,
+      },
+      onDoneEkyc: handleFullFlowDone,
+      onError: (err) => console.log('onError', err),
+      onClose: () => { document.body.style.height = 'auto'; tv.destroyView(); },
+    });
+  }
+
+  function handleFullFlowDone(ekycResult) {
+    tv.destroyView();
+    console.log('ekycResult', ekycResult);
+
+    resultFullFlowEl.appendChild(document.createElement("br"));
+    resultFullFlowEl.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
+    resultFullFlowEl.appendChild(
+      renderjson(ekycResult)
+    );
   }
 
   function handleReadIDCardResult({ image, recordedVideos, apiResult }) {
@@ -486,9 +646,7 @@
 
     if (!!inputAccessKey.value) {
       resultExtractIdInfoEl.appendChild(document.createTextNode("API Result:\n"));
-      resultExtractIdInfoEl.appendChild(
-        document.createTextNode(`${JSON.stringify(apiResult, null, 2)}`)
-      );
+      resultExtractIdInfoEl.appendChild(renderjson(apiResult));
       if (cardSide === TVWebSDK.Constants.IDCardSide.FRONT) {
         const frontCardId = apiResult.cardInfo.image1.id;
         inputFrontIdEl.value = frontCardId;
@@ -539,9 +697,8 @@
     resultLivenessDetectionEl.appendChild(
       document.createTextNode("API results: ")
     );
-    const resultPre = document.createElement("pre");
-    resultPre.innerHTML = JSON.stringify(result, null, 2)
-    resultLivenessDetectionEl.appendChild(resultPre);
+    resultLivenessDetectionEl.appendChild(renderjson(result));
+    tv.destroyView();
   }
 </script>
 
@@ -566,6 +723,17 @@
       contentID.style.display = 'block';
     } else {
       contentID.style.display = 'none';
+    }
+  });
+  // fullFlow
+  const collapseFullFlowBtn = document.querySelector('.collapsible_fullflow');
+  const contentFullFlow = document.querySelector('.content_fullflow');
+
+  collapseFullFlowBtn.addEventListener('click', function() {
+    if (contentFullFlow.style.display === 'none' || !contentFullFlow.style.display) {
+      contentFullFlow.style.display = 'block';
+    } else {
+      contentFullFlow.style.display = 'none';
     }
   });
 </script>
