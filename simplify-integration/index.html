@@ -620,13 +620,11 @@
       },
       onDoneEkyc: handleFullFlowDone,
       onError: (e) => {
-        console.log('in error');
         resultFullFlowEl.appendChild(renderjson(e));
         tv.destroyView();
         document.body.style.height = 'auto';
       },
       onClose: () => { 
-        console.log('in close')
         document.body.style.height = 'auto'; tv.destroyView(); },
     });
   }
