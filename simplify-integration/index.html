@@ -31,7 +31,7 @@
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <h2>SDK ADAPTER</h2>
-<h3>Build: 30May 16:30</h3>
+<h3>Build: 1Jun 14:00</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -198,7 +198,7 @@
   </div>
 
   <hr />
-  <h4>Full Flow</h4>
+  <h4>Full flow</h4>
   <div>
     Liveness mode:
     <select id="select-mode-fullflow"></select>
@@ -641,8 +641,13 @@
       livenessDetectionProps: {
         mode: livenessDetectionMode,
         apiCheck: false,
+        captureFrameSettings: {
+          enable: true,
+          framesIntervalTime: 180,
+          framesBatchLength: 10,
+        }
       },
-      onDoneEkyc: handleFullFlowDone,
+      onDoneEkyc: (result) => handleFullFlowDone(result, resultFullFlowEl),
       onError: (e) => {
         resultFullFlowEl.appendChild(renderjson(e));
         tv.destroyView();
@@ -653,14 +658,14 @@
     });
   }
 
-  function handleFullFlowDone(ekycResult) {
+  function handleFullFlowDone(ekycResult, element) {
     tv.destroyView();
-    resultFullFlowEl.innerHTML = "";
+    element.innerHTML = "";
     console.log('ekycResult', ekycResult);
 
-    resultFullFlowEl.appendChild(document.createElement("br"));
-    resultFullFlowEl.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
-    resultFullFlowEl.appendChild(
+    element.appendChild(document.createElement("br"));
+    element.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
+    element.appendChild(
       renderjson(ekycResult)
     );
   }
