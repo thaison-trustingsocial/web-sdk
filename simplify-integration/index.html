@@ -43,6 +43,8 @@
     </select>
   </div>
 
+  <div style="margin-bottom: 10px" id="keys-input-placeholder"></div>
+
   <div style="display: none; margin-top: 10px;">
     <label>
       Cached User ID
@@ -61,144 +63,8 @@
     </div>
     <textarea cols="40" rows="8" id="tracking-config"></textarea>
   </div>
-  
-  <hr />
-  <h4>Extract ID Info</h4>
-  <div style="display: none; margin-right: 20px;">
-    <div>Settings (notice that if <strong>Api check: true</strong>, settings from api will overwrite these settings)</div>
-    <textarea cols="40" rows="15" id="id-card-settings"></textarea>
-  </div>
-  <div style="display: none">
-    <div>Steps</div>
-    <textarea cols="40" rows="15" id="id-card-steps"></textarea>
-  </div>
-  <button onclick="startExtractIDInfo()">Start</button>
-  <pre id="result-extract-id-info"></pre>
 
-  <button class="collapsible_id">Sample code</button>
-  <div class="content_id">
-    <pre>
-      <code>
-        // override interfaces
-        const uploadImageSimp = async (params) => {
-          return apiClient.uploadImage(params);
-        };
-        const uploadFilesSimp = async (params) => {
-          return apiClient.fileService.request(params);
-        };
-        const requestVerifyIDCardSimp = async (params) => {
-          return apiClient.requestVerifyIDCard(params);
-        };
-        const detectIDTamperingSimp = async (params) => {
-          return apiClient.detectIDTampering(params);
-        };
-        const readIDCardSimp = async (params) => {
-          return apiClient.readIDCard(params);
-        };
-
-        class MyAdapter extends TVWebSDK.SDKAdapter {
-           async uploadImage(params) {
-            const result = await uploadImageSimp(params);
-            return result;
-          }
-          async uploadFiles(params) {
-            const result = await uploadFilesSimp(params);
-            return result;
-          }
-          async requestVerifyIDCard(params) {
-            const result = await requestVerifyIDCardSimp(params);
-            return result;
-          }
-          async detectIDTampering(params) {
-            const result = await detectIDTamperingSimp(params);
-            return result;
-          }
-          async readIDCard(params) {
-            const result = await readIDCardSimp(params);
-            return result;
-          }
-        }
-        
-        // then pass adapter to readIDCardUIOnly
-        const adapter = new MyAdapter();
-        tv.readIDCardUIOnly({
-          ...
-          sdkAdapter: adapter,
-        });
-      </code>
-    </pre>
-  </div>
-
-  <div id="read-id-card-loading" style="margin-top: 10px; display: none;">
-    Api checking
-    <div class="dot-windmill"></div>
-  </div>
-  <hr />
-  
-  <h4>Liveness detection</h4>
-  <div>
-      Mode:
-      <select id="select-mode"></select>
-    </div>
-    <div style="display: none">
-      Camera:
-      <select id="select-camera">
-        <option value="true">Front</option>
-        <option value="false">Back</option>
-      </select>
-    </div>
-    <button onclick="startLivenessDetection()" id="btn-start-liveness" style="margin: 10px 0">
-      Liveness detection
-    </button>
-
-    <button class="collapsible_liveness">Sample code</button>
-    <div class="content_liveness">
-      <pre>
-        <code>
-          // override interfaces
-          const uploadImageSimp = async (params) => {
-            return apiClient.uploadImage(params);
-          };
-          const requestVerifyPortraitSimp = async (params) => {
-            return apiClient.requestVerifyPortrait(params);
-          };
-          const verifyFaceLivenessSimp = async (params) => {
-            return apiClient.verifyFaceLiveness(params);
-          };
-          
-          class MyAdapter extends TVWebSDK.SDKAdapter {
-            async uploadImage(params) {
-              const result = await uploadImageSimp(params);
-              return result;
-            }
-            async requestVerifyPortrait(params) {
-              const result = await requestVerifyPortraitSimp(params);
-              return result;
-            }
-            async verifyFaceLiveness(params) {
-              const result = await verifyFaceLivenessSimp(params);
-              return result;
-            }
-          }
-          
-          // then pass adapter to livenessDetection
-          const adapter = new MyAdapter();
-          tv.livenessDetection({
-            ...
-            sdkAdapter: adapter,
-          });
-        </code>
-      </pre>
-    </div>
-    <div id="liveness-loading" style="padding-top: 10px; display: none;">
-      Api checking
-      <div class="dot-windmill"></div>
-    </div>
-    <div id="result-liveness-detection"></div>
-  </div>
-
-  <hr />
-  <h4>Full flow</h4>
+  <h4>Full flow (import keys before start)</h4>
   <div>
     Liveness mode:
     <select id="select-mode-fullflow"></select>
@@ -319,6 +185,9 @@
     <div id="result-fullflow"></div>
   </div>
   <br />
+
+<script src="../qr-scanner-for-input-keys.js"></script>
+<script src="../keys-input.js"></script>
 <script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
 <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
@@ -382,16 +251,9 @@
   );
   const resultFullFlowEl = document.getElementById("result-fullflow");
 
-  const selectModeEl = document.getElementById("select-mode");
   const selectModeFullFlowEl = document.getElementById("select-mode-fullflow");
 
   // SDK ADAPTER
-  const apiCredentials = {
-    accessKey: '4df5f9b9-f34d-4ffa-829f-aa4889bc9fe5',
-    secretKey: 'dQDfxkVYXfAxpdReqdOd1zJP4pJ088Y7',
-    // apiUrl: 'http://10.10.9.243:3001/api',
-    apiUrl: 'https://tv-testing.trustingsocial.com/api',
-  };
   function create_UUID(){
     var dt = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -408,103 +270,6 @@
     xRequestId = create_UUID();
     localStorage.setItem("user-id", JSON.stringify(xRequestId));
   }
-  const apiClient = new trustvisionSdk.default(
-    apiCredentials.accessKey,
-    apiCredentials.secretKey,
-    apiCredentials.apiUrl,
-    { httpHeaders: { 'x-request-id': xRequestId } }
-  );
-
-  const getClientSettingsSimp = async () => {
-    return apiClient.clientSettings();
-  };
-  const uploadImageSimp = async (params) => {
-    return apiClient.uploadImage(params);
-  };
-  const uploadFilesSimp = async (params) => {
-    return apiClient.fileService.request(params);
-  };
-  const requestVerifyIDCardSimp = async (params) => {
-    return apiClient.requestVerifyIDCard(params);
-  };
-  const detectIDTamperingSimp = async (params) => {
-    return apiClient.detectIDTampering(params);
-  };
-  const readIDCardSimp = async (params) => {
-    return apiClient.readIDCard(params);
-  };
-  const requestVerifyPortraitSimp = async (params) => {
-    return apiClient.requestVerifyPortrait(params);
-  };
-  const verifyFaceLivenessSimp = async (params) => {
-    return apiClient.verifyFaceLiveness(params);
-  };
-  const compareFacesSimp = async (params) => {
-    return apiClient.compareFaces(params);
-  };
-  const searchFacesSimp = async (params) => {
-    return apiClient.searchFaces(params);
-  };
-  const indexFacesSimp = async (params) => {
-    return apiClient.indexFaces(params);
-  };
-  class MyAdapter extends TVWebSDK.SDKAdapter {
-    async clientSettings() {
-      const result = await getClientSettingsSimp();
-      return result;
-    }
-    
-    async uploadImage(params) {
-      const result = await uploadImageSimp(params);
-      return result;
-    }
-
-    async uploadFiles(params) {
-      const result = await uploadFilesSimp(params);
-      return result;
-    }
-
-    async requestVerifyIDCard(params) {
-      const result = await requestVerifyIDCardSimp(params);
-      return result;
-    }
-
-    async detectIDTampering(params) {
-      const result = await detectIDTamperingSimp(params);
-      return result;
-    }
-
-    async readIDCard(params) {
-      const result = await readIDCardSimp(params);
-      return result;
-    }
-    
-    async requestVerifyPortrait(params) {
-      const result = await requestVerifyPortraitSimp(params);
-      return result;
-    }
-
-    async verifyFaceLiveness(params) {
-      const result = await verifyFaceLivenessSimp(params);
-      return result;
-  }
-   
-    async compareFaces(params) {
-      const result = await compareFacesSimp(params);
-      return result;
-    }
-
-    async searchFaces(params) {
-      const result = await searchFacesSimp(params);
-      return result;
-    }
-
-    async indexFaces(params) {
-      const result = await indexFacesSimp(params);
-      return result;
-    }  
-  }
-  const adapter = new MyAdapter();
 
   const userIdEl = document.getElementById("user-id");
   const trackingConfigEl = document.getElementById("tracking-config");
@@ -521,8 +286,7 @@
     const option = document.createElement("option");
     option.appendChild(document.createTextNode(k));
     option.setAttribute("value", TVWebSDK.Constants.Mode[k]);
-    selectModeEl.appendChild(option);
-    selectModeFullFlowEl.appendChild(option.cloneNode(true));
+    selectModeFullFlowEl.appendChild(option);
   });
 
   idCardSettingsEl.value = JSON.stringify(TVWebSDK.defaultClientSettings, null, 2);
@@ -637,6 +401,102 @@
   }
 
   function startFullFlow() {
+    const apiClient = new trustvisionSdk.default(
+      inputAccessKey.value,
+      inputSecretKey.value,
+      inputApiUrl.value,
+      { httpHeaders: { 'x-request-id': xRequestId } }
+    );
+    const getClientSettingsSimp = async () => {
+      return apiClient.clientSettings();
+    };
+    const uploadImageSimp = async (params) => {
+      return apiClient.uploadImage(params);
+    };
+    const uploadFilesSimp = async (params) => {
+      return apiClient.fileService.request(params);
+    };
+    const requestVerifyIDCardSimp = async (params) => {
+      return apiClient.requestVerifyIDCard(params);
+    };
+    const detectIDTamperingSimp = async (params) => {
+      return apiClient.detectIDTampering(params);
+    };
+    const readIDCardSimp = async (params) => {
+      return apiClient.readIDCard(params);
+    };
+    const requestVerifyPortraitSimp = async (params) => {
+      return apiClient.requestVerifyPortrait(params);
+    };
+    const verifyFaceLivenessSimp = async (params) => {
+      return apiClient.verifyFaceLiveness(params);
+    };
+    const compareFacesSimp = async (params) => {
+      return apiClient.compareFaces(params);
+    };
+    const searchFacesSimp = async (params) => {
+      return apiClient.searchFaces(params);
+    };
+    const indexFacesSimp = async (params) => {
+      return apiClient.indexFaces(params);
+    };
+    class MyAdapter extends TVWebSDK.SDKAdapter {
+    async clientSettings() {
+      const result = await getClientSettingsSimp();
+      return result;
+    }
+    
+    async uploadImage(params) {
+      const result = await uploadImageSimp(params);
+      return result;
+    }
+
+    async uploadFiles(params) {
+      const result = await uploadFilesSimp(params);
+      return result;
+    }
+
+    async requestVerifyIDCard(params) {
+      const result = await requestVerifyIDCardSimp(params);
+      return result;
+    }
+
+    async detectIDTampering(params) {
+      const result = await detectIDTamperingSimp(params);
+      return result;
+    }
+
+    async readIDCard(params) {
+      const result = await readIDCardSimp(params);
+      return result;
+    }
+    
+    async requestVerifyPortrait(params) {
+      const result = await requestVerifyPortraitSimp(params);
+      return result;
+    }
+
+    async verifyFaceLiveness(params) {
+      const result = await verifyFaceLivenessSimp(params);
+      return result;
+  }
+   
+    async compareFaces(params) {
+      const result = await compareFacesSimp(params);
+      return result;
+    }
+
+    async searchFaces(params) {
+      const result = await searchFacesSimp(params);
+      return result;
+    }
+
+    async indexFaces(params) {
+      const result = await indexFacesSimp(params);
+      return result;
+    }  
+  }
+    const adapter = new MyAdapter();
     revokeObjectURL();
     resultFullFlowEl.innerHTML = "";
     const livenessDetectionMode = selectModeFullFlowEl.value;
@@ -746,28 +606,6 @@
 </script>
 
 <script>
-  // liveness
-  const collapseLivenessBtn = document.querySelector('.collapsible_liveness');
-  const contentLiveness = document.querySelector('.content_liveness');
-
-  collapseLivenessBtn.addEventListener('click', function() {
-    if (contentLiveness.style.display === 'none' || !contentLiveness.style.display) {
-      contentLiveness.style.display = 'block';
-    } else {
-      contentLiveness.style.display = 'none';
-    }
-  });
-  // id
-  const collapseIDBtn = document.querySelector('.collapsible_id');
-  const contentID = document.querySelector('.content_id');
-
-  collapseIDBtn.addEventListener('click', function() {
-    if (contentID.style.display === 'none' || !contentID.style.display) {
-      contentID.style.display = 'block';
-    } else {
-      contentID.style.display = 'none';
-    }
-  });
   // fullFlow
   const collapseFullFlowBtn = document.querySelector('.collapsible_fullflow');
   const contentFullFlow = document.querySelector('.content_fullflow');
