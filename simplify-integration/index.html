@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css" />
   <style>
-    .collapsible_liveness, .collapsible_id, .collapsible_fullflow {
+    .collapsible_fullflow {
       cursor: pointer;
       padding: 8px;
       border: none;
@@ -20,18 +20,27 @@
       display: block;
     }
 
-    .content_liveness, .content_id, .content_fullflow {
+    .content_fullflow {
       padding: 0 18px;
       display: none;
       overflow: hidden;
       border: 1px solid #f1f1f1;
     }
+
+    .result_table {
+      border: 1px solid #000;
+      display: none;
+    }
+    .tables {
+      display: flex;
+      justify-content: space-around;
+    }
   </style>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<h2>SDK ADAPTER v5</h2>
-<h3>Build: 12Jun 10:00</h3>
+<h2>SDK ADAPTER v6</h2>
+<h3>Build: 14Jun 16:00</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -62,6 +71,10 @@
       </select>
     </div>
     <textarea cols="40" rows="8" id="tracking-config"></textarea>
+  </div>
+  <div style="display: none">
+    <div>Steps</div>
+    <textarea cols="40" rows="15" id="id-card-steps"></textarea>
   </div>
 
   <h4>Full flow (import keys before start)</h4>
@@ -183,12 +196,22 @@
       <div class="dot-windmill"></div>
     </div>
     <div id="result-fullflow"></div>
+
+    <div class="tables">
+      <table class="result_table" id="summary_table">
+        <tbody id="result-tbody"></tbody>
+      </table>
+      
+      <table class="result_table" id="ocr_table">
+        <tbody id="ocr-tbody"></tbody>
+      </table>
+    </div>
   </div>
   <br />
 
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="../qr-scanner-for-input-keys.js"></script>
 <script src="../keys-input.js"></script>
-<script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
 <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
@@ -262,6 +285,11 @@
   const idCardSettingsEl = document.getElementById("id-card-settings");
   const idCardStepsEl = document.getElementById("id-card-steps");
 
+  const summaryTable = document.getElementById("summary_table");
+  const ocrTable = document.getElementById("ocr_table");
+  const tbodyEl = document.getElementById('result-tbody');
+  const ocrTbodyEl = document.getElementById('ocr-tbody');
+
   userIdEl.value = JSON.parse(localStorage.getItem("user-id"));
 
   Object.keys(TVWebSDK.Constants.Mode).forEach((k) => {
@@ -278,108 +306,6 @@
   function clearUserId() {
     window.localStorage.removeItem('user-id');
     userIdEl.value = JSON.parse(localStorage.getItem("user-id"));
-  }
-
-  function handleStepDoneIDCard ({ stepNumber, image, qrScannedResult, recordedVideos, apiResult }) {
-    const steps = JSON.parse(idCardStepsEl.value)
-
-    resultExtractIdInfoEl.appendChild(document.createTextNode(`\n-----------------------------------------\n`))
-    resultExtractIdInfoEl.appendChild(document.createTextNode(`\nSTEP NUMBER ${stepNumber}:\n`));
-
-
-    const imgEl = document.createElement("img");
-    imgEl.width = "300";
-    imgEl.src = createObjectURL(image.blob);
-    resultExtractIdInfoEl.appendChild(imgEl);
-    resultExtractIdInfoEl.appendChild(document.createElement("br"));
-    resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
-
-    if (qrScannedResult) {
-      const { result, image } = qrScannedResult
-
-      if (image && image.blob) {
-        const qrImgEl = document.createElement("img");
-        qrImgEl.width = "200";
-        qrImgEl.src = URL.createObjectURL(image.blob);
-        resultExtractIdInfoEl.appendChild(qrImgEl);
-      }
-      resultExtractIdInfoEl.appendChild(renderjson(result));
-    }
-
-    if (apiResult) {
-      resultExtractIdInfoEl.appendChild(document.createTextNode("API Result:\n"));
-      resultExtractIdInfoEl.appendChild(renderjson(apiResult));
-    }
-
-    // all steps done
-    if (stepNumber === steps.length - 1) {
-      tv.destroyView();
-      readIdCardLoadingEl.style.display = 'none';
-    }
-  }
-
-  async function handleDetectIdCard (props) {
-    const { cardType, image, cardSide } = props
-    const apiClient = new trustvisionSdk.default(inputAccessKey.value, inputSecretKey.value, inputApiUrl.value);
-    const resultUpload = await apiClient.uploadImage({
-      file: image.blob,
-      label: `id_card.${cardType}.${cardSide}`,
-    });
-    const imageId = resultUpload.data.image_id
-    const resultDetect = await apiClient.httpClient.post('/v1/detect_id_cards_sync', {
-      card_type: cardType,
-      image: {
-        id: imageId,
-      }
-    });
-    return _.get(resultDetect, 'data.image.cards.0')
-  }
-
-  function startExtractIDInfo() {
-    revokeObjectURL();
-    resultExtractIdInfoEl.innerHTML = "";
-    document.body.style.height = 0;
-
-    const commonProps = {
-      onError: (e) => {
-        resultExtractIdInfoEl.appendChild(renderjson(e));
-        tv.destroyView();
-        document.body.style.height = 'auto';
-        readIdCardLoadingEl.style.display = 'none';
-      },
-      onClose: () => {
-        document.body.style.height = 'auto';
-        tv.destroyView();
-      },
-      detectIdCard: handleDetectIdCard,
-      onStepDone: handleStepDoneIDCard,
-      tracking: JSON.parse(trackingConfigEl.value),
-      sdkAdapter: adapter,
-    }
-
-    console.log('UI only')
-    tv.readIDCardUIOnly(commonProps)
-  }
-
-  function startLivenessDetection() {
-    revokeObjectURL();
-    const livenessDetectionMode = selectModeEl.value;
-    const cameraSelected = document.getElementById("select-camera");
-    document.body.style.height = 0;
-
-    tv.livenessDetection({
-      apiCheck: true,
-      mode: livenessDetectionMode,
-      onLivenessDetectionDone: handleLivenessDetectionDone,
-      sdkAdapter: adapter,
-      onError: (e) => {
-        livenessLoadingEl.style.display = "none";
-        startLivenessBtn.disabled = false;
-        resultLivenessDetectionEl.appendChild(renderjson(e));
-      },
-      frontCamera: cameraSelected.value === "true",
-      onClose: () => { document.body.style.height = 'auto'; tv.destroyView(); },
-    });
   }
 
   function startFullFlow() {
@@ -481,6 +407,8 @@
     const adapter = new MyAdapter();
     revokeObjectURL();
     resultFullFlowEl.innerHTML = "";
+    tbodyEl.innerHTML = null;
+    ocrTbodyEl.innerHTML = null;
     const livenessDetectionMode = selectModeFullFlowEl.value;
     document.body.style.height = 0;
     tv.ekycFullFlow({
@@ -499,7 +427,8 @@
       },
       onDoneEkyc: (result) => handleFullFlowDone(result, resultFullFlowEl),
       onError: (e) => {
-        resultFullFlowEl.appendChild(renderjson(e));
+        console.log('on error', e);
+        // resultFullFlowEl.appendChild(renderjson(e));
         tv.destroyView();
         document.body.style.height = 'auto';
       },
@@ -508,83 +437,137 @@
     });
   }
 
-  function handleFullFlowDone(ekycResult, element) {
-    tv.destroyView();
-    element.innerHTML = "";
-    console.log('ekycResult', ekycResult);
-
-    element.appendChild(document.createElement("br"));
-    element.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
-    element.appendChild(
-      renderjson(ekycResult)
-    );
-  }
-
-  function handleReadIDCardResult({ image, recordedVideos, apiResult }) {
-    const imgEl = document.createElement("img");
-    imgEl.width = "200";
-    imgEl.src = createObjectURL(image);
-    resultExtractIdInfoEl.appendChild(imgEl);
-    resultExtractIdInfoEl.appendChild(document.createElement("br"));
-    resultExtractIdInfoEl.appendChild(document.createTextNode(`Recorded videos: ${recordedVideos.length}\n`));
-
-    if (!!inputAccessKey.value) {
-      resultExtractIdInfoEl.appendChild(document.createTextNode("API Result:\n"));
-      resultExtractIdInfoEl.appendChild(renderjson(apiResult));
-      if (cardSide === TVWebSDK.Constants.IDCardSide.FRONT) {
-        const frontCardId = apiResult.cardInfo.image1.id;
-        inputFrontIdEl.value = frontCardId;
-      }
+  function getSimplifyResult(ekycResult) {
+    const results = [];
+    if (_.get(ekycResult, 'frontCard.apiResult.sanityResult')) {
+      results.push({
+        label: `frontCard - sanity`,
+        value: _.get(ekycResult, 'frontCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+      });
+    }
+    if (_.get(ekycResult, 'frontCard.apiResult.tamperingInfo')) {
+      results.push({
+        label: `frontCard - tampering`,
+        value: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+      });
+    }
+    if (_.get(ekycResult, 'frontCard.apiResult.cardInfo')) {
+      results.push({
+        label: `frontCard - OCR_status`,
+        value: _.get(ekycResult, 'frontCard.apiResult.cardInfo.status', '') === 'success',
+      });
     }
 
-    tv.destroyView();
-    readIdCardLoadingEl.style.display = 'none';
+    if (_.get(ekycResult, 'backCard.apiResult.sanityResult')) {
+      results.push({
+        label: `backCard - sanity`,
+        value: _.get(ekycResult, 'backCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+      });
+    }
+    if (_.get(ekycResult, 'backCard.apiResult.tamperingInfo')) {
+      results.push({
+        label: `backCard - tampering`,
+        value: _.get(ekycResult, 'backCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+      });
+    }
+    if (_.get(ekycResult, 'backCard.apiResult.cardInfo')) {
+      results.push({
+        label: `backCard - OCR_status`,
+        value: _.get(ekycResult, 'backCard.apiResult.cardInfo.status', '') === 'success',
+      });
+    }
+
+    if (_.get(ekycResult, 'faceLiveness.verifyFacePortraitResult')) {
+      results.push({
+        label: 'portrait_sanity',
+        value: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult.portrait_sanity.verdict', '') === 'good',
+      });
+    }
+    if (_.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult')) {
+      results.push({
+        label: 'face_liveness',
+        value: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult.is_live', false),
+      });
+    }
+
+    if (_.get(ekycResult, 'compareFaces', null)) {
+      const compareArrays = _.get(ekycResult, 'compareFaces.compare_faces', []);
+
+      results.push({
+        label: 'compare_faces',
+        value: 
+          !(compareArrays[0]?.result !== 'matched' ||
+          compareArrays.filter((item) => item?.result === 'matched').length !== 1 ||
+          _.get(ekycResult, 'compareFaces.errors', null)),
+      });
+    }
+    if (_.get(ekycResult, 'searchFaces', null)) {
+      results.push({
+        label: 'search_faces',
+        value: !_.get(ekycResult, 'searchFaces.faces', null),
+      });
+    }
+    if (_.get(ekycResult, 'indexFaces', null)) {
+      results.push({
+        label: 'index_faces',
+        value: _.get(ekycResult, 'indexFaces.status', '') === 'success',
+      });
+    }
+    return results;
   }
 
-  function handleLivenessDetectionDone(result) {
-    resultLivenessDetectionEl.innerHTML = "";
-    const { frontalFaces, apiCheckPassed, steps } = result;
-    console.log("result", result);
-
-    livenessLoadingEl.style.display = "none";
-    startLivenessBtn.disabled = false;
-
-    resultLivenessDetectionEl.appendChild(
-      document.createTextNode("Random frontal faces detected: ")
-    );
-
-    frontalFaces.forEach((item) => {
-      const imgEl = document.createElement("img");
-      imgEl.width = "200";
-      imgEl.style.marginRight = "5px";
-      imgEl.src = createObjectURL(item.blob);
-      resultLivenessDetectionEl.appendChild(imgEl);
-    });
-    resultLivenessDetectionEl.appendChild(document.createElement("br"));
-    resultLivenessDetectionEl.appendChild(document.createElement("br"));
-    resultLivenessDetectionEl.appendChild(
-      document.createTextNode("Directional faces:")
-    );
-    steps.forEach((s) => {
-      const imgEl = document.createElement("img");
-      imgEl.width = "200";
-      imgEl.style.marginRight = "5px";
-      imgEl.src = createObjectURL(s.blob);
-      resultLivenessDetectionEl.appendChild(imgEl);
-    });
-    resultLivenessDetectionEl.appendChild(document.createElement("br"));
-    resultLivenessDetectionEl.appendChild(document.createElement("br"));
-    resultLivenessDetectionEl.appendChild(
-      document.createTextNode("Video:")
-    );
-
-    resultLivenessDetectionEl.appendChild(document.createElement("br"));
-    resultLivenessDetectionEl.appendChild(
-      document.createTextNode("API results: ")
-    );
-    resultLivenessDetectionEl.appendChild(renderjson(result));
-    tv.destroyView();
+  function getCardOCR(ekycResult) {
+    const frontCardInfo = _.get(ekycResult, 'frontCard.apiResult.cardInfo.card_information', []);
+    const backCardInfo = _.get(ekycResult, 'backCard.apiResult.cardInfo.card_information', []);
+    const result = [...frontCardInfo, ...backCardInfo]?.map(({field, value}) => ({ field, value }));
+    return result;
   }
+
+  function handleFullFlowDone(ekycResult, element) {
+    tv.destroyView();
+    // element.innerHTML = "";
+
+    // element.appendChild(document.createElement("br"));
+    // element.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
+    // element.appendChild(
+    //   renderjson(ekycResult)
+    // );
+    const resultArr = getSimplifyResult(ekycResult);
+    if (resultArr && resultArr.length > 0) {
+      console.log({ ekycResult, resultArr })
+      summaryTable.style.display = "block";
+      
+      resultArr.forEach((item, index) => {
+        const row = document.createElement('tr');
+        const cell1 = document.createElement('td');
+        const cell2 = document.createElement('td');
+        
+        cell1.textContent = item.value ? '\u2705' : '\u274C'; // Checkmark or Cross symbol
+        cell2.textContent = item.label;
+        
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        tbodyEl.appendChild(row);
+      });
+    }
+      
+    const ocrArr = getCardOCR(ekycResult);
+    if (ocrArr && ocrArr.length > 0) {
+      ocrTable.style.display = "block";
+      ocrArr.forEach((item, index) => {
+        const row = document.createElement('tr');
+        const cell1 = document.createElement('td');
+        const cell2 = document.createElement('td');
+        
+        cell1.textContent = item.field;
+        cell2.textContent = item.value;
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        ocrTbodyEl.appendChild(row);
+      });
+    }
+  }
+
 </script>
 
 <script>
