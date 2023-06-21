@@ -10,14 +10,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css" />
   <style>
-    .collapsible_fullflow {
+    .fullflow_container .collapsible_fullflow {
       cursor: pointer;
       padding: 8px;
       border: none;
       text-align: left;
       outline: none;
-      font-size: 16px;
       display: block;
+      width: 120px;
+      border: 1px solid #282828;
+      background-color: transparent;
+      color: #282828;
+    }
+    .fullflow_container .collapsible_fullflow:hover {
+      background-color: transparent;
     }
 
     .content_fullflow {
@@ -27,20 +33,44 @@
       border: 1px solid #f1f1f1;
     }
 
-    .result_table {
-      border: 1px solid #000;
-      display: none;
+    .fullflow_container button {
+      min-height: 40px;
+      background-color: #f1f1f1;
+      color: #282828;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer; 
     }
-    .tables {
-      display: flex;
-      justify-content: space-around;
+    .fullflow_container button:hover {
+      background-color: #e3e3e3;
+    }
+
+    #btn-start-fullflow {
+      width: 120px;
+    }
+
+    .result_table {
+      display: none;
+      justify-content: space-between;
+    }
+    .my_table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+    }
+    .my_table td, .my_table th {
+      border: 1px solid #f1f1f1;
+      text-align: left;
+      padding: 8px;
+    }
+    .my_table tr:nth-child(even) {
+      background-color: #f1f1f1;
     }
   </style>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<h2>SDK ADAPTER v6</h2>
-<h3>Build: 14Jun 16:00</h3>
+<h2>SDK ADAPTER v7</h2>
+<h3>Build: 21Jun 14:00</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -61,31 +91,16 @@
     </label>
     <button onclick="clearUserId()">Clear user id (x-request-id)</button>
   </div>
-  
-  <div style="display: none; margin-top: 10px;">
-    <div>
-      Tracking config
-      <select id="select-tracking-config-template" onchange="onSelectTrackingConfigTemplate()">
-        <option value="0" selected>default</option>
-        <option value="1">Engineering test (...9fe5)</option>
-      </select>
-    </div>
-    <textarea cols="40" rows="8" id="tracking-config"></textarea>
-  </div>
-  <div style="display: none">
-    <div>Steps</div>
-    <textarea cols="40" rows="15" id="id-card-steps"></textarea>
-  </div>
 
   <h4>Full flow (import keys before start)</h4>
-  <div>
+  <div class="fullflow_container">
     Liveness mode:
     <select id="select-mode-fullflow"></select>
     <br />
     <button onclick="startFullFlow()" id="btn-start-fullflow" style="margin: 10px 0">
-      Full flow
+      FULL FLOW
     </button>
-    <button class="collapsible_fullflow">Sample code</button>
+    <button class="collapsible_fullflow">SAMPLE CODE</button>
     <div class="content_fullflow">
       <pre>
         <code>
@@ -197,18 +212,17 @@
     </div>
     <div id="result-fullflow"></div>
 
-    <div class="tables">
-      <table class="result_table" id="summary_table">
-        <tbody id="result-tbody"></tbody>
-      </table>
-      
-      <table class="result_table" id="ocr_table">
-        <tbody id="ocr-tbody"></tbody>
-      </table>
-    </div>
+    <table bordered class="result_table my_table" id="summary_table">
+      <tbody id="result-tbody"></tbody>
+    </table>
+    <br />
+    <table class="result_table my_table" id="ocr_table">
+      <tbody id="ocr-tbody"></tbody>
+    </table>
   </div>
   <br />
 
+<script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="../qr-scanner-for-input-keys.js"></script>
 <script src="../keys-input.js"></script>
@@ -248,12 +262,6 @@
   });
   window.tv = tv;
   tv.runPreloadEKYCResources();
-  const resultExtractIdInfoEl = document.getElementById(
-    "result-extract-id-info"
-  );
-  const resultLivenessDetectionEl = document.getElementById(
-    "result-liveness-detection"
-  );
   const resultFullFlowEl = document.getElementById("result-fullflow");
 
   const selectModeFullFlowEl = document.getElementById("select-mode-fullflow");
@@ -277,13 +285,6 @@
   }
 
   const userIdEl = document.getElementById("user-id");
-  const trackingConfigEl = document.getElementById("tracking-config");
-  const readIdCardLoadingEl = document.getElementById("read-id-card-loading");
-  const statusWarmupReadIDCardEl = document.getElementById("status-warmup-read-id-card");
-  const livenessLoadingEl = document.getElementById("liveness-loading");
-  const startLivenessBtn = document.getElementById("btn-start-liveness");
-  const idCardSettingsEl = document.getElementById("id-card-settings");
-  const idCardStepsEl = document.getElementById("id-card-steps");
 
   const summaryTable = document.getElementById("summary_table");
   const ocrTable = document.getElementById("ocr_table");
@@ -298,10 +299,6 @@
     option.setAttribute("value", TVWebSDK.Constants.Mode[k]);
     selectModeFullFlowEl.appendChild(option);
   });
-
-  idCardSettingsEl.value = JSON.stringify(TVWebSDK.defaultClientSettings, null, 2);
-  idCardStepsEl.value = JSON.stringify(TVWebSDK.defaultReadIDCardSteps, null, 2);
-  trackingConfigEl.value = JSON.stringify(TVWebSDK.TrackingContext.defaultTrackingConfig, null, 2);
 
   function clearUserId() {
     window.localStorage.removeItem('user-id');
@@ -428,7 +425,6 @@
       onDoneEkyc: (result) => handleFullFlowDone(result, resultFullFlowEl),
       onError: (e) => {
         console.log('on error', e);
-        // resultFullFlowEl.appendChild(renderjson(e));
         tv.destroyView();
         document.body.style.height = 'auto';
       },
@@ -442,51 +438,59 @@
     if (_.get(ekycResult, 'frontCard.apiResult.sanityResult')) {
       results.push({
         label: `frontCard - sanity`,
-        value: _.get(ekycResult, 'frontCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+        status: _.get(ekycResult, 'frontCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+        value: _.get(ekycResult, 'frontCard.apiResult.sanityResult', {})
       });
     }
     if (_.get(ekycResult, 'frontCard.apiResult.tamperingInfo')) {
       results.push({
         label: `frontCard - tampering`,
-        value: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+        status: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+        value: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo', {})
       });
     }
     if (_.get(ekycResult, 'frontCard.apiResult.cardInfo')) {
       results.push({
         label: `frontCard - OCR_status`,
-        value: _.get(ekycResult, 'frontCard.apiResult.cardInfo.status', '') === 'success',
+        status: _.get(ekycResult, 'frontCard.apiResult.cardInfo.status', '') === 'success',
+        value: _.get(ekycResult, 'frontCard.apiResult.cardInfo', {})
       });
     }
 
     if (_.get(ekycResult, 'backCard.apiResult.sanityResult')) {
       results.push({
         label: `backCard - sanity`,
-        value: _.get(ekycResult, 'backCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+        status: _.get(ekycResult, 'backCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+        value: _.get(ekycResult, 'backCard.apiResult.sanityResult', {})
       });
     }
     if (_.get(ekycResult, 'backCard.apiResult.tamperingInfo')) {
       results.push({
         label: `backCard - tampering`,
-        value: _.get(ekycResult, 'backCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+        status: _.get(ekycResult, 'backCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+        value: _.get(ekycResult, 'backCard.apiResult.tamperingInfo', {})
       });
     }
     if (_.get(ekycResult, 'backCard.apiResult.cardInfo')) {
       results.push({
         label: `backCard - OCR_status`,
-        value: _.get(ekycResult, 'backCard.apiResult.cardInfo.status', '') === 'success',
+        status: _.get(ekycResult, 'backCard.apiResult.cardInfo.status', '') === 'success',
+        value: _.get(ekycResult, 'backCard.apiResult.cardInfo', {})
       });
     }
 
     if (_.get(ekycResult, 'faceLiveness.verifyFacePortraitResult')) {
       results.push({
         label: 'portrait_sanity',
-        value: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult.portrait_sanity.verdict', '') === 'good',
+        status: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult.portrait_sanity.verdict', '') === 'good',
+        value: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult', {})
       });
     }
     if (_.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult')) {
       results.push({
         label: 'face_liveness',
-        value: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult.is_live', false),
+        status: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult.is_live', false),
+        value: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult', {})
       });
     }
 
@@ -495,22 +499,25 @@
 
       results.push({
         label: 'compare_faces',
-        value: 
+        status: 
           !(compareArrays[0]?.result !== 'matched' ||
           compareArrays.filter((item) => item?.result === 'matched').length !== 1 ||
           _.get(ekycResult, 'compareFaces.errors', null)),
+        value: _.get(ekycResult, 'compareFaces', {})
       });
     }
     if (_.get(ekycResult, 'searchFaces', null)) {
       results.push({
         label: 'search_faces',
-        value: !_.get(ekycResult, 'searchFaces.faces', null),
+        status: !_.get(ekycResult, 'searchFaces.faces', null),
+        value: _.get(ekycResult, 'searchFaces', {})
       });
     }
     if (_.get(ekycResult, 'indexFaces', null)) {
       results.push({
         label: 'index_faces',
-        value: _.get(ekycResult, 'indexFaces.status', '') === 'success',
+        status: _.get(ekycResult, 'indexFaces.status', '') === 'success',
+        value: _.get(ekycResult, 'indexFaces', {})
       });
     }
     return results;
@@ -525,28 +532,42 @@
 
   function handleFullFlowDone(ekycResult, element) {
     tv.destroyView();
-    // element.innerHTML = "";
+    element.innerHTML = "";
 
-    // element.appendChild(document.createElement("br"));
-    // element.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
-    // element.appendChild(
-    //   renderjson(ekycResult)
-    // );
+    element.appendChild(document.createElement("br"));
+    element.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
+    element.appendChild(
+      renderjson(ekycResult)
+    );
     const resultArr = getSimplifyResult(ekycResult);
     if (resultArr && resultArr.length > 0) {
       console.log({ ekycResult, resultArr })
       summaryTable.style.display = "block";
+      const theader = document.createElement('tr');
+      const thItem1 = document.createElement('th');
+      const thItem2 = document.createElement('th');
+      const thItem3 = document.createElement('th');
+      thItem1.textContent = 'Service';
+      thItem2.textContent = 'Status';
+      thItem3.textContent = 'Result';
+      theader.appendChild(thItem1);
+      theader.appendChild(thItem2);
+      theader.appendChild(thItem3);
+      summaryTable.prepend(theader);
       
       resultArr.forEach((item, index) => {
         const row = document.createElement('tr');
         const cell1 = document.createElement('td');
         const cell2 = document.createElement('td');
+        const cell3 = document.createElement('td');
         
-        cell1.textContent = item.value ? '\u2705' : '\u274C'; // Checkmark or Cross symbol
-        cell2.textContent = item.label;
+        cell1.textContent = item.label;
+        cell2.textContent = item.status ? '\u2705' : '\u274C'; // Checkmark or Cross symbol
+        cell3.appendChild(renderjson(item.value));
         
         row.appendChild(cell1);
         row.appendChild(cell2);
+        row.appendChild(cell3);
         tbodyEl.appendChild(row);
       });
     }
@@ -554,6 +575,15 @@
     const ocrArr = getCardOCR(ekycResult);
     if (ocrArr && ocrArr.length > 0) {
       ocrTable.style.display = "block";
+      const theader = document.createElement('tr');
+      const thItem1 = document.createElement('th');
+      const thItem2 = document.createElement('th');
+      thItem1.textContent = 'Field';
+      thItem2.textContent = 'Value';
+      theader.appendChild(thItem1);
+      theader.appendChild(thItem2);
+      ocrTable.prepend(theader);
+
       ocrArr.forEach((item, index) => {
         const row = document.createElement('tr');
         const cell1 = document.createElement('td');
