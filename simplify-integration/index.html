@@ -213,10 +213,12 @@
     <div id="result-fullflow"></div>
 
     <table bordered class="result_table my_table" id="summary_table">
+      <thead id="result-thead"></thead>
       <tbody id="result-tbody"></tbody>
     </table>
     <br />
     <table class="result_table my_table" id="ocr_table">
+      <thead id="ocr-thead"></thead>
       <tbody id="ocr-tbody"></tbody>
     </table>
   </div>
@@ -288,6 +290,8 @@
 
   const summaryTable = document.getElementById("summary_table");
   const ocrTable = document.getElementById("ocr_table");
+  const theadResult = document.getElementById("result-thead");
+  const theadOcr = document.getElementById("ocr-thead");
   const tbodyEl = document.getElementById('result-tbody');
   const ocrTbodyEl = document.getElementById('ocr-tbody');
 
@@ -406,6 +410,8 @@
     resultFullFlowEl.innerHTML = "";
     tbodyEl.innerHTML = null;
     ocrTbodyEl.innerHTML = null;
+    theadResult.innerHTML = null;
+    theadOcr.innerHTML = null;
     const livenessDetectionMode = selectModeFullFlowEl.value;
     document.body.style.height = 0;
     tv.ekycFullFlow({
@@ -549,7 +555,6 @@
     if (resultArr && resultArr.length > 0) {
       console.log({ ekycResult, resultArr })
       summaryTable.style.display = "block";
-      const theader = document.createElement('tr');
       const thItem1 = document.createElement('th');
       const thItem2 = document.createElement('th');
       const thItem3 = document.createElement('th');
@@ -558,11 +563,11 @@
       thItem2.textContent = 'Status';
       thItem3.textContent = 'Result';
       thItem4.textContent = 'Verdict';
-      theader.appendChild(thItem1);
-      theader.appendChild(thItem2);
-      theader.appendChild(thItem3);
-      theader.appendChild(thItem4);
-      summaryTable.prepend(theader);
+      theadResult.appendChild(thItem1);
+      theadResult.appendChild(thItem2);
+      theadResult.appendChild(thItem3);
+      theadResult.appendChild(thItem4);
+      summaryTable.prepend(theadResult);
       
       resultArr.forEach((item, index) => {
         const row = document.createElement('tr');
@@ -587,14 +592,13 @@
     const ocrArr = getCardOCR(ekycResult);
     if (ocrArr && ocrArr.length > 0) {
       ocrTable.style.display = "block";
-      const theader = document.createElement('tr');
       const thItem1 = document.createElement('th');
       const thItem2 = document.createElement('th');
       thItem1.textContent = 'Field';
       thItem2.textContent = 'Value';
-      theader.appendChild(thItem1);
-      theader.appendChild(thItem2);
-      ocrTable.prepend(theader);
+      theadOcr.appendChild(thItem1);
+      theadOcr.appendChild(thItem2);
+      ocrTable.prepend(theadOcr);
 
       ocrArr.forEach((item, index) => {
         const row = document.createElement('tr');
