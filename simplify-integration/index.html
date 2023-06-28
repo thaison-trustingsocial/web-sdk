@@ -346,61 +346,61 @@
       return apiClient.indexFaces(params);
     };
     class MyAdapter extends TVWebSDK.SDKAdapter {
-    async clientSettings() {
-      const result = await getClientSettingsSimp();
-      return result;
-    }
-    
-    async uploadImage(params) {
-      const result = await uploadImageSimp(params);
-      return result;
-    }
+      async clientSettings() {
+        const result = await getClientSettingsSimp();
+        return result;
+      }
+      
+      async uploadImage(params) {
+        const result = await uploadImageSimp(params);
+        return result;
+      }
 
-    async uploadFiles(params) {
-      const result = await uploadFilesSimp(params);
-      return result;
-    }
+      async uploadFiles(params) {
+        const result = await uploadFilesSimp(params);
+        return result;
+      }
 
-    async requestVerifyIDCard(params) {
-      const result = await requestVerifyIDCardSimp(params);
-      return result;
-    }
+      async requestVerifyIDCard(params) {
+        const result = await requestVerifyIDCardSimp(params);
+        return result;
+      }
 
-    async detectIDTampering(params) {
-      const result = await detectIDTamperingSimp(params);
-      return result;
-    }
+      async detectIDTampering(params) {
+        const result = await detectIDTamperingSimp(params);
+        return result;
+      }
 
-    async readIDCard(params) {
-      const result = await readIDCardSimp(params);
-      return result;
-    }
-    
-    async requestVerifyPortrait(params) {
-      const result = await requestVerifyPortraitSimp(params);
-      return result;
-    }
+      async readIDCard(params) {
+        const result = await readIDCardSimp(params);
+        return result;
+      }
+      
+      async requestVerifyPortrait(params) {
+        const result = await requestVerifyPortraitSimp(params);
+        return result;
+      }
 
-    async verifyFaceLiveness(params) {
-      const result = await verifyFaceLivenessSimp(params);
-      return result;
-  }
+      async verifyFaceLiveness(params) {
+        const result = await verifyFaceLivenessSimp(params);
+        return result;
+      }
    
-    async compareFaces(params) {
-      const result = await compareFacesSimp(params);
-      return result;
-    }
+      async compareFaces(params) {
+        const result = await compareFacesSimp(params);
+        return result;
+      }
 
-    async searchFaces(params) {
-      const result = await searchFacesSimp(params);
-      return result;
-    }
+      async searchFaces(params) {
+        const result = await searchFacesSimp(params);
+        return result;
+      }
 
-    async indexFaces(params) {
-      const result = await indexFacesSimp(params);
-      return result;
-    }  
-  }
+      async indexFaces(params) {
+        const result = await indexFacesSimp(params);
+        return result;
+      }  
+    }
     const adapter = new MyAdapter();
     revokeObjectURL();
     resultFullFlowEl.innerHTML = "";
@@ -439,21 +439,23 @@
       results.push({
         label: `frontCard - sanity`,
         status: _.get(ekycResult, 'frontCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
-        value: _.get(ekycResult, 'frontCard.apiResult.sanityResult', {})
+        value: _.get(ekycResult, 'frontCard.apiResult.sanityResult', {}),
+        result: `verdict: ${_.get(ekycResult, 'frontCard.apiResult.sanityResult.card_sanity.verdict', '')}`
       });
     }
     if (_.get(ekycResult, 'frontCard.apiResult.tamperingInfo')) {
       results.push({
         label: `frontCard - tampering`,
         status: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
-        value: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo', {})
+        value: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo', {}),
+        result: `verdict: ${_.get(ekycResult, 'frontCard.apiResult.tamperingInfo.card_tampering.verdict', '')}`
       });
     }
     if (_.get(ekycResult, 'frontCard.apiResult.cardInfo')) {
       results.push({
         label: `frontCard - OCR_status`,
         status: _.get(ekycResult, 'frontCard.apiResult.cardInfo.status', '') === 'success',
-        value: _.get(ekycResult, 'frontCard.apiResult.cardInfo', {})
+        value: _.get(ekycResult, 'frontCard.apiResult.cardInfo', {}),
       });
     }
 
@@ -461,21 +463,23 @@
       results.push({
         label: `backCard - sanity`,
         status: _.get(ekycResult, 'backCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
-        value: _.get(ekycResult, 'backCard.apiResult.sanityResult', {})
+        value: _.get(ekycResult, 'backCard.apiResult.sanityResult', {}),
+        result: `verdict: ${_.get(ekycResult, 'backCard.apiResult.sanityResult.card_sanity.verdict', '')}`
       });
     }
     if (_.get(ekycResult, 'backCard.apiResult.tamperingInfo')) {
       results.push({
         label: `backCard - tampering`,
         status: _.get(ekycResult, 'backCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
-        value: _.get(ekycResult, 'backCard.apiResult.tamperingInfo', {})
+        value: _.get(ekycResult, 'backCard.apiResult.tamperingInfo', {}),
+        result: `verdict: ${_.get(ekycResult, 'backCard.apiResult.tamperingInfo.card_tampering.verdict', '')}`
       });
     }
     if (_.get(ekycResult, 'backCard.apiResult.cardInfo')) {
       results.push({
         label: `backCard - OCR_status`,
         status: _.get(ekycResult, 'backCard.apiResult.cardInfo.status', '') === 'success',
-        value: _.get(ekycResult, 'backCard.apiResult.cardInfo', {})
+        value: _.get(ekycResult, 'backCard.apiResult.cardInfo', {}),
       });
     }
 
@@ -483,14 +487,16 @@
       results.push({
         label: 'portrait_sanity',
         status: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult.portrait_sanity.verdict', '') === 'good',
-        value: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult', {})
+        value: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult', {}),
+        result: `verdict: ${_.get(ekycResult, 'faceLiveness.verifyFacePortraitResult.portrait_sanity.verdict', '')}`
       });
     }
     if (_.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult')) {
       results.push({
         label: 'face_liveness',
         status: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult.is_live', false),
-        value: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult', {})
+        value: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult', {}),
+        result: `is_live: ${_.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult.is_live', false)}`
       });
     }
 
@@ -547,12 +553,15 @@
       const thItem1 = document.createElement('th');
       const thItem2 = document.createElement('th');
       const thItem3 = document.createElement('th');
+      const thItem4 = document.createElement('th');
       thItem1.textContent = 'Service';
       thItem2.textContent = 'Status';
       thItem3.textContent = 'Result';
+      thItem4.textContent = 'Verdict';
       theader.appendChild(thItem1);
       theader.appendChild(thItem2);
       theader.appendChild(thItem3);
+      theader.appendChild(thItem4);
       summaryTable.prepend(theader);
       
       resultArr.forEach((item, index) => {
@@ -560,14 +569,17 @@
         const cell1 = document.createElement('td');
         const cell2 = document.createElement('td');
         const cell3 = document.createElement('td');
+        const cell4 = document.createElement('td');
         
         cell1.textContent = item.label;
         cell2.textContent = item.status ? '\u2705' : '\u274C'; // Checkmark or Cross symbol
         cell3.appendChild(renderjson(item.value));
+        cell4.textContent = item.result;
         
         row.appendChild(cell1);
         row.appendChild(cell2);
         row.appendChild(cell3);
+        row.appendChild(cell4);
         tbodyEl.appendChild(row);
       });
     }
