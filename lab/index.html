@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="description" content="Vanilla JS demo" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css"  />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <h2>Detect face from an image</h2>
+    <div id="container"></div>
+
+    <script src="./tvweb-sdk.standalone.min.js"></script>
+    <script type="text/javascript">
+      const tv = new TVWebSDK.SDK({
+        container: document.getElementById("container"),
+        lang: "vi",
+        assetRoot: "/web-sdk/assets/tcb.bss",
+        // assetRoot: "./assets/tcb.bss",
+        enableAntiDebug: false,
+      });
+      tv.faceDetectFromImage();
+    </script>
+  </body>
+</html>

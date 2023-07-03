@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline' https: data:; worker-src blob:">
+  <meta name="description" content="Vanilla JS demo" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .fullflow_container .collapsible_fullflow {
+      cursor: pointer;
+      padding: 8px;
+      border: none;
+      text-align: left;
+      outline: none;
+      display: block;
+      width: 120px;
+      border: 1px solid #282828;
+      background-color: transparent;
+      color: #282828;
+    }
+    .fullflow_container .collapsible_fullflow:hover {
+      background-color: transparent;
+    }
+
+    .content_fullflow {
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      border: 1px solid #f1f1f1;
+    }
+
+    .fullflow_container button {
+      min-height: 40px;
+      background-color: #f1f1f1;
+      color: #282828;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer; 
+    }
+    .fullflow_container button:hover {
+      background-color: #e3e3e3;
+    }
+
+    #btn-start-fullflow {
+      width: 120px;
+    }
+
+    .result_table {
+      display: none;
+      justify-content: space-between;
+    }
+    .my_table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+    }
+    .my_table td, .my_table th {
+      border: 1px solid #f1f1f1;
+      text-align: left;
+      padding: 8px;
+    }
+    .my_table tr:nth-child(even) {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<h2>SDK ADAPTER v7.5</h2>
+<h3>Build: 29Jun 14:30</h3>
+<div id="container"></div>
+
+<div id="content">
+  <div style="margin-bottom: 10px">
+    Language
+    <select id="select-lang" onchange="onSelectLang()">
+      <option value="vi" selected>vi</option>
+      <option value="en">en</option>
+    </select>
+  </div>
+
+  <div style="margin-bottom: 10px" id="keys-input-placeholder"></div>
+
+  <div style="display: none; margin-top: 10px;">
+    <label>
+      Cached User ID
+      <input id="user-id" readonly style="width: 300px" />
+    </label>
+    <button onclick="clearUserId()">Clear user id (x-request-id)</button>
+  </div>
+
+  <h4>Full flow (import keys before start)</h4>
+  <div class="fullflow_container">
+    Liveness mode:
+    <select id="select-mode-fullflow"></select>
+    <br />
+    <button onclick="startFullFlow()" id="btn-start-fullflow" style="margin: 10px 0">
+      FULL FLOW
+    </button>
+    <button class="collapsible_fullflow">SAMPLE CODE</button>
+    <div class="content_fullflow">
+      <pre>
+        <code>
+          const apiClient = new trustvisionSdk.default(
+            accessKey, secretKey, apiUrl, { httpHeaders: { 'x-request-id': your x-request-id }}
+          );
+          // override interfaces
+          const uploadImageSimp = async (params) => {
+            return apiClient.uploadImage(params);
+          };
+          const uploadFilesSimp = async (params) => {
+            return apiClient.fileService.request(params);
+          };
+          const requestVerifyIDCardSimp = async (params) => {
+            return apiClient.requestVerifyIDCard(params);
+          };
+          const detectIDTamperingSimp = async (params) => {
+            return apiClient.detectIDTampering(params);
+          };
+          const readIDCardSimp = async (params) => {
+            return apiClient.readIDCard(params);
+          };
+          const requestVerifyPortraitSimp = async (params) => {
+            return apiClient.requestVerifyPortrait(params);
+          };
+          const verifyFaceLivenessSimp = async (params) => {
+            return apiClient.verifyFaceLiveness(params);
+          };
+          const compareFacesSimp = async (params) => {
+            return apiClient.compareFaces(params);
+          };
+          const searchFacesSimp = async (params) => {
+            return apiClient.searchFaces(params);
+          };
+          const indexFacesSimp = async (params) => {
+            return apiClient.indexFaces(params);
+          };
+
+          class MyAdapter extends TVWebSDK.SDKAdapter {
+            async uploadImage(params) {
+              const result = await uploadImageSimp(params);
+              return result;
+            }
+        
+            async uploadFiles(params) {
+              const result = await uploadFilesSimp(params);
+              return result;
+            }
+        
+            async requestVerifyIDCard(params) {
+              const result = await requestVerifyIDCardSimp(params);
+              return result;
+            }
+        
+            async detectIDTampering(params) {
+              const result = await detectIDTamperingSimp(params);
+              return result;
+            }
+        
+            async readIDCard(params) {
+              const result = await readIDCardSimp(params);
+              return result;
+            }
+            
+            async requestVerifyPortrait(params) {
+              const result = await requestVerifyPortraitSimp(params);
+              return result;
+            }
+        
+            async verifyFaceLiveness(params) {
+              const result = await verifyFaceLivenessSimp(params);
+              return result;
+          }
+           
+            async compareFaces(params) {
+              const result = await compareFacesSimp(params);
+              return result;
+            }
+        
+            async searchFaces(params) {
+              const result = await searchFacesSimp(params);
+              return result;
+            }
+        
+            async indexFaces(params) {
+              const result = await indexFacesSimp(params);
+              return result;
+            }  
+          }
+          const adapter = new MyAdapter();
+          
+          // then pass adapter to ekycFullFlow
+          tv.ekycFullFlow({
+            sdkAdapter: adapter,
+            livenessDetectionProps: {
+              mode: livenessDetectionMode,
+            },
+            readIDCardProps: {},
+            onDoneEkyc: console.log,
+            onError: console.log,
+            onClose: () => { tv.destroyView(); },
+          });
+        </code>
+      </pre>
+    </div>
+    <div id="fullflow-loading" style="padding-top: 10px; display: none;">
+      Api checking
+      <div class="dot-windmill"></div>
+    </div>
+    <div id="result-fullflow"></div>
+
+    <table bordered class="result_table my_table" id="summary_table">
+      <thead id="result-thead"></thead>
+      <tbody id="result-tbody"></tbody>
+    </table>
+    <br />
+    <table class="result_table my_table" id="ocr_table">
+      <thead id="ocr-thead"></thead>
+      <tbody id="ocr-tbody"></tbody>
+    </table>
+  </div>
+  <br />
+
+<script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script src="../qr-scanner-for-input-keys.js"></script>
+<script src="../keys-input.js"></script>
+<script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
+<script src="./tvweb-sdk.standalone.min.js"></script>
+<script>
+  let listObjUrls = [];
+  function onSelectLang() {
+    const langEle = document.getElementById("select-lang");
+    localStorage.setItem('lang', langEle.value);
+    location.reload();
+  }
+  function createObjectURL(blob) {
+    const objUrl = URL.createObjectURL(blob);
+    listObjUrls.push(objUrl);
+    return objUrl;
+  }
+  function revokeObjectURL() {
+    if (listObjUrls.length === 0) return;
+    listObjUrls.map((item) => URL.revokeObjectURL(item));
+    listObjUrls = [];
+  }
+</script>
+<script type="text/javascript">
+  const lang = localStorage.getItem('lang');
+  if (lang) {
+    const langEle = document.getElementById("select-lang");
+    langEle.value = lang;
+  }
+  const tv = new TVWebSDK.SDK({
+    container: document.getElementById("container"),
+    lang: lang || "vi",
+    assetRoot: "https://unpkg.com/@tsocial/tvweb-sdk@latest/assets",
+    enableAntiDebug: false,
+  });
+  window.tv = tv;
+  tv.runPreloadEKYCResources();
+  const resultFullFlowEl = document.getElementById("result-fullflow");
+
+  const selectModeFullFlowEl = document.getElementById("select-mode-fullflow");
+
+  // SDK ADAPTER
+  function create_UUID(){
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+}
+  let xRequestId;
+  if (localStorage.getItem("user-id")) {
+    xRequestId = JSON.parse(localStorage.getItem("user-id"));
+  } else {
+    xRequestId = create_UUID();
+    localStorage.setItem("user-id", JSON.stringify(xRequestId));
+  }
+
+  const userIdEl = document.getElementById("user-id");
+
+  const summaryTable = document.getElementById("summary_table");
+  const ocrTable = document.getElementById("ocr_table");
+  const theadResult = document.getElementById("result-thead");
+  const theadOcr = document.getElementById("ocr-thead");
+  const tbodyEl = document.getElementById('result-tbody');
+  const ocrTbodyEl = document.getElementById('ocr-tbody');
+
+  userIdEl.value = JSON.parse(localStorage.getItem("user-id"));
+
+  Object.keys(TVWebSDK.Constants.Mode).forEach((k) => {
+    const option = document.createElement("option");
+    option.appendChild(document.createTextNode(k));
+    option.setAttribute("value", TVWebSDK.Constants.Mode[k]);
+    selectModeFullFlowEl.appendChild(option);
+  });
+
+  function clearUserId() {
+    window.localStorage.removeItem('user-id');
+    userIdEl.value = JSON.parse(localStorage.getItem("user-id"));
+  }
+
+  function startFullFlow() {
+    const apiClient = new trustvisionSdk.default(
+      inputAccessKey.value,
+      inputSecretKey.value,
+      inputApiUrl.value,
+      { httpHeaders: { 'x-request-id': xRequestId } }
+    );
+    const getClientSettingsSimp = async () => {
+      return apiClient.clientSettings();
+    };
+    const uploadImageSimp = async (params) => {
+      return apiClient.uploadImage(params);
+    };
+    const uploadFilesSimp = async (params) => {
+      return apiClient.fileService.request(params);
+    };
+    const requestVerifyIDCardSimp = async (params) => {
+      return apiClient.requestVerifyIDCard(params);
+    };
+    const detectIDTamperingSimp = async (params) => {
+      return apiClient.detectIDTampering(params);
+    };
+    const readIDCardSimp = async (params) => {
+      return apiClient.readIDCard(params);
+    };
+    const requestVerifyPortraitSimp = async (params) => {
+      return apiClient.requestVerifyPortrait(params);
+    };
+    const verifyFaceLivenessSimp = async (params) => {
+      return apiClient.verifyFaceLiveness(params);
+    };
+    const compareFacesSimp = async (params) => {
+      return apiClient.compareFaces(params);
+    };
+    const searchFacesSimp = async (params) => {
+      return apiClient.searchFaces(params);
+    };
+    const indexFacesSimp = async (params) => {
+      return apiClient.indexFaces(params);
+    };
+    class MyAdapter extends TVWebSDK.SDKAdapter {
+      async clientSettings() {
+        const result = await getClientSettingsSimp();
+        return result;
+      }
+      
+      async uploadImage(params) {
+        const result = await uploadImageSimp(params);
+        return result;
+      }
+
+      async uploadFiles(params) {
+        const result = await uploadFilesSimp(params);
+        return result;
+      }
+
+      async requestVerifyIDCard(params) {
+        const result = await requestVerifyIDCardSimp(params);
+        return result;
+      }
+
+      async detectIDTampering(params) {
+        const result = await detectIDTamperingSimp(params);
+        return result;
+      }
+
+      async readIDCard(params) {
+        const result = await readIDCardSimp(params);
+        return result;
+      }
+      
+      async requestVerifyPortrait(params) {
+        const result = await requestVerifyPortraitSimp(params);
+        return result;
+      }
+
+      async verifyFaceLiveness(params) {
+        const result = await verifyFaceLivenessSimp(params);
+        return result;
+      }
+   
+      async compareFaces(params) {
+        const result = await compareFacesSimp(params);
+        return result;
+      }
+
+      async searchFaces(params) {
+        const result = await searchFacesSimp(params);
+        return result;
+      }
+
+      async indexFaces(params) {
+        const result = await indexFacesSimp(params);
+        return result;
+      }  
+    }
+    const adapter = new MyAdapter();
+    revokeObjectURL();
+    resultFullFlowEl.innerHTML = "";
+    tbodyEl.innerHTML = null;
+    ocrTbodyEl.innerHTML = null;
+    theadResult.innerHTML = null;
+    theadOcr.innerHTML = null;
+    const livenessDetectionMode = selectModeFullFlowEl.value;
+    document.body.style.height = 0;
+    tv.ekycFullFlow({
+      logCredentials: {
+        enable: false,
+      },
+      sdkAdapter: adapter,
+      livenessDetectionProps: {
+        mode: livenessDetectionMode,
+        apiCheck: false,
+        captureFrameSettings: {
+          enable: true,
+          framesIntervalTime: 180,
+          framesBatchLength: 10,
+        }
+      },
+      onDoneEkyc: (result) => handleFullFlowDone(result, resultFullFlowEl),
+      onError: (e) => {
+        console.log('on error', e);
+        tv.destroyView();
+        document.body.style.height = 'auto';
+      },
+      onClose: () => { 
+        document.body.style.height = 'auto'; tv.destroyView(); },
+    });
+  }
+
+  function getSimplifyResult(ekycResult) {
+    const results = [];
+    if (_.get(ekycResult, 'frontCard.apiResult.sanityResult')) {
+      results.push({
+        label: `frontCard - sanity`,
+        status: _.get(ekycResult, 'frontCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+        value: _.get(ekycResult, 'frontCard.apiResult.sanityResult', {}),
+        result: `verdict: ${_.get(ekycResult, 'frontCard.apiResult.sanityResult.card_sanity.verdict', '')}`
+      });
+    }
+    if (_.get(ekycResult, 'frontCard.apiResult.tamperingInfo')) {
+      results.push({
+        label: `frontCard - tampering`,
+        status: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+        value: _.get(ekycResult, 'frontCard.apiResult.tamperingInfo', {}),
+        result: `verdict: ${_.get(ekycResult, 'frontCard.apiResult.tamperingInfo.card_tampering.verdict', '')}`
+      });
+    }
+    if (_.get(ekycResult, 'frontCard.apiResult.cardInfo')) {
+      results.push({
+        label: `frontCard - OCR_status`,
+        status: _.get(ekycResult, 'frontCard.apiResult.cardInfo.status', '') === 'success',
+        value: _.get(ekycResult, 'frontCard.apiResult.cardInfo', {}),
+      });
+    }
+
+    if (_.get(ekycResult, 'backCard.apiResult.sanityResult')) {
+      results.push({
+        label: `backCard - sanity`,
+        status: _.get(ekycResult, 'backCard.apiResult.sanityResult.card_sanity.verdict', '') === 'good',
+        value: _.get(ekycResult, 'backCard.apiResult.sanityResult', {}),
+        result: `verdict: ${_.get(ekycResult, 'backCard.apiResult.sanityResult.card_sanity.verdict', '')}`
+      });
+    }
+    if (_.get(ekycResult, 'backCard.apiResult.tamperingInfo')) {
+      results.push({
+        label: `backCard - tampering`,
+        status: _.get(ekycResult, 'backCard.apiResult.tamperingInfo.card_tampering.verdict', '') === 'good',
+        value: _.get(ekycResult, 'backCard.apiResult.tamperingInfo', {}),
+        result: `verdict: ${_.get(ekycResult, 'backCard.apiResult.tamperingInfo.card_tampering.verdict', '')}`
+      });
+    }
+    if (_.get(ekycResult, 'backCard.apiResult.cardInfo')) {
+      results.push({
+        label: `backCard - OCR_status`,
+        status: _.get(ekycResult, 'backCard.apiResult.cardInfo.status', '') === 'success',
+        value: _.get(ekycResult, 'backCard.apiResult.cardInfo', {}),
+      });
+    }
+
+    if (_.get(ekycResult, 'faceLiveness.verifyFacePortraitResult')) {
+      results.push({
+        label: 'portrait_sanity',
+        status: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult.portrait_sanity.verdict', '') === 'good',
+        value: _.get(ekycResult, 'faceLiveness.verifyFacePortraitResult', {}),
+        result: `verdict: ${_.get(ekycResult, 'faceLiveness.verifyFacePortraitResult.portrait_sanity.verdict', '')}`
+      });
+    }
+    if (_.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult')) {
+      results.push({
+        label: 'face_liveness',
+        status: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult.is_live', false),
+        value: _.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult', {}),
+        result: `is_live: ${_.get(ekycResult, 'faceLiveness.verifyFaceLivenessResult.is_live', false)}`
+      });
+    }
+
+    if (_.get(ekycResult, 'compareFaces', null)) {
+      const compareArrays = _.get(ekycResult, 'compareFaces.compare_faces', []);
+
+      results.push({
+        label: 'compare_faces',
+        status: 
+          !(compareArrays[0]?.result !== 'matched' ||
+          compareArrays.filter((item) => item?.result === 'matched').length !== 1 ||
+          _.get(ekycResult, 'compareFaces.errors', null)),
+        value: _.get(ekycResult, 'compareFaces', {})
+      });
+    }
+    if (_.get(ekycResult, 'searchFaces', null)) {
+      results.push({
+        label: 'search_faces',
+        status: !_.get(ekycResult, 'searchFaces.faces', null),
+        value: _.get(ekycResult, 'searchFaces', {})
+      });
+    }
+    if (_.get(ekycResult, 'indexFaces', null)) {
+      results.push({
+        label: 'index_faces',
+        status: _.get(ekycResult, 'indexFaces.status', '') === 'success',
+        value: _.get(ekycResult, 'indexFaces', {})
+      });
+    }
+    return results;
+  }
+
+  function getCardOCR(ekycResult) {
+    const frontCardInfo = _.get(ekycResult, 'frontCard.apiResult.cardInfo.card_information', []);
+    const backCardInfo = _.get(ekycResult, 'backCard.apiResult.cardInfo.card_information', []);
+    const result = [...frontCardInfo, ...backCardInfo]?.map(({field, value}) => ({ field, value }));
+    return result;
+  }
+
+  function handleFullFlowDone(ekycResult, element) {
+    tv.destroyView();
+    element.innerHTML = "";
+
+    element.appendChild(document.createElement("br"));
+    element.appendChild(document.createTextNode("Ekyc Full Flow Result:\n"));
+    element.appendChild(
+      renderjson(ekycResult)
+    );
+    const resultArr = getSimplifyResult(ekycResult);
+    if (resultArr && resultArr.length > 0) {
+      console.log({ ekycResult, resultArr })
+      summaryTable.style.display = "block";
+      const thItem1 = document.createElement('th');
+      const thItem2 = document.createElement('th');
+      const thItem3 = document.createElement('th');
+      const thItem4 = document.createElement('th');
+      thItem1.textContent = 'Service';
+      thItem2.textContent = 'Status';
+      thItem3.textContent = 'Result';
+      thItem4.textContent = 'Verdict';
+      theadResult.appendChild(thItem1);
+      theadResult.appendChild(thItem2);
+      theadResult.appendChild(thItem3);
+      theadResult.appendChild(thItem4);
+      summaryTable.prepend(theadResult);
+      
+      resultArr.forEach((item, index) => {
+        const row = document.createElement('tr');
+        const cell1 = document.createElement('td');
+        const cell2 = document.createElement('td');
+        const cell3 = document.createElement('td');
+        const cell4 = document.createElement('td');
+        
+        cell1.textContent = item.label;
+        cell2.textContent = item.status ? '\u2705' : '\u274C'; // Checkmark or Cross symbol
+        cell3.appendChild(renderjson(item.value));
+        cell4.textContent = item.result;
+        
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        row.appendChild(cell3);
+        row.appendChild(cell4);
+        tbodyEl.appendChild(row);
+      });
+    }
+      
+    const ocrArr = getCardOCR(ekycResult);
+    if (ocrArr && ocrArr.length > 0) {
+      ocrTable.style.display = "block";
+      const thItem1 = document.createElement('th');
+      const thItem2 = document.createElement('th');
+      thItem1.textContent = 'Field';
+      thItem2.textContent = 'Value';
+      theadOcr.appendChild(thItem1);
+      theadOcr.appendChild(thItem2);
+      ocrTable.prepend(theadOcr);
+
+      ocrArr.forEach((item, index) => {
+        const row = document.createElement('tr');
+        const cell1 = document.createElement('td');
+        const cell2 = document.createElement('td');
+        
+        cell1.textContent = item.field;
+        cell2.textContent = item.value;
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        ocrTbodyEl.appendChild(row);
+      });
+    }
+  }
+
+</script>
+
+<script>
+  // fullFlow
+  const collapseFullFlowBtn = document.querySelector('.collapsible_fullflow');
+  const contentFullFlow = document.querySelector('.content_fullflow');
+
+  collapseFullFlowBtn.addEventListener('click', function() {
+    if (contentFullFlow.style.display === 'none' || !contentFullFlow.style.display) {
+      contentFullFlow.style.display = 'block';
+    } else {
+      contentFullFlow.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>

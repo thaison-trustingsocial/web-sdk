@@ -1,0 +1,99 @@
+html {
+  font-family: "Inter", sans-serif;
+}
+
+#result-extract-id-info {
+  max-width: 100%;
+  white-space: break-spaces;
+}
+.key-input {
+  max-width: 500px;
+  width: calc(100% - 8px);
+}
+
+.dot-windmill {
+  position: relative;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  transform-origin: 5px 15px;
+  animation: dotWindmill 2s infinite linear;
+  margin-left: 100px;
+  margin-top: -10px;
+}
+
+.dot-windmill::before,
+.dot-windmill::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+}
+
+.dot-windmill::before {
+  left: -8.66px;
+  top: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+}
+
+.dot-windmill::after {
+  left: 8.66px;
+  top: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+}
+
+@keyframes dotWindmill {
+  0% {
+    transform: rotateZ(0deg) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: rotateZ(720deg) translate3d(0, 0, 0);
+  }
+}
+
+#result-biz-ocr {
+  white-space: pre;
+}
+
+legend {
+  background-color: #000;
+  color: #fff;
+  padding: 3px 6px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background-color: #1677ff;
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 3px;
+  width: 150px;
+  white-space: normal;
+  font-size: 14px;
+  display: none;
+}
+
+.tooltip:hover::after {
+  display: block;
+}

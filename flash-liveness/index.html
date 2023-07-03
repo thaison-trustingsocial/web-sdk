@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-eval' 'unsafe-inline' https: data:; worker-src blob:"
+    />
+    <meta name="description" content="Vanilla JS demo" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <title>Flash Liveness</title>
+
+    <style>
+      input {
+        margin-block-end: 4px;
+      }
+
+      .start-button {
+        padding: 10px 12px;
+        outline: 0;
+        border: 0;
+        background: black;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 100px;
+      }
+
+      .start-button:hover {
+        background: #000000a6;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <h2>Flash Liveness detection</h2>
+    <h3>Build Version: 30th Jun, 2023 - 17:30 PM</h3>
+    <div id="container"></div>
+
+    <div id="content">
+      <div style="margin-bottom: 10px">
+        Language
+        <select id="select-lang" onchange="onSelectLang()">
+          <option value="vi" selected>vi</option>
+          <option value="en">en</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 10px" id="keys-input-placeholder"></div>
+
+      <hr />
+      <h4>Face liveness with color</h4>
+
+      <div
+        style="display: grid; grid-gap: 12px; grid-template-columns: 1fr 1fr"
+      >
+        <fieldset>
+          <legend>Frame settings</legend>
+
+          <label for="frame-interval">Frame Interval (ms): </label>
+          <input id="frame-interval" value="0" type="number" min="0" />
+          <br />
+        </fieldset>
+
+        <fieldset>
+          <legend>Flash settings</legend>
+
+          <label for="colors"
+            >Colors (Only accepts 'r', 'g', 'b', ' ' characters):
+          </label>
+          <input id="colors" value="r r r r r " />
+          <br />
+
+          <label for="frame-per-color">Frame per Color: </label>
+          <input id="frame-per-color" value="4" type="number" min="1" />
+          <br />
+
+          <label
+            for="color-delay"
+            class="tooltip"
+            data-tooltip="Delay khi thay đổi màu flash"
+            >Delay between colors (ms):
+          </label>
+          <input id="color-delay" value="120" type="number" min="0" />
+          <br />
+
+          <label for="use-face-dectector"
+            >Use Face Dectector when flashing:
+          </label>
+          <input id="use-face-dectector" type="checkbox" />
+          <br />
+
+          <label for="flash-intensity">Flash intensity (0 -> 1): </label>
+          <input
+            id="flash-intensity"
+            value="0.6"
+            type="number"
+            min="0"
+            max="1"
+            style="width: 40px"
+            step="0.1"
+          />
+          <br />
+        </fieldset>
+
+        <fieldset>
+          <legend>Face settings</legend>
+
+          <label
+            for="min-far-face-ratio"
+            class="tooltip"
+            data-tooltip="Ratio nhỏ nhất để xác định khuôn mặt ở xa nhưng không quá xa"
+            >Min far face ratio:
+          </label>
+          <input
+            id="min-far-face-ratio"
+            value="0.55"
+            type="number"
+            min="0"
+            max="1"
+            step="0.01"
+          />
+          <br />
+
+          <label
+            for="max-far-face-ratio"
+            class="tooltip"
+            data-tooltip="Ratio lớn nhất để xác định khuôn mặt ở xa nhưng không quá gần"
+            >Max far face ratio:
+          </label>
+          <input
+            id="max-far-face-ratio"
+            value="0.6"
+            type="number"
+            min="0"
+            max="1"
+            step="0.01"
+          />
+          <br />
+
+          <label
+            for="close-face-ratio"
+            class="tooltip"
+            data-tooltip="Ratio nhỏ nhất để xác định khuôn mặt ở vừa đủ gần để flash"
+            >Close face ratio:
+          </label>
+          <input
+            id="close-face-ratio"
+            value="0.75"
+            type="number"
+            min="0"
+            max="1"
+            step="0.01"
+          />
+        </fieldset>
+
+        <fieldset>
+          <legend>Mask settings</legend>
+
+          <label
+            for="small-scale"
+            class="tooltip"
+            data-tooltip="Scale của camera mask so với chiều cao màn hình lúc thu nhỏ"
+            >Small scale:
+          </label>
+          <input
+            id="small-scale"
+            value="0.65"
+            type="number"
+            min="0"
+            max="1"
+            step="0.01"
+          />
+          <br />
+
+          <label
+            for="large-scale"
+            class="tooltip"
+            data-tooltip="Scale của camera mask so với chiều cao màn hình lúc phóng lớn"
+            >Large scale:
+          </label>
+          <input
+            id="large-scale"
+            value="0.9"
+            type="number"
+            min="0"
+            max="1"
+            step="0.01"
+          />
+        </fieldset>
+      </div>
+
+      <br />
+
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          gap: 12px;
+          flex-direction: column;
+          align-items: center;
+        "
+      >
+        <div>
+          <input id="log-debugging-info" type="checkbox" />
+          <label for="log-debugging-info">Log debugging info</label>
+        </div>
+        <button class="start-button" onclick="startFaceAuthen()">Start</button>
+      </div>
+
+      <div id="api-result">
+
+      </div>
+
+      <div
+        id="result"
+        style="
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          flex-direction: row;
+          margin-block-start: 12px;
+        "
+      ></div>
+    </div>
+
+    <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="../qr-scanner-for-input-keys.js"></script>
+    <script src="../keys-input.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
+    <script src="./tvweb-sdk.standalone.min.js"></script>
+    <script>
+      let listObjUrls = [];
+      function onSelectLang() {
+        const langEle = document.getElementById("select-lang");
+        localStorage.setItem("lang", langEle.value);
+        location.reload();
+      }
+      function createObjectURL(blob) {
+        const objUrl = URL.createObjectURL(blob);
+        listObjUrls.push(objUrl);
+        return objUrl;
+      }
+      function revokeObjectURL() {
+        if (listObjUrls.length === 0) return;
+        listObjUrls.map((item) => URL.revokeObjectURL(item));
+        listObjUrls = [];
+      }
+    </script>
+    <script type="text/javascript">
+      const lang = localStorage.getItem("lang");
+      if (lang) {
+        const langEle = document.getElementById("select-lang");
+        langEle.value = lang;
+      }
+      const tv = new TVWebSDK.SDK({
+        container: document.getElementById("container"),
+        lang: lang || "vi",
+        assetRoot: "/web-sdk/assets",
+        // assetRoot: "/assets",
+        enableAntiDebug: false,
+      });
+      window.tv = tv;
+      tv.runPreloadEKYCResources();
+
+      function startFaceAuthen() {
+        // Frame settings
+        const frameInterval = document.getElementById("frame-interval").value;
+
+        // Flash settings
+        const framePerColor = document.getElementById("frame-per-color").value;
+        const colors = document.getElementById("colors").value;
+        const colorDelay = document.getElementById("color-delay").value;
+        const useFaceDetector =
+          document.getElementById("use-face-dectector").checked;
+        const flashIntensity = document.getElementById("flash-intensity").value;
+
+        // Face settings
+        const minFarFaceRatio =
+          document.getElementById("min-far-face-ratio").value;
+        const maxFarFaceRatio =
+          document.getElementById("max-far-face-ratio").value;
+        const closeFaceRatio =
+          document.getElementById("close-face-ratio").value;
+
+        // Mask settings
+        const smallScale = document.getElementById("small-scale").value;
+        const largeScale = document.getElementById("large-scale").value;
+
+        // Debug settings
+        const debug = document.getElementById("log-debugging-info").checked;
+
+        const form = document.getElementById("content");
+        form.style.display = "none";
+
+        tv.flashLiveness({
+          apiCredentials: {
+            accessKey: inputAccessKey.value,
+            secretKey: inputSecretKey.value,
+            apiUrl: inputApiUrl.value,
+          },
+          onDone: (result) => {
+            tv.destroyView();
+            form.style.display = "block";
+          },
+          onClose: (result) => {
+            tv.destroyView();
+            form.style.display = "block";
+          },
+          onFlashDone: async (result, apiResult) => {
+            const resultContainer = document.getElementById("result");
+            resultContainer.innerHTML = "";
+
+            const farFaceFrames = result.frames.far_face;
+            const closeFaceFrames = result.frames.close_face;
+            const flashingFrames = result.frames.flashing;
+
+            const frames = [
+              farFaceFrames[farFaceFrames.length - 1],
+              closeFaceFrames[closeFaceFrames.length - 1],
+              ...flashingFrames,
+            ];
+
+            frames.forEach((frame) => {
+              const img = document.createElement("img");
+              img.src = `data:image/jpeg;base64,${frame.base64}`;
+              img.style.width = "150px";
+              resultContainer.appendChild(img);
+            });
+
+            // Handle API result
+            const apiResultContainer = document.getElementById("api-result");
+            const preTag = document.createElement("pre");
+            apiResultContainer.innerHTML = "";
+            apiResultContainer.appendChild(preTag);
+            preTag.innerHTML = JSON.stringify(apiResult, null, 2);
+          },
+          frameInterval: parseInt(frameInterval),
+          flashSettings: {
+            framesPerColor: parseInt(framePerColor),
+            colors,
+            delayBetweenColors: parseInt(colorDelay),
+            useFaceDetectorWhenFlashing: useFaceDetector,
+            flashIntensity: parseFloat(flashIntensity),
+          },
+          faceSettings: {
+            minFarFaceRatio: parseFloat(minFarFaceRatio),
+            maxFarFaceRatio: parseFloat(maxFarFaceRatio),
+            closeFaceRatio: parseFloat(closeFaceRatio),
+          },
+          maskSettings: {
+            smallScale: parseFloat(smallScale),
+            largeScale: parseFloat(largeScale),
+          },
+          debug: Boolean(debug),
+        });
+      }
+    </script>
+  </body>
+</html>
