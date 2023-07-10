@@ -25,26 +25,35 @@
         margin-block-end: 4px;
       }
 
-      .start-button {
-        padding: 10px 12px;
+      input:disabled {
+        cursor: not-allowed;
+      }
+
+      button {
         outline: 0;
         border: 0;
         background: black;
         color: #fff;
         cursor: pointer;
         border-radius: 4px;
+      }
+
+      button:hover {
+        background: #000000a6;
+      }
+
+      .start-button {
+        padding: 10px 12px;
+        
         width: 100px;
       }
 
-      .start-button:hover {
-        background: #000000a6;
-      }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 4th July, 2023 - 12:00 PM</h3>
+    <h3>Build Version: 10th July, 2023 - 15:30 PM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -75,10 +84,12 @@
         <fieldset>
           <legend>Flash settings</legend>
 
-          <label for="colors"
-            >Colors (Only accepts 'r', 'g', 'b', ' ' characters):
+          <label for="colors-length"
+            >Colors length:
           </label>
-          <input id="colors" value="r r r r r " />
+          <input id="colors-length" value="8" type="number" min="8" max="12" step="1" />
+          <input id="colors" value="•r•••rrr" type="text" disabled readonly/>
+          <button class="button" id="random-color">⟳</button>
           <br />
 
           <label for="frame-per-color">Frame per Color: </label>
@@ -215,7 +226,7 @@
           <input id="log-debugging-info" type="checkbox" />
           <label for="log-debugging-info">Log debugging info</label>
         </div>
-        <button class="start-button" onclick="startFaceAuthen()">Start</button>
+        <button class="button start-button" onclick="startFaceAuthen()">Start</button>
       </div>
 
       <div id="api-result">
@@ -257,6 +268,29 @@
         listObjUrls.map((item) => URL.revokeObjectURL(item));
         listObjUrls = [];
       }
+    </script>
+    <script>
+      let colorSeq = {};
+      fetch('./seq_collections.json').then(res => res.json()).then(res => {
+        colorSeq = res;
+      })
+      const colorsLengthInput = document.getElementById('colors-length');
+      const colorsInput = document.getElementById('colors');
+      colorsLengthInput.addEventListener('change', (e) => {
+        const length = e.target.value;
+        const sequence = colorSeq[length];
+        const colors = sequence[Math.floor(Math.random() * sequence.length)];
+        colorsInput.value = colors.replace(/ /g, '•');
+      })
+
+      const randomColorButton = document.getElementById('random-color');
+      randomColorButton.addEventListener('click', () => {
+        const length = colorsLengthInput.value;
+        const sequence = colorSeq[length];
+        const colors = sequence[Math.floor(Math.random() * sequence.length)];
+        colorsInput.value = colors.replace(/ /g, '•');;
+      })
+      
     </script>
     <script type="text/javascript">
       const lang = localStorage.getItem("lang");
@@ -349,7 +383,7 @@
           frameInterval: parseInt(frameInterval),
           flashSettings: {
             framesPerColor: parseInt(framePerColor),
-            colors,
+            colors: colors.replace(/•/g, ' '),
             delayBetweenColors: parseInt(colorDelay),
             useFaceDetectorWhenFlashing: useFaceDetector,
             flashIntensity: parseFloat(flashIntensity),
