@@ -69,8 +69,8 @@
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<h2>SDK ADAPTER v7.5</h2>
-<h3>Build: 29Jun 14:30</h3>
+<h2>SDK ADAPTER v7.6</h2>
+<h3>Build: 10Jul 16:30</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -193,7 +193,7 @@
           const adapter = new MyAdapter();
           
           // then pass adapter to ekycFullFlow
-          tv.ekycFullFlow({
+          tv.ekycFlow({
             sdkAdapter: adapter,
             livenessDetectionProps: {
               mode: livenessDetectionMode,
@@ -414,7 +414,7 @@
     theadOcr.innerHTML = null;
     const livenessDetectionMode = selectModeFullFlowEl.value;
     document.body.style.height = 0;
-    tv.ekycFullFlow({
+    tv.ekycFlow({
       logCredentials: {
         enable: false,
       },
