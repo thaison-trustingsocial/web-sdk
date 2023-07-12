@@ -367,42 +367,42 @@
 
       async requestVerifyIDCard(params) {
         const result = await requestVerifyIDCardSimp(params);
-        return result;
+        return {result};
       }
 
       async detectIDTampering(params) {
         const result = await detectIDTamperingSimp(params);
-        return result;
+        return {result};
       }
 
       async readIDCard(params) {
         const result = await readIDCardSimp(params);
-        return result;
+        return {result};
       }
       
       async requestVerifyPortrait(params) {
         const result = await requestVerifyPortraitSimp(params);
-        return result;
+        return {result};
       }
 
       async verifyFaceLiveness(params) {
         const result = await verifyFaceLivenessSimp(params);
-        return result;
+        return {result};
       }
    
       async compareFaces(params) {
         const result = await compareFacesSimp(params);
-        return result;
+        return {result};
       }
 
       async searchFaces(params) {
         const result = await searchFacesSimp(params);
-        return result;
+        return {result};
       }
 
       async indexFaces(params) {
         const result = await indexFacesSimp(params);
-        return result;
+        return {result};
       }  
     }
     const adapter = new MyAdapter();
