@@ -70,7 +70,7 @@
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <h2>SDK ADAPTER v7.6</h2>
-<h3>Build: 10Jul 16:30</h3>
+<h3>Build: 11Jul 16:30</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -367,42 +367,42 @@
 
       async requestVerifyIDCard(params) {
         const result = await requestVerifyIDCardSimp(params);
-        return result;
+        return {result};
       }
 
       async detectIDTampering(params) {
         const result = await detectIDTamperingSimp(params);
-        return result;
+        return {result};
       }
 
       async readIDCard(params) {
         const result = await readIDCardSimp(params);
-        return result;
+        return {result};
       }
       
       async requestVerifyPortrait(params) {
         const result = await requestVerifyPortraitSimp(params);
-        return result;
+        return {result};
       }
 
       async verifyFaceLiveness(params) {
         const result = await verifyFaceLivenessSimp(params);
-        return result;
+        return {result};
       }
    
       async compareFaces(params) {
         const result = await compareFacesSimp(params);
-        return result;
+        return {result};
       }
 
       async searchFaces(params) {
         const result = await searchFacesSimp(params);
-        return result;
+        return {result};
       }
 
       async indexFaces(params) {
         const result = await indexFacesSimp(params);
-        return result;
+        return {result};
       }  
     }
     const adapter = new MyAdapter();
