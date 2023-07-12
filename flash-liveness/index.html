@@ -36,6 +36,7 @@
         color: #fff;
         cursor: pointer;
         border-radius: 4px;
+        padding: 8px;
       }
 
       button:hover {
@@ -47,18 +48,20 @@
         background: #d5d5d5;
       }
 
-      .start-button {
-        padding: 10px 12px;
-        
-        width: 100px;
+      .random-button {
+        padding: 3px 8px;
       }
 
+      .start-button {
+        padding: 10px 12px;
+        width: 100px;
+      }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 10th July, 2023 - 15:30 PM</h3>
+    <h3>Build Version: 12th July, 2023 - 16:45 PM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -89,12 +92,17 @@
         <fieldset>
           <legend>Flash settings</legend>
 
-          <label for="colors-length"
-            >Colors length:
-          </label>
-          <input id="colors-length" value="8" type="number" min="8" max="12" step="1" />
-          <input id="colors" value="" type="text" disabled readonly/>
-          <button class="button" id="random-color">⟳</button>
+          <label for="colors-length">Colors length: </label>
+          <input
+            id="colors-length"
+            value="8"
+            type="number"
+            min="8"
+            max="12"
+            step="1"
+          />
+          <input id="colors" value="" type="text" disabled readonly />
+          <button class="button random-button" id="random-color">⟳</button>
           <br />
 
           <label for="frame-per-color">Frame per Color: </label>
@@ -231,12 +239,15 @@
           <input id="log-debugging-info" type="checkbox" />
           <label for="log-debugging-info">Log debugging info</label>
         </div>
-        <button class="button start-button disabled" onclick="startFaceAuthen()">Start</button>
+        <button
+          class="button start-button disabled"
+          onclick="startFaceAuthen()"
+        >
+          Start
+        </button>
       </div>
 
-      <div id="api-result">
-
-      </div>
+      <div id="api-result"></div>
 
       <div
         id="result"
@@ -274,35 +285,64 @@
         listObjUrls = [];
       }
     </script>
+
+    <!-- Load input from local storage to improve UX -->
+    <script>
+      const persistedInput = localStorage.getItem("flash-liveness-input");
+      if (persistedInput) {
+        const keys = JSON.parse(persistedInput);
+        document.getElementById("frame-interval").value = keys.frameInterval;
+        document.getElementById("frame-per-color").value = keys.flashSettings.framePerColor;
+        document.getElementById('colors-length').value = keys.flashSettings.colorsLength;
+        document.getElementById("colors").value = keys.flashSettings.colors;
+        document.getElementById("color-delay").value = keys.flashSettings.delayBetweenColors;
+        document.getElementById("use-face-dectector").checked = keys.flashSettings.useFaceDetectorWhenFlashing;
+        document.getElementById("flash-intensity").value = keys.flashSettings.flashIntensity;
+        document.getElementById("min-far-face-ratio").value = keys.faceSettings.minFarFaceRatio;
+        document.getElementById("max-far-face-ratio").value = keys.faceSettings.maxFarFaceRatio;
+        document.getElementById("close-face-ratio").value = keys.faceSettings.closeFaceRatio;
+        document.getElementById("small-scale").value = keys.maskSettings.smallScale;
+        document.getElementById("large-scale").value = keys.maskSettings.largeScale;
+        document.getElementById("log-debugging-info").checked = keys.debug;
+      }
+
+      function persistInput (object) {
+        localStorage.setItem("flash-liveness-input", JSON.stringify(object));
+      }
+    </script>
+
+    <!-- Handle random color sequence -->
     <script>
       let colorSeq = {};
       const startButton = document.querySelector(".start-button");
-      fetch('./seq_collections.json').then(res => res.json()).then(res => {
-        colorSeq = res;
-        const length = colorsLengthInput.value;
-        const sequence = colorSeq[length];
-        const colors = sequence[Math.floor(Math.random() * sequence.length)];
-        colorsInput.value = colors.replace(/ /g, '•');;
-        startButton.classList.remove('disabled');
-      })
-      const colorsLengthInput = document.getElementById('colors-length');
-      const colorsInput = document.getElementById('colors');
-      colorsLengthInput.addEventListener('change', (e) => {
+      fetch("./seq_collections.json")
+        .then((res) => res.json())
+        .then((res) => {
+          colorSeq = res;
+          const length = colorsLengthInput.value;
+          const sequence = colorSeq[length];
+          const colors = sequence[Math.floor(Math.random() * sequence.length)];
+          colorsInput.value = colors.replace(/ /g, "•");
+          startButton.classList.remove("disabled");
+        });
+      const colorsLengthInput = document.getElementById("colors-length");
+      const colorsInput = document.getElementById("colors");
+      colorsLengthInput.addEventListener("change", (e) => {
         const length = e.target.value;
         const sequence = colorSeq[length];
         const colors = sequence[Math.floor(Math.random() * sequence.length)];
-        colorsInput.value = colors.replace(/ /g, '•');
-      })
+        colorsInput.value = colors.replace(/ /g, "•");
+      });
 
-      const randomColorButton = document.getElementById('random-color');
-      randomColorButton.addEventListener('click', () => {
+      const randomColorButton = document.getElementById("random-color");
+      randomColorButton.addEventListener("click", () => {
         const length = colorsLengthInput.value;
         const sequence = colorSeq[length];
         const colors = sequence[Math.floor(Math.random() * sequence.length)];
-        colorsInput.value = colors.replace(/ /g, '•');;
-      })
-      
+        colorsInput.value = colors.replace(/ /g, "•");
+      });
     </script>
+
     <script type="text/javascript">
       const lang = localStorage.getItem("lang");
       if (lang) {
@@ -325,6 +365,7 @@
 
         // Flash settings
         const framePerColor = document.getElementById("frame-per-color").value;
+        const colorsLength = document.getElementById("colors-length").value;
         const colors = document.getElementById("colors").value;
         const colorDelay = document.getElementById("color-delay").value;
         const useFaceDetector =
@@ -348,6 +389,28 @@
 
         const form = document.getElementById("content");
         form.style.display = "none";
+
+        const persistedInput = persistInput({
+          frameInterval,
+          flashSettings: {
+            framePerColor,
+            colorsLength,
+            colors,
+            colorDelay,
+            useFaceDetectorWhenFlashing: useFaceDetector,
+            flashIntensity,
+          },
+          faceSettings: {
+            minFarFaceRatio,
+            maxFarFaceRatio,
+            closeFaceRatio,
+          },
+          maskSettings: {
+            smallScale,
+            largeScale,
+          },
+          debug,
+        });
 
         tv.flashLiveness({
           apiCredentials: {
@@ -394,7 +457,7 @@
           frameInterval: parseInt(frameInterval),
           flashSettings: {
             framesPerColor: parseInt(framePerColor),
-            colors: colors.replace(/•/g, ' '),
+            colors: colors.replace(/•/g, " "),
             delayBetweenColors: parseInt(colorDelay),
             useFaceDetectorWhenFlashing: useFaceDetector,
             flashIntensity: parseFloat(flashIntensity),
