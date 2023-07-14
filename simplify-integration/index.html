@@ -70,7 +70,7 @@
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <h2>SDK ADAPTER v7.6</h2>
-<h3>Build: 11Jul 16:30</h3>
+<h3>Build: 14Jul 16:30</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -96,6 +96,109 @@
   <div class="fullflow_container">
     Liveness mode:
     <select id="select-mode-fullflow"></select>
+    <br />
+    <br />
+    <div style="display: grid; grid-gap: 12px; grid-template-columns: 1fr 1fr">
+      <fieldset>
+        <legend>Card sanity</legend>
+
+        <label for="card-sanity-error-en-msg">En error msg:</label>
+        <input id="card-sanity-error-en-msg" value="Card sanity failed" />
+        <br />
+
+        <label for="card-sanity-error-vi-msg">Vi error msg:</label>
+        <input id="card-sanity-error-vi-msg" value="Kiểm tra sanity thất bại" />
+        <br />
+
+        <label for="card-sanity-success-en-msg">En success msg:</label>
+        <input id="card-sanity-success-en-msg" value="Card sanity succeeded" />
+        <br />
+
+        <label for="card-sanity-success-vi-msg">Vi success msg:</label>
+        <input id="card-sanity-success-vi-msg" value="Kiểm tra sanity thành công" />
+        <br />
+      </fieldset>
+
+      <fieldset>
+        <legend>Card tampering</legend>
+
+        <label for="card-tampering-error-en-msg">En error msg:</label>
+        <input id="card-tampering-error-en-msg" value="Card tampering failed" />
+        <br />
+
+        <label for="card-tampering-error-vi-msg">Vi error msg:</label>
+        <input id="card-tampering-error-vi-msg" value="Kiểm tra tampering thất bại" />
+        <br />
+
+        <label for="card-tampering-success-en-msg">En success msg:</label>
+        <input id="card-tampering-success-en-msg" value="Card tampering succeeded" />
+        <br />
+
+        <label for="card-tampering-success-vi-msg">Vi success msg:</label>
+        <input id="card-tampering-success-vi-msg" value="Kiểm tra tampering thành công" />
+        <br />
+      </fieldset>
+
+      <fieldset>
+        <legend>Card OCR</legend>
+
+        <label for="card-ocr-error-en-msg">En error msg:</label>
+        <input id="card-ocr-error-en-msg" value="Card OCR failed" />
+        <br />
+
+        <label for="card-ocr-error-vi-msg">Vi error msg:</label>
+        <input id="card-ocr-error-vi-msg" value="Kiểm tra OCR thất bại" />
+        <br />
+
+        <label for="card-ocr-success-en-msg">En success msg:</label>
+        <input id="card-ocr-success-en-msg" value="Card OCR succeeded" />
+        <br />
+
+        <label for="card-ocr-success-vi-msg">Vi success msg:</label>
+        <input id="card-ocr-success-vi-msg" value="Kiểm tra OCR thành công" />
+        <br />
+      </fieldset>
+
+      <fieldset>
+        <legend>Face sanity</legend>
+
+        <label for="face-sanity-error-en-msg">En error msg:</label>
+        <input id="face-sanity-error-en-msg" value="Face sanity failed" />
+        <br />
+
+        <label for="face-sanity-error-vi-msg">Vi error msg:</label>
+        <input id="face-sanity-error-vi-msg" value="Kiểm tra face sanity thất bại" />
+        <br />
+
+        <label for="face-sanity-success-en-msg">En success msg:</label>
+        <input id="face-sanity-success-en-msg" value="Face sanity succeeded" />
+        <br />
+
+        <label for="face-sanity-success-vi-msg">Vi success msg:</label>
+        <input id="face-sanity-success-vi-msg" value="Kiểm tra face sanity thành công" />
+        <br />
+      </fieldset>
+
+      <fieldset>
+        <legend>Face liveness</legend>
+
+        <label for="face-liveness-error-en-msg">En error msg:</label>
+        <input id="face-liveness-error-en-msg" value="Face liveness failed" />
+        <br />
+
+        <label for="face-liveness-error-vi-msg">Vi error msg:</label>
+        <input id="face-liveness-error-vi-msg" value="Kiểm tra face liveness thất bại" />
+        <br />
+
+        <label for="face-liveness-success-en-msg">En success msg:</label>
+        <input id="face-liveness-success-en-msg" value="Face liveness succeeded" />
+        <br />
+
+        <label for="face-liveness-success-vi-msg">Vi success msg:</label>
+        <input id="face-liveness-success-vi-msg" value="Kiểm tra face liveness thành công" />
+        <br />
+      </fieldset>
+    </div>
     <br />
     <button onclick="startFullFlow()" id="btn-start-fullflow" style="margin: 10px 0">
       FULL FLOW
@@ -354,52 +457,102 @@
         const result = await getClientSettingsSimp();
         return result;
       }
-      
       async uploadImage(params) {
         const result = await uploadImageSimp(params);
         return result;
       }
-
       async uploadFiles(params) {
         const result = await uploadFilesSimp(params);
         return result;
       }
-
       async requestVerifyIDCard(params) {
         const result = await requestVerifyIDCardSimp(params);
-        return {result};
+        return { 
+          result,
+          message: {
+            error: {
+              en: document.getElementById('card-sanity-error-en-msg').value, 
+              vi: document.getElementById('card-sanity-error-vi-msg').value
+            },
+            success: {
+              en: document.getElementById('card-sanity-success-en-msg').value,
+              vi: document.getElementById('card-sanity-success-vi-msg').value
+            }
+          }
+        };
       }
-
       async detectIDTampering(params) {
         const result = await detectIDTamperingSimp(params);
-        return {result};
+        return {
+          result,
+          message: {
+            error: {
+              en: document.getElementById('card-tampering-error-en-msg').value, 
+              vi: document.getElementById('card-tampering-error-vi-msg').value
+            },
+            success: {
+              en: document.getElementById('card-tampering-success-en-msg').value,
+              vi: document.getElementById('card-tampering-success-vi-msg').value
+            }
+          }
+        };
       }
-
       async readIDCard(params) {
         const result = await readIDCardSimp(params);
-        return {result};
+        return {
+          result,
+          message: {
+            error: {
+              en: document.getElementById('card-ocr-error-en-msg').value, 
+              vi: document.getElementById('card-ocr-error-vi-msg').value
+            },
+            success: {
+              en: document.getElementById('card-ocr-success-en-msg').value,
+              vi: document.getElementById('card-ocr-success-vi-msg').value
+            }
+          }
+        };
       }
-      
       async requestVerifyPortrait(params) {
         const result = await requestVerifyPortraitSimp(params);
-        return {result};
+        return {
+          result,
+          message: {
+            error: {
+              en: document.getElementById('face-sanity-error-en-msg').value, 
+              vi: document.getElementById('face-sanity-error-vi-msg').value
+            },
+            success: {
+              en: document.getElementById('face-sanity-success-en-msg').value,
+              vi: document.getElementById('face-sanity-success-vi-msg').value
+            }
+          }
+        };
       }
-
       async verifyFaceLiveness(params) {
         const result = await verifyFaceLivenessSimp(params);
-        return {result};
+        return {
+          result,
+          message: {
+            error: {
+              en: document.getElementById('face-liveness-error-en-msg').value, 
+              vi: document.getElementById('face-liveness-error-vi-msg').value
+            },
+            success: {
+              en: document.getElementById('face-liveness-success-en-msg').value,
+              vi: document.getElementById('face-liveness-success-vi-msg').value
+            }
+          }
+        };
       }
-   
       async compareFaces(params) {
         const result = await compareFacesSimp(params);
         return {result};
       }
-
       async searchFaces(params) {
         const result = await searchFacesSimp(params);
         return {result};
       }
-
       async indexFaces(params) {
         const result = await indexFacesSimp(params);
         return {result};
