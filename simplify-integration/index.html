@@ -69,8 +69,8 @@
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<h2>SDK ADAPTER v7.6</h2>
-<h3>Build: 14Jul 16:30</h3>
+<h2>SDK ADAPTER v7.7</h2>
+<h3>Build: 17Jul 15:30</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -94,8 +94,12 @@
 
   <h4>Full flow (import keys before start)</h4>
   <div class="fullflow_container">
-    Liveness mode:
+    Liveness Mode:
     <select id="select-mode-fullflow"></select>
+    <br />
+    <br />
+    Ekyc Flow Mode: 
+    <select id="select-ekyc-flow-mode"></select>
     <br />
     <br />
     <div style="display: grid; grid-gap: 12px; grid-template-columns: 1fr 1fr">
@@ -370,6 +374,8 @@
   const resultFullFlowEl = document.getElementById("result-fullflow");
 
   const selectModeFullFlowEl = document.getElementById("select-mode-fullflow");
+  const selectEkycModeEl = document.getElementById("select-ekyc-flow-mode");
+
 
   // SDK ADAPTER
   function create_UUID(){
@@ -405,6 +411,12 @@
     option.appendChild(document.createTextNode(k));
     option.setAttribute("value", TVWebSDK.Constants.Mode[k]);
     selectModeFullFlowEl.appendChild(option);
+  });
+  Object.keys(TVWebSDK.Constants.EkycFlow).forEach((k) => {
+    const option = document.createElement("option");
+    option.appendChild(document.createTextNode(k));
+    option.setAttribute("value", TVWebSDK.Constants.EkycFlow[k]);
+    selectEkycModeEl.appendChild(option);
   });
 
   function clearUserId() {
@@ -566,11 +578,13 @@
     theadResult.innerHTML = null;
     theadOcr.innerHTML = null;
     const livenessDetectionMode = selectModeFullFlowEl.value;
+    const ekycFlowMode = selectEkycModeEl.value;
     document.body.style.height = 0;
     tv.ekycFlow({
       logCredentials: {
         enable: false,
       },
+      flow: ekycFlowMode,
       sdkAdapter: adapter,
       livenessDetectionProps: {
         mode: livenessDetectionMode,
