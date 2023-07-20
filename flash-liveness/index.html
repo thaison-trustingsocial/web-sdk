@@ -61,7 +61,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 19th July, 2023 - 12:20 PM</h3>
+    <h3>Build Version: 20th July, 2023 - 15:15 PM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -122,6 +122,12 @@
             >Use Face Dectector when flashing:
           </label>
           <input id="use-face-dectector" type="checkbox" />
+          <br />
+
+          <label for="use-close-eyes-detector"
+            >Use Close Eyes Detector:
+          </label>
+          <input id="use-close-eyes-detector" type="checkbox" checked/>
           <br />
 
           <label for="flash-intensity">Flash intensity (0 -> 1): </label>
@@ -221,6 +227,21 @@
             max="1"
             step="0.01"
           />
+          <br />
+
+          <label
+            for="oval-padding"
+            class="tooltip"
+            data-tooltip="Padding của hình chữ nhật bao quanh oval"
+            >Oval padding:
+          </label>
+          <input
+            id="oval-padding"
+            value="20"
+            type="number"
+            min="0"
+            step="1"
+          />
         </fieldset>
       </div>
 
@@ -297,12 +318,14 @@
         document.getElementById("colors").value = keys.flashSettings.colors;
         document.getElementById("color-delay").value = keys.flashSettings.delayBetweenColors;
         document.getElementById("use-face-dectector").checked = keys.flashSettings.useFaceDetectorWhenFlashing;
+        document.getElementById("use-close-eyes-detector").checked = keys.flashSettings.useCloseEyesDetector;
         document.getElementById("flash-intensity").value = keys.flashSettings.flashIntensity;
         document.getElementById("min-far-face-ratio").value = keys.faceSettings.minFarFaceRatio;
         document.getElementById("max-far-face-ratio").value = keys.faceSettings.maxFarFaceRatio;
         document.getElementById("close-face-ratio").value = keys.faceSettings.closeFaceRatio;
         document.getElementById("small-scale").value = keys.maskSettings.smallScale;
         document.getElementById("large-scale").value = keys.maskSettings.largeScale;
+        document.getElementById("oval-padding").value = keys.maskSettings.ovalPadding;
         document.getElementById("log-debugging-info").checked = keys.debug;
       }
 
@@ -368,8 +391,8 @@
         const colorsLength = document.getElementById("colors-length").value;
         const colors = document.getElementById("colors").value;
         const colorDelay = document.getElementById("color-delay").value;
-        const useFaceDetector =
-          document.getElementById("use-face-dectector").checked;
+        const useFaceDetector = document.getElementById("use-face-dectector").checked;
+        const useCloseEyesDetector = document.getElementById("use-close-eyes-detector").checked;
         const flashIntensity = document.getElementById("flash-intensity").value;
 
         // Face settings
@@ -383,6 +406,7 @@
         // Mask settings
         const smallScale = document.getElementById("small-scale").value;
         const largeScale = document.getElementById("large-scale").value;
+        const ovalPadding = document.getElementById("oval-padding").value;
 
         // Debug settings
         const debug = document.getElementById("log-debugging-info").checked;
@@ -398,6 +422,7 @@
             colors,
             colorDelay,
             useFaceDetectorWhenFlashing: useFaceDetector,
+            useCloseEyesDetector,
             flashIntensity,
           },
           faceSettings: {
@@ -408,6 +433,7 @@
           maskSettings: {
             smallScale,
             largeScale,
+            ovalPadding,
           },
           debug,
         });
@@ -460,6 +486,7 @@
             colors: colors.replace(/•/g, " "),
             delayBetweenColors: parseInt(colorDelay),
             useFaceDetectorWhenFlashing: useFaceDetector,
+            useCloseEyesDetector,
             flashIntensity: parseFloat(flashIntensity),
           },
           faceSettings: {
@@ -470,6 +497,7 @@
           maskSettings: {
             smallScale: parseFloat(smallScale),
             largeScale: parseFloat(largeScale),
+            ovalPadding: parseInt(ovalPadding),
           },
           debug: Boolean(debug),
         });
