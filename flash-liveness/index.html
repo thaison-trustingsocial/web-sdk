@@ -61,7 +61,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 20th July, 2023 - 15:15 PM</h3>
+    <h3>Build Version: 21st July, 2023 - 10:40 PM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -307,33 +307,6 @@
       }
     </script>
 
-    <!-- Load input from local storage to improve UX -->
-    <script>
-      const persistedInput = localStorage.getItem("flash-liveness-input");
-      if (persistedInput) {
-        const keys = JSON.parse(persistedInput);
-        document.getElementById("frame-interval").value = keys.frameInterval;
-        document.getElementById("frame-per-color").value = keys.flashSettings.framePerColor;
-        document.getElementById('colors-length').value = keys.flashSettings.colorsLength;
-        document.getElementById("colors").value = keys.flashSettings.colors;
-        document.getElementById("color-delay").value = keys.flashSettings.delayBetweenColors;
-        document.getElementById("use-face-dectector").checked = keys.flashSettings.useFaceDetectorWhenFlashing;
-        document.getElementById("use-close-eyes-detector").checked = keys.flashSettings.useCloseEyesDetector;
-        document.getElementById("flash-intensity").value = keys.flashSettings.flashIntensity;
-        document.getElementById("min-far-face-ratio").value = keys.faceSettings.minFarFaceRatio;
-        document.getElementById("max-far-face-ratio").value = keys.faceSettings.maxFarFaceRatio;
-        document.getElementById("close-face-ratio").value = keys.faceSettings.closeFaceRatio;
-        document.getElementById("small-scale").value = keys.maskSettings.smallScale;
-        document.getElementById("large-scale").value = keys.maskSettings.largeScale;
-        document.getElementById("oval-padding").value = keys.maskSettings.ovalPadding;
-        document.getElementById("log-debugging-info").checked = keys.debug;
-      }
-
-      function persistInput (object) {
-        localStorage.setItem("flash-liveness-input", JSON.stringify(object));
-      }
-    </script>
-
     <!-- Handle random color sequence -->
     <script>
       let colorSeq = {};
@@ -414,29 +387,6 @@
         const form = document.getElementById("content");
         form.style.display = "none";
 
-        const persistedInput = persistInput({
-          frameInterval,
-          flashSettings: {
-            framePerColor,
-            colorsLength,
-            colors,
-            colorDelay,
-            useFaceDetectorWhenFlashing: useFaceDetector,
-            useCloseEyesDetector,
-            flashIntensity,
-          },
-          faceSettings: {
-            minFarFaceRatio,
-            maxFarFaceRatio,
-            closeFaceRatio,
-          },
-          maskSettings: {
-            smallScale,
-            largeScale,
-            ovalPadding,
-          },
-          debug,
-        });
 
         tv.flashLiveness({
           apiCredentials: {
