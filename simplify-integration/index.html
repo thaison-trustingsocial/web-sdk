@@ -69,8 +69,8 @@
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<h2>SDK ADAPTER v7.7</h2>
-<h3>Build: 17Jul 15:30</h3>
+<h2>SDK ADAPTER v7.9</h2>
+<h3>Build: 24Jul 11:30</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -92,7 +92,7 @@
     <button onclick="clearUserId()">Clear user id (x-request-id)</button>
   </div>
 
-  <h4>Full flow (import keys before start)</h4>
+  <h3>Full flow (import keys before start)</h3>
   <div class="fullflow_container">
     Liveness Mode:
     <select id="select-mode-fullflow"></select>
@@ -102,6 +102,27 @@
     <select id="select-ekyc-flow-mode"></select>
     <br />
     <br />
+    <div>
+      ID Card Step Config: 
+      <br />
+      <label>
+        <input type="radio" name="idCardStep" value="0" checked>
+        Default (not pass in <em>steps</em> prop, has 2 sides)
+      </label>
+      <br />
+      <label>
+        <input type="radio" name="idCardStep" value="1">
+        <em>step</em> prop has Front card
+      </label>
+      <br />
+      <label>
+        <input type="radio" name="idCardStep" value="2">
+        <em>step</em> prop has Front card and Back card
+      </label>
+    </div>
+    <br />
+    <br />
+
     <div style="display: grid; grid-gap: 12px; grid-template-columns: 1fr 1fr">
       <fieldset>
         <legend>Card sanity</legend>
@@ -375,7 +396,38 @@
 
   const selectModeFullFlowEl = document.getElementById("select-mode-fullflow");
   const selectEkycModeEl = document.getElementById("select-ekyc-flow-mode");
-
+  // id card step config
+  const radioButtons = document.querySelectorAll('input[name="idCardStep"]');
+  let cardStepConfig = null;
+  radioButtons.forEach(radioButton => {
+    radioButton.addEventListener('click', () => {
+      cardStepConfig = radioButton.value;
+    });
+  });
+  const ScannerType = {
+    ID_CARD: 'id_card',
+    QR_CODE: 'qr_code',
+  };
+  const [frontCardStepConfig, backCardStepConfig] = [
+    {
+      scannerType: ScannerType.ID_CARD,
+      title: lang === 'vi' ? 'Mặt trước CMND/CCCD' : 'Capture Front Side of ID Card',
+      description: lang === 'vi' ? 'Vui lòng đặt CMND mặt trước vào trong khung' : '',
+      titleIcon: 'id_card_front.svg',
+      cardSide: TVWebSDK.Constants.IDCardSide.FRONT,
+      cardType: TVWebSDK.Constants.IDCardType.VN,
+      enableConfirmPopup: true,
+    },
+    {
+      scannerType: ScannerType.ID_CARD,
+      title: lang === 'vi' ? 'Mặt sau CMND/CCCD' : 'Capture Back Side of ID Card',
+      description: lang === 'vi' ? 'Vui lòng đặt CMND mặt sau vào trong khung' : '',
+      titleIcon: 'id_card_back.svg',
+      cardSide: TVWebSDK.Constants.IDCardSide.BACK,
+      cardType: TVWebSDK.Constants.IDCardType.VN,
+      enableConfirmPopup: true,
+    },
+  ];
 
   // SDK ADAPTER
   function create_UUID(){
@@ -580,6 +632,16 @@
     const livenessDetectionMode = selectModeFullFlowEl.value;
     const ekycFlowMode = selectEkycModeEl.value;
     document.body.style.height = 0;
+
+    let stepConfig = null;
+    if (cardStepConfig === "0") {
+      stepConfig = null;
+    }
+    if (cardStepConfig === "1") {
+      stepConfig = [frontCardStepConfig];
+    } else if (cardStepConfig === "2") {
+      stepConfig = [frontCardStepConfig, backCardStepConfig];
+    }
     tv.ekycFlow({
       logCredentials: {
         enable: false,
@@ -594,6 +656,9 @@
           framesIntervalTime: 180,
           framesBatchLength: 10,
         }
+      },
+      readIDCardProps: {
+        ...(stepConfig ? { steps: stepConfig } : {}),
       },
       onDoneEkyc: (result) => handleFullFlowDone(result, resultFullFlowEl),
       onError: (e) => {
