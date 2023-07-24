@@ -21,8 +21,16 @@
     <title>Flash Liveness</title>
 
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       input {
         margin-block-end: 4px;
+      }
+
+      input:not([type="checkbox"]) {
+        width: 60px;
       }
 
       input:disabled {
@@ -61,7 +69,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 21st July, 2023 - 10:40 PM</h3>
+    <h3>Build Version: 24th July, 2023 - 15:35 PM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -79,7 +87,7 @@
       <h4>Face liveness with color</h4>
 
       <div
-        style="display: grid; grid-gap: 12px; grid-template-columns: 1fr 1fr"
+        style="display: grid; grid-gap: 8px; grid-template-columns: 1fr 1fr"
       >
         <fieldset>
           <legend>Frame settings</legend>
@@ -124,10 +132,8 @@
           <input id="use-face-dectector" type="checkbox" />
           <br />
 
-          <label for="use-close-eyes-detector"
-            >Use Close Eyes Detector:
-          </label>
-          <input id="use-close-eyes-detector" type="checkbox" checked/>
+          <label for="use-close-eyes-detector">Use Close Eyes Detector: </label>
+          <input id="use-close-eyes-detector" type="checkbox" checked />
           <br />
 
           <label for="flash-intensity">Flash intensity (0 -> 1): </label>
@@ -229,15 +235,61 @@
           />
           <br />
 
-          <label
-            for="oval-padding"
+          <span
             class="tooltip"
             data-tooltip="Padding của hình chữ nhật bao quanh oval"
             >Oval padding:
+          </span>
+
+          <div style="display: inline-flex; gap: 8px">
+            <label for="oval-padding-left">Left: </label>
+            <input
+              id="oval-padding-left"
+              value="20"
+              type="number"
+              min="0"
+              step="1"
+            />
+
+            <label for="oval-padding-right">Right: </label>
+            <input
+              id="oval-padding-right"
+              value="20"
+              type="number"
+              min="0"
+              step="1"
+            />
+
+            <label for="oval-padding-top">Top: </label>
+            <input
+              id="oval-padding-top"
+              value="20"
+              type="number"
+              min="0"
+              step="1"
+            />
+
+            <label for="oval-padding-bottom">Bottom: </label>
+            <input
+              id="oval-padding-bottom"
+              value="20"
+              type="number"
+              min="0"
+              step="1"
+            />
+          </div>
+
+          <br />
+
+          <label
+            for="oval-vertical-offset"
+            class="tooltip"
+            data-tooltip="Khoảng cách từ tâm hình chụp đến tâm hình oval"
+            >Oval vertical offset:
           </label>
           <input
-            id="oval-padding"
-            value="20"
+            id="oval-vertical-offset"
+            value="0"
             type="number"
             min="0"
             step="1"
@@ -364,8 +416,11 @@
         const colorsLength = document.getElementById("colors-length").value;
         const colors = document.getElementById("colors").value;
         const colorDelay = document.getElementById("color-delay").value;
-        const useFaceDetector = document.getElementById("use-face-dectector").checked;
-        const useCloseEyesDetector = document.getElementById("use-close-eyes-detector").checked;
+        const useFaceDetector =
+          document.getElementById("use-face-dectector").checked;
+        const useCloseEyesDetector = document.getElementById(
+          "use-close-eyes-detector"
+        ).checked;
         const flashIntensity = document.getElementById("flash-intensity").value;
 
         // Face settings
@@ -379,14 +434,19 @@
         // Mask settings
         const smallScale = document.getElementById("small-scale").value;
         const largeScale = document.getElementById("large-scale").value;
-        const ovalPadding = document.getElementById("oval-padding").value;
+        const ovalPaddingLeft = document.getElementById("oval-padding-left").value;
+        const ovalPaddingRight = document.getElementById("oval-padding-right").value;
+        const ovalPaddingTop = document.getElementById("oval-padding-top").value;
+        const ovalPaddingBottom = document.getElementById("oval-padding-bottom").value;
+        const ovalVerticalOffset = document.getElementById(
+          "oval-vertical-offset"
+        ).value;
 
         // Debug settings
         const debug = document.getElementById("log-debugging-info").checked;
 
         const form = document.getElementById("content");
         form.style.display = "none";
-
 
         tv.flashLiveness({
           apiCredentials: {
@@ -447,7 +507,13 @@
           maskSettings: {
             smallScale: parseFloat(smallScale),
             largeScale: parseFloat(largeScale),
-            ovalPadding: parseInt(ovalPadding),
+            ovalPadding: {
+              left: parseInt(ovalPaddingLeft),
+              right: parseInt(ovalPaddingRight),
+              top: parseInt(ovalPaddingTop),
+              bottom: parseInt(ovalPaddingBottom),
+            },
+            ovalVerticalOffset: parseInt(ovalVerticalOffset),
           },
           debug: Boolean(debug),
         });
