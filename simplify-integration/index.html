@@ -69,8 +69,8 @@
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<h2>SDK ADAPTER v7.8</h2>
-<h3>Build: 21Jul 14:30</h3>
+<h2>SDK ADAPTER v7.9</h2>
+<h3>Build: 24Jul 11:30</h3>
 <div id="container"></div>
 
 <div id="content">
@@ -411,8 +411,8 @@
   const [frontCardStepConfig, backCardStepConfig] = [
     {
       scannerType: ScannerType.ID_CARD,
-      title: 'Mặt trước CMND/CCCD',
-      description: 'Vui lòng đặt CMND mặt trước vào trong khung',
+      title: lang === 'vi' ? 'Mặt trước CMND/CCCD' : 'Capture Front Side of ID Card',
+      description: lang === 'vi' ? 'Vui lòng đặt CMND mặt trước vào trong khung' : '',
       titleIcon: 'id_card_front.svg',
       cardSide: TVWebSDK.Constants.IDCardSide.FRONT,
       cardType: TVWebSDK.Constants.IDCardType.VN,
@@ -420,8 +420,8 @@
     },
     {
       scannerType: ScannerType.ID_CARD,
-      title: 'Mặt sau CMND/CCCD',
-      description: 'Vui lòng đặt CMND mặt sau vào trong khung',
+      title: lang === 'vi' ? 'Mặt sau CMND/CCCD' : 'Capture Back Side of ID Card',
+      description: lang === 'vi' ? 'Vui lòng đặt CMND mặt sau vào trong khung' : '',
       titleIcon: 'id_card_back.svg',
       cardSide: TVWebSDK.Constants.IDCardSide.BACK,
       cardType: TVWebSDK.Constants.IDCardType.VN,
