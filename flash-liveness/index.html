@@ -17,7 +17,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../style.css" />
     <title>Flash Liveness</title>
 
@@ -65,12 +64,30 @@
         padding: 10px 12px;
         width: 100px;
       }
+
+      .settings-container {
+        display: grid;
+        grid-gap: 8px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .oval-padding-setting-container {
+        display: inline-grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 4px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .settings-container {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 26th July, 2023 - 14:30 PM</h3>
+    <h3>Build Version: 28th July, 2023 - 11:30 AM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -87,9 +104,7 @@
       <hr />
       <h4>Face liveness with color</h4>
 
-      <div
-        style="display: grid; grid-gap: 8px; grid-template-columns: 1fr 1fr"
-      >
+      <div class="settings-container">
         <fieldset>
           <legend>Frame settings</legend>
 
@@ -242,42 +257,50 @@
             >Oval padding:
           </span>
 
-          <div style="display: inline-flex; gap: 8px">
-            <label for="oval-padding-left">Left: </label>
-            <input
-              id="oval-padding-left"
-              value="20"
-              type="number"
-              min="0"
-              step="1"
-            />
+          <div class="oval-padding-setting-container">
+            <div>
+              <label for="oval-padding-left">Left: </label>
+              <input
+                id="oval-padding-left"
+                value="20"
+                type="number"
+                min="0"
+                step="1"
+              />
+            </div>
 
-            <label for="oval-padding-right">Right: </label>
-            <input
-              id="oval-padding-right"
-              value="20"
-              type="number"
-              min="0"
-              step="1"
-            />
+            <div>
+              <label for="oval-padding-right">Right: </label>
+              <input
+                id="oval-padding-right"
+                value="20"
+                type="number"
+                min="0"
+                step="1"
+              />
+            </div>
 
-            <label for="oval-padding-top">Top: </label>
-            <input
-              id="oval-padding-top"
-              value="20"
-              type="number"
-              min="0"
-              step="1"
-            />
+            <div>
+              <label for="oval-padding-top">Top: </label>
+              <input
+                id="oval-padding-top"
+                value="20"
+                type="number"
+                min="0"
+                step="1"
+              />
+            </div>
 
-            <label for="oval-padding-bottom">Bottom: </label>
-            <input
-              id="oval-padding-bottom"
-              value="20"
-              type="number"
-              min="0"
-              step="1"
-            />
+            <div>
+              <label for="oval-padding-bottom">Bottom: </label>
+              <input
+                id="oval-padding-bottom"
+                value="20"
+                type="number"
+                min="0"
+                step="1"
+              />
+            </div>
           </div>
 
           <br />
@@ -435,10 +458,15 @@
         // Mask settings
         const smallScale = document.getElementById("small-scale").value;
         const largeScale = document.getElementById("large-scale").value;
-        const ovalPaddingLeft = document.getElementById("oval-padding-left").value;
-        const ovalPaddingRight = document.getElementById("oval-padding-right").value;
-        const ovalPaddingTop = document.getElementById("oval-padding-top").value;
-        const ovalPaddingBottom = document.getElementById("oval-padding-bottom").value;
+        const ovalPaddingLeft =
+          document.getElementById("oval-padding-left").value;
+        const ovalPaddingRight =
+          document.getElementById("oval-padding-right").value;
+        const ovalPaddingTop =
+          document.getElementById("oval-padding-top").value;
+        const ovalPaddingBottom = document.getElementById(
+          "oval-padding-bottom"
+        ).value;
         const ovalVerticalOffset = document.getElementById(
           "oval-vertical-offset"
         ).value;
