@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <video id="video" autoplay playsinline></video>
+
+    <div style="position: fixed; bottom: 0; right: 0">
+      <button onclick="requestStream()">Request Stream</button>
+      <button onclick="stopStream()">Stop Stream</button>
+    </div>
+
+    <script type="text/javascript">
+      const video = document.getElementById("video");
+
+      async function requestStream() {
+        const constraints = {
+          audio: false,
+          video: {
+            aspectRatio: window.innerHeight / window.innerWidth,
+          },
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+      }
+
+      function stopStream() {
+        const stream = video.srcObject;
+
+        const tracks = stream.getTracks();
+
+        tracks.forEach(function (track) {
+          track.stop();
+        });
+
+        video.srcObject = null;
+      }
+    </script>
+  </body>
+</html>
