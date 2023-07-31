@@ -87,7 +87,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 28th July, 2023 - 11:30 AM</h3>
+    <h3>Build Version: 31th July, 2023 - 17:48 PM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -214,6 +214,10 @@
             max="1"
             step="0.01"
           />
+
+          <br />
+          <label for="use-new-face-detector">Use New Face Detector: </label>
+          <input id="use-new-face-detector" type="checkbox" checked />
         </fieldset>
 
         <fieldset>
@@ -431,6 +435,7 @@
       window.tv = tv;
       tv.runPreloadEKYCResources();
 
+      // prettier-ignore
       function startFaceAuthen() {
         // Frame settings
         const frameInterval = document.getElementById("frame-interval").value;
@@ -440,36 +445,24 @@
         const colorsLength = document.getElementById("colors-length").value;
         const colors = document.getElementById("colors").value;
         const colorDelay = document.getElementById("color-delay").value;
-        const useFaceDetector =
-          document.getElementById("use-face-dectector").checked;
-        const useCloseEyesDetector = document.getElementById(
-          "use-close-eyes-detector"
-        ).checked;
+        const useFaceDetector = document.getElementById("use-face-dectector").checked;
+        const useCloseEyesDetector = document.getElementById( "use-close-eyes-detector").checked;
         const flashIntensity = document.getElementById("flash-intensity").value;
 
         // Face settings
-        const minFarFaceRatio =
-          document.getElementById("min-far-face-ratio").value;
-        const maxFarFaceRatio =
-          document.getElementById("max-far-face-ratio").value;
-        const closeFaceRatio =
-          document.getElementById("close-face-ratio").value;
+        const minFarFaceRatio = document.getElementById("min-far-face-ratio").value;
+        const maxFarFaceRatio = document.getElementById("max-far-face-ratio").value;
+        const closeFaceRatio = document.getElementById("close-face-ratio").value;
+        const useNewFaceDetector = document.getElementById( "use-new-face-detector").checked;
 
         // Mask settings
         const smallScale = document.getElementById("small-scale").value;
         const largeScale = document.getElementById("large-scale").value;
-        const ovalPaddingLeft =
-          document.getElementById("oval-padding-left").value;
-        const ovalPaddingRight =
-          document.getElementById("oval-padding-right").value;
-        const ovalPaddingTop =
-          document.getElementById("oval-padding-top").value;
-        const ovalPaddingBottom = document.getElementById(
-          "oval-padding-bottom"
-        ).value;
-        const ovalVerticalOffset = document.getElementById(
-          "oval-vertical-offset"
-        ).value;
+        const ovalPaddingLeft = document.getElementById("oval-padding-left").value;
+        const ovalPaddingRight = document.getElementById("oval-padding-right").value;
+        const ovalPaddingTop = document.getElementById("oval-padding-top").value;
+        const ovalPaddingBottom = document.getElementById("oval-padding-bottom").value;
+        const ovalVerticalOffset = document.getElementById("oval-vertical-offset").value;
 
         // Debug settings
         const debug = document.getElementById("log-debugging-info").checked;
@@ -532,6 +525,7 @@
             minFarFaceRatio: parseFloat(minFarFaceRatio),
             maxFarFaceRatio: parseFloat(maxFarFaceRatio),
             closeFaceRatio: parseFloat(closeFaceRatio),
+            useNewFaceDetector,
           },
           maskSettings: {
             smallScale: parseFloat(smallScale),
