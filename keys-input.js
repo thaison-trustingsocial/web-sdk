@@ -52,6 +52,10 @@ function importKeys(keys) {
   inputApiUrl.value = keyParsed[1];
   inputAccessKey.value = keyParsed[2];
   inputSecretKey.value = keyParsed[3];
+
+  if (typeof setSessionKey === 'function') {
+    setSessionKey(keyParsed);
+  }
 }
 
 document.getElementById('key-import-string').addEventListener('click', onImportStrClick);

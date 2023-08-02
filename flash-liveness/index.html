@@ -149,13 +149,13 @@
           <br />
 
           <label for="use-close-eyes-detector">Use Close Eyes Detector: </label>
-          <input id="use-close-eyes-detector" type="checkbox" checked />
+          <input id="use-close-eyes-detector" type="checkbox" />
           <br />
 
           <label for="flash-intensity">Flash intensity (0 -> 1): </label>
           <input
             id="flash-intensity"
-            value="0.6"
+            value="1"
             type="number"
             min="0"
             max="1"
@@ -363,11 +363,14 @@
     </div>
 
     <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="./session-storage.js"></script>
     <script src="../qr-scanner-for-input-keys.js"></script>
     <script src="../keys-input.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
     <script src="./tvweb-sdk.standalone.min.js"></script>
+    <script src="./random-color.js"></script>
+    <script src="./flash-liveness-settings.js"></script>
     <script>
       let listObjUrls = [];
       function onSelectLang() {
@@ -387,36 +390,12 @@
       }
     </script>
 
-    <!-- Handle random color sequence -->
-    <script>
-      let colorSeq = {};
-      const startButton = document.querySelector(".start-button");
-      fetch("./seq_collections.json")
-        .then((res) => res.json())
-        .then((res) => {
-          colorSeq = res;
-          const length = colorsLengthInput.value;
-          const sequence = colorSeq[length];
-          const colors = sequence[Math.floor(Math.random() * sequence.length)];
-          colorsInput.value = colors.replace(/ /g, "•");
-          startButton.classList.remove("disabled");
-        });
-      const colorsLengthInput = document.getElementById("colors-length");
-      const colorsInput = document.getElementById("colors");
-      colorsLengthInput.addEventListener("change", (e) => {
-        const length = e.target.value;
-        const sequence = colorSeq[length];
-        const colors = sequence[Math.floor(Math.random() * sequence.length)];
-        colorsInput.value = colors.replace(/ /g, "•");
-      });
+    <script text="text/javascript">
+      const sessionKey = getSessionKey();
 
-      const randomColorButton = document.getElementById("random-color");
-      randomColorButton.addEventListener("click", () => {
-        const length = colorsLengthInput.value;
-        const sequence = colorSeq[length];
-        const colors = sequence[Math.floor(Math.random() * sequence.length)];
-        colorsInput.value = colors.replace(/ /g, "•");
-      });
+      if (sessionKey) {
+        importKeys(sessionKey);
+      }
     </script>
 
     <script type="text/javascript">
@@ -428,44 +407,37 @@
       const tv = new TVWebSDK.SDK({
         container: document.getElementById("container"),
         lang: lang || "vi",
-        assetRoot: "/web-sdk/assets",
-        // assetRoot: "/assets",
+        // assetRoot: "/web-sdk/assets",
+        assetRoot: "/assets",
         enableAntiDebug: false,
       });
       window.tv = tv;
       tv.runPreloadEKYCResources();
 
-      // prettier-ignore
       function startFaceAuthen() {
-        // Frame settings
-        const frameInterval = document.getElementById("frame-interval").value;
-
-        // Flash settings
-        const framePerColor = document.getElementById("frame-per-color").value;
-        const colorsLength = document.getElementById("colors-length").value;
-        const colors = document.getElementById("colors").value;
-        const colorDelay = document.getElementById("color-delay").value;
-        const useFaceDetector = document.getElementById("use-face-dectector").checked;
-        const useCloseEyesDetector = document.getElementById( "use-close-eyes-detector").checked;
-        const flashIntensity = document.getElementById("flash-intensity").value;
-
-        // Face settings
-        const minFarFaceRatio = document.getElementById("min-far-face-ratio").value;
-        const maxFarFaceRatio = document.getElementById("max-far-face-ratio").value;
-        const closeFaceRatio = document.getElementById("close-face-ratio").value;
-        const useNewFaceDetector = document.getElementById( "use-new-face-detector").checked;
-
-        // Mask settings
-        const smallScale = document.getElementById("small-scale").value;
-        const largeScale = document.getElementById("large-scale").value;
-        const ovalPaddingLeft = document.getElementById("oval-padding-left").value;
-        const ovalPaddingRight = document.getElementById("oval-padding-right").value;
-        const ovalPaddingTop = document.getElementById("oval-padding-top").value;
-        const ovalPaddingBottom = document.getElementById("oval-padding-bottom").value;
-        const ovalVerticalOffset = document.getElementById("oval-vertical-offset").value;
-
-        // Debug settings
-        const debug = document.getElementById("log-debugging-info").checked;
+        const settings = getFlashLivenessSettings();
+        const {
+          frameInterval,
+          framePerColor,
+          colorsLength,
+          colors,
+          colorDelay,
+          useFaceDetector,
+          useCloseEyesDetector,
+          flashIntensity,
+          minFarFaceRatio,
+          maxFarFaceRatio,
+          closeFaceRatio,
+          useNewFaceDetector,
+          smallScale,
+          largeScale,
+          ovalPaddingLeft,
+          ovalPaddingRight,
+          ovalPaddingTop,
+          ovalPaddingBottom,
+          ovalVerticalOffset,
+          debug,
+        } = settings;
 
         const form = document.getElementById("content");
         form.style.display = "none";
@@ -479,10 +451,12 @@
           onDone: (result) => {
             tv.destroyView();
             form.style.display = "block";
+            randomColor();
           },
           onClose: (result) => {
             tv.destroyView();
             form.style.display = "block";
+            randomColor();
           },
           onFlashDone: async (result, apiResult) => {
             const resultContainer = document.getElementById("result");
