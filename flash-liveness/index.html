@@ -87,7 +87,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection</h2>
-    <h3>Build Version: 2nd August, 2023 - 14:20 PM</h3>
+    <h3>Build Version: 4th August, 2023 - 15:50 PM</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -109,7 +109,7 @@
           <legend>Frame settings</legend>
 
           <label for="frame-interval">Frame Interval (ms): </label>
-          <input id="frame-interval" value="0" type="number" min="0" />
+          <input id="frame-interval" type="number" min="0" />
           <br />
         </fieldset>
 
@@ -117,20 +117,13 @@
           <legend>Flash settings</legend>
 
           <label for="colors-length">Colors length: </label>
-          <input
-            id="colors-length"
-            value="8"
-            type="number"
-            min="8"
-            max="12"
-            step="1"
-          />
+          <input id="colors-length" type="number" min="8" max="12" step="1" />
           <input id="colors" value="" type="text" disabled readonly />
           <button class="button random-button" id="random-color">⟳</button>
           <br />
 
           <label for="frame-per-color">Frame per Color: </label>
-          <input id="frame-per-color" value="4" type="number" min="1" />
+          <input id="frame-per-color" type="number" min="1" />
           <br />
 
           <label
@@ -139,7 +132,7 @@
             data-tooltip="Delay khi thay đổi màu flash"
             >Delay between colors (ms):
           </label>
-          <input id="color-delay" value="120" type="number" min="0" />
+          <input id="color-delay" type="number" min="0" />
           <br />
 
           <label for="use-face-dectector"
@@ -155,7 +148,6 @@
           <label for="flash-intensity">Flash intensity (0 -> 1): </label>
           <input
             id="flash-intensity"
-            value="1"
             type="number"
             min="0"
             max="1"
@@ -176,7 +168,6 @@
           </label>
           <input
             id="min-far-face-ratio"
-            value="0.55"
             type="number"
             min="0"
             max="1"
@@ -192,7 +183,6 @@
           </label>
           <input
             id="max-far-face-ratio"
-            value="0.6"
             type="number"
             min="0"
             max="1"
@@ -208,7 +198,6 @@
           </label>
           <input
             id="close-face-ratio"
-            value="0.75"
             type="number"
             min="0"
             max="1"
@@ -229,14 +218,7 @@
             data-tooltip="Scale của camera mask so với chiều cao màn hình lúc thu nhỏ"
             >Small scale:
           </label>
-          <input
-            id="small-scale"
-            value="0.65"
-            type="number"
-            min="0"
-            max="1"
-            step="0.01"
-          />
+          <input id="small-scale" type="number" min="0" max="1" step="0.01" />
           <br />
 
           <label
@@ -245,14 +227,7 @@
             data-tooltip="Scale của camera mask so với chiều cao màn hình lúc phóng lớn"
             >Large scale:
           </label>
-          <input
-            id="large-scale"
-            value="0.9"
-            type="number"
-            min="0"
-            max="1"
-            step="0.01"
-          />
+          <input id="large-scale" type="number" min="0" max="1" step="0.01" />
           <br />
 
           <span
@@ -264,46 +239,22 @@
           <div class="oval-padding-setting-container">
             <div>
               <label for="oval-padding-left">Left: </label>
-              <input
-                id="oval-padding-left"
-                value="20"
-                type="number"
-                min="0"
-                step="1"
-              />
+              <input id="oval-padding-left" type="number" min="0" step="1" />
             </div>
 
             <div>
               <label for="oval-padding-right">Right: </label>
-              <input
-                id="oval-padding-right"
-                value="20"
-                type="number"
-                min="0"
-                step="1"
-              />
+              <input id="oval-padding-right" type="number" min="0" step="1" />
             </div>
 
             <div>
               <label for="oval-padding-top">Top: </label>
-              <input
-                id="oval-padding-top"
-                value="20"
-                type="number"
-                min="0"
-                step="1"
-              />
+              <input id="oval-padding-top" type="number" min="0" step="1" />
             </div>
 
             <div>
               <label for="oval-padding-bottom">Bottom: </label>
-              <input
-                id="oval-padding-bottom"
-                value="20"
-                type="number"
-                min="0"
-                step="1"
-              />
+              <input id="oval-padding-bottom" type="number" min="0" step="1" />
             </div>
           </div>
 
@@ -315,9 +266,17 @@
             data-tooltip="Khoảng cách từ tâm hình chụp đến tâm hình oval"
             >Oval vertical offset:
           </label>
+          <input id="oval-vertical-offset" type="number" min="0" step="1" />
+
+          <br />
+          <label
+            for="chin-to-mask-bottom-padding"
+            class="tooltip"
+            data-tooltip="Khoảng cách từ cằm đến đáy mask để chụp"
+            >Chin to Mask bottom padding:
+          </label>
           <input
-            id="oval-vertical-offset"
-            value="0"
+            id="chin-to-mask-bottom-padding"
             type="number"
             min="0"
             step="1"
@@ -369,8 +328,9 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
     <script src="./tvweb-sdk.standalone.min.js"></script>
-    <script src="./random-color.js"></script>
     <script src="./flash-liveness-settings.js"></script>
+    <script src="./random-color.js"></script>
+
     <script>
       let listObjUrls = [];
       function onSelectLang() {
@@ -417,7 +377,15 @@
       function startFaceAuthen() {
         const settings = getFlashLivenessSettings();
         const {
-          frameInterval,
+          frameSettings,
+          flashSettings,
+          faceSettings,
+          maskSettings,
+          debug,
+        } = settings;
+
+        const { frameInterval } = frameSettings;
+        const {
           framePerColor,
           colorsLength,
           colors,
@@ -425,10 +393,10 @@
           useFaceDetector,
           useCloseEyesDetector,
           flashIntensity,
-          minFarFaceRatio,
-          maxFarFaceRatio,
-          closeFaceRatio,
-          useNewFaceDetector,
+        } = flashSettings;
+        const { minFarFaceRatio, maxFarFaceRatio, closeFaceRatio } =
+          faceSettings;
+        const {
           smallScale,
           largeScale,
           ovalPaddingLeft,
@@ -436,8 +404,8 @@
           ovalPaddingTop,
           ovalPaddingBottom,
           ovalVerticalOffset,
-          debug,
-        } = settings;
+          chinToMaskBottomPadding,
+        } = maskSettings;
 
         const form = document.getElementById("content");
         form.style.display = "none";
@@ -499,7 +467,6 @@
             minFarFaceRatio: parseFloat(minFarFaceRatio),
             maxFarFaceRatio: parseFloat(maxFarFaceRatio),
             closeFaceRatio: parseFloat(closeFaceRatio),
-            useNewFaceDetector,
           },
           maskSettings: {
             smallScale: parseFloat(smallScale),
@@ -511,6 +478,7 @@
               bottom: parseInt(ovalPaddingBottom),
             },
             ovalVerticalOffset: parseInt(ovalVerticalOffset),
+            chinToMaskBottomPadding: parseInt(chinToMaskBottomPadding),
           },
           debug: Boolean(debug),
         });
