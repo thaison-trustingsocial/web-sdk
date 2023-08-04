@@ -127,7 +127,7 @@ settings.maskSettings.ovalPaddingRight = isMobile ? 20 : 30;
 settings.maskSettings.ovalPaddingTop = isMobile ? 0 : 0;
 settings.maskSettings.ovalPaddingBottom = isMobile ? 20 : 20;
 settings.maskSettings.ovalVerticalOffset = isMobile ? 60 : 0;
-settings.maskSettings.chinToMaskBottomPadding = isMobile ? 10 : 10;
+settings.maskSettings.chinToMaskBottomPadding = isMobile ? 20 : 20;
 
 settings.debug = false;
 
