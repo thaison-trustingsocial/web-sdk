@@ -232,93 +232,8 @@
     <div class="content_fullflow">
       <pre>
         <code>
-          const apiClient = new trustvisionSdk.default(
-            accessKey, secretKey, apiUrl, { httpHeaders: { 'x-request-id': your x-request-id }}
-          );
-          // override interfaces
-          const uploadImageSimp = async (params) => {
-            return apiClient.uploadImage(params);
-          };
-          const uploadFilesSimp = async (params) => {
-            return apiClient.fileService.request(params);
-          };
-          const requestVerifyIDCardSimp = async (params) => {
-            return apiClient.requestVerifyIDCard(params);
-          };
-          const detectIDTamperingSimp = async (params) => {
-            return apiClient.detectIDTampering(params);
-          };
-          const readIDCardSimp = async (params) => {
-            return apiClient.readIDCard(params);
-          };
-          const requestVerifyPortraitSimp = async (params) => {
-            return apiClient.requestVerifyPortrait(params);
-          };
-          const verifyFaceLivenessSimp = async (params) => {
-            return apiClient.verifyFaceLiveness(params);
-          };
-          const compareFacesSimp = async (params) => {
-            return apiClient.compareFaces(params);
-          };
-          const searchFacesSimp = async (params) => {
-            return apiClient.searchFaces(params);
-          };
-          const indexFacesSimp = async (params) => {
-            return apiClient.indexFaces(params);
-          };
-
-          class MyAdapter extends TVWebSDK.SDKAdapter {
-            async uploadImage(params) {
-              const result = await uploadImageSimp(params);
-              return result;
-            }
-        
-            async uploadFiles(params) {
-              const result = await uploadFilesSimp(params);
-              return result;
-            }
-        
-            async requestVerifyIDCard(params) {
-              const result = await requestVerifyIDCardSimp(params);
-              return result;
-            }
-        
-            async detectIDTampering(params) {
-              const result = await detectIDTamperingSimp(params);
-              return result;
-            }
-        
-            async readIDCard(params) {
-              const result = await readIDCardSimp(params);
-              return result;
-            }
-            
-            async requestVerifyPortrait(params) {
-              const result = await requestVerifyPortraitSimp(params);
-              return result;
-            }
-        
-            async verifyFaceLiveness(params) {
-              const result = await verifyFaceLivenessSimp(params);
-              return result;
-          }
-           
-            async compareFaces(params) {
-              const result = await compareFacesSimp(params);
-              return result;
-            }
-        
-            async searchFaces(params) {
-              const result = await searchFacesSimp(params);
-              return result;
-            }
-        
-            async indexFaces(params) {
-              const result = await indexFacesSimp(params);
-              return result;
-            }  
-          }
-          const adapter = new MyAdapter();
+          class MyAdapter extends TVWebSDK.SDKAdapter {}
+          const adapter = new MyAdapter(accessKey, secretKey, baseUrl);
           
           // then pass adapter to ekycFullFlow
           tv.ekycFlow({
@@ -477,152 +392,12 @@
   }
 
   function startFullFlow() {
-    const apiClient = new trustvisionSdk.default(
+    class MyAdapter extends TVWebSDK.SDKAdapter {}
+    const adapter = new MyAdapter(
       inputAccessKey.value,
       inputSecretKey.value,
       inputApiUrl.value,
-      { httpHeaders: { 'x-request-id': xRequestId } }
     );
-    const getClientSettingsSimp = async () => {
-      return apiClient.clientSettings();
-    };
-    const uploadImageSimp = async (params) => {
-      return apiClient.uploadImage(params);
-    };
-    const uploadFilesSimp = async (params) => {
-      return apiClient.fileService.request(params);
-    };
-    const requestVerifyIDCardSimp = async (params) => {
-      return apiClient.requestVerifyIDCard(params);
-    };
-    const detectIDTamperingSimp = async (params) => {
-      return apiClient.detectIDTampering(params);
-    };
-    const readIDCardSimp = async (params) => {
-      return apiClient.readIDCard(params);
-    };
-    const requestVerifyPortraitSimp = async (params) => {
-      return apiClient.requestVerifyPortrait(params);
-    };
-    const verifyFaceLivenessSimp = async (params) => {
-      return apiClient.verifyFaceLiveness(params);
-    };
-    const compareFacesSimp = async (params) => {
-      return apiClient.compareFaces(params);
-    };
-    const searchFacesSimp = async (params) => {
-      return apiClient.searchFaces(params);
-    };
-    const indexFacesSimp = async (params) => {
-      return apiClient.indexFaces(params);
-    };
-    class MyAdapter extends TVWebSDK.SDKAdapter {
-      async clientSettings() {
-        const result = await getClientSettingsSimp();
-        return result;
-      }
-      async uploadImage(params) {
-        const result = await uploadImageSimp(params);
-        return result;
-      }
-      async uploadFiles(params) {
-        const result = await uploadFilesSimp(params);
-        return result;
-      }
-      async requestVerifyIDCard(params) {
-        const result = await requestVerifyIDCardSimp(params);
-        return { 
-          result,
-          message: {
-            error: {
-              en: document.getElementById('card-sanity-error-en-msg').value, 
-              vi: document.getElementById('card-sanity-error-vi-msg').value
-            },
-            success: {
-              en: document.getElementById('card-sanity-success-en-msg').value,
-              vi: document.getElementById('card-sanity-success-vi-msg').value
-            }
-          }
-        };
-      }
-      async detectIDTampering(params) {
-        const result = await detectIDTamperingSimp(params);
-        return {
-          result,
-          message: {
-            error: {
-              en: document.getElementById('card-tampering-error-en-msg').value, 
-              vi: document.getElementById('card-tampering-error-vi-msg').value
-            },
-            success: {
-              en: document.getElementById('card-tampering-success-en-msg').value,
-              vi: document.getElementById('card-tampering-success-vi-msg').value
-            }
-          }
-        };
-      }
-      async readIDCard(params) {
-        const result = await readIDCardSimp(params);
-        return {
-          result,
-          message: {
-            error: {
-              en: document.getElementById('card-ocr-error-en-msg').value, 
-              vi: document.getElementById('card-ocr-error-vi-msg').value
-            },
-            success: {
-              en: document.getElementById('card-ocr-success-en-msg').value,
-              vi: document.getElementById('card-ocr-success-vi-msg').value
-            }
-          }
-        };
-      }
-      async requestVerifyPortrait(params) {
-        const result = await requestVerifyPortraitSimp(params);
-        return {
-          result,
-          message: {
-            error: {
-              en: document.getElementById('face-sanity-error-en-msg').value, 
-              vi: document.getElementById('face-sanity-error-vi-msg').value
-            },
-            success: {
-              en: document.getElementById('face-sanity-success-en-msg').value,
-              vi: document.getElementById('face-sanity-success-vi-msg').value
-            }
-          }
-        };
-      }
-      async verifyFaceLiveness(params) {
-        const result = await verifyFaceLivenessSimp(params);
-        return {
-          result,
-          message: {
-            error: {
-              en: document.getElementById('face-liveness-error-en-msg').value, 
-              vi: document.getElementById('face-liveness-error-vi-msg').value
-            },
-            success: {
-              en: document.getElementById('face-liveness-success-en-msg').value,
-              vi: document.getElementById('face-liveness-success-vi-msg').value
-            }
-          }
-        };
-      }
-      async compareFaces(params) {
-        const result = await compareFacesSimp(params);
-        return {result};
-      }
-      async searchFaces(params) {
-        const result = await searchFacesSimp(params);
-        return {result};
-      }
-      async indexFaces(params) {
-        const result = await indexFacesSimp(params);
-        return {result};
-      }  
-    }
-    const adapter = new MyAdapter();
     revokeObjectURL();
     resultFullFlowEl.innerHTML = "";
     tbodyEl.innerHTML = null;
@@ -785,7 +560,6 @@
     );
     const resultArr = getSimplifyResult(ekycResult);
     if (resultArr && resultArr.length > 0) {
-      console.log({ ekycResult, resultArr })
       summaryTable.style.display = "block";
       const thItem1 = document.createElement('th');
       const thItem2 = document.createElement('th');
