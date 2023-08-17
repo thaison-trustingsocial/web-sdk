@@ -330,6 +330,7 @@
     <script src="./tvweb-sdk.standalone.min.js"></script>
     <script src="./flash-liveness-settings.js"></script>
     <script src="./random-color.js"></script>
+    <script src="../clearUserId.js"></script>
 
     <script>
       let listObjUrls = [];
@@ -375,6 +376,7 @@
       tv.runPreloadEKYCResources();
 
       function startFaceAuthen() {
+        clearUserId();
         const settings = getFlashLivenessSettings();
         const {
           frameSettings,
