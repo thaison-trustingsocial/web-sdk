@@ -87,7 +87,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection v3</h2>
-    <h3>Build Version: 25th August, 2023 - 15:00</h3>
+    <h3>Build Version: 28th August, 2023 - 17:00</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -289,7 +289,14 @@
           <label for="close-eyes-timeout">Timeout (in seconds): </label>
           <input id="close-eyes-timeout" type="number" min="0" />
           <br />
+        </fieldset>
 
+        <fieldset>
+          <legend>Liveness settings</legend>
+
+          <label for="liveness-timeout">Timeout (in seconds): </label>
+          <input id="liveness-timeout" type="number" min="0" />
+          <br />
         </fieldset>
       </div>
 
@@ -391,6 +398,7 @@
           faceSettings,
           maskSettings,
           closeEyesSettings,
+          livenessSettings,
           debug,
         } = settings;
 
@@ -415,6 +423,7 @@
           ovalVerticalOffset,
           chinToMaskBottomPadding,
         } = maskSettings;
+        const { timeout: livenessTimeout } = livenessSettings;
         const { enable, timeout } = closeEyesSettings;
 
         const form = document.getElementById("content");
@@ -492,6 +501,9 @@
           closeEyesSettings: {
             enable: Boolean(enable),
             timeout: parseInt(timeout),
+          },
+          livenessSettings: {
+            timeout: parseInt(livenessTimeout),
           },
           debug: Boolean(debug),
         });

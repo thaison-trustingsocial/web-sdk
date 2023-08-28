@@ -33,6 +33,9 @@ function getFlashLivenessSettings() {
   // Debug settings
   const debug = document.getElementById("log-debugging-info").checked;
 
+  // Liveness settings
+  const livenessTimeout = document.getElementById('liveness-timeout').value;
+
   return {
     frameSettings: {
       frameInterval,
@@ -63,6 +66,9 @@ function getFlashLivenessSettings() {
     closeEyesSettings: {
       enable: useCloseEyesDetector,
       timeout: closeEyesTimeout,
+    },
+    livenessSettings: {
+      timeout: livenessTimeout,
     },
     debug
   }
@@ -99,8 +105,12 @@ function setFlashLivenessSettings(settings) {
   document.getElementById("use-close-eyes-detector").checked = settings.closeEyesSettings.enable;
   document.getElementById("close-eyes-timeout").value = settings.closeEyesSettings.timeout;
 
+  // Liveness settings
+  document.getElementById('liveness-timeout').value = 30;
+
   // Debug settings
   document.getElementById("log-debugging-info").checked = settings.debug;
+
 }
 
 const isMobile =
@@ -113,6 +123,7 @@ const settings = {
   faceSettings: {},
   maskSettings: {},
   closeEyesSettings: {},
+  livenessSettings: {},
   debug: false,
 };
 
@@ -140,6 +151,8 @@ settings.maskSettings.chinToMaskBottomPadding = isMobile ? 20 : 20;
 
 settings.closeEyesSettings.enable = false;
 settings.closeEyesSettings.timeout = 5;
+
+settings.livenessSettings.timeout = 30;
 
 settings.debug = false;
 
