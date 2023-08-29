@@ -35,6 +35,7 @@ function getFlashLivenessSettings() {
 
   // Liveness settings
   const livenessTimeout = document.getElementById('liveness-timeout').value;
+  const enableFarStep = document.getElementById('enable-far-step').checked;
 
   return {
     frameSettings: {
@@ -69,6 +70,7 @@ function getFlashLivenessSettings() {
     },
     livenessSettings: {
       timeout: livenessTimeout,
+      enableFarStep,
     },
     debug
   }
@@ -106,7 +108,8 @@ function setFlashLivenessSettings(settings) {
   document.getElementById("close-eyes-timeout").value = settings.closeEyesSettings.timeout;
 
   // Liveness settings
-  document.getElementById('liveness-timeout').value = 30;
+  document.getElementById('liveness-timeout').value = settings.livenessSettings.timeout;
+  document.getElementById('enable-far-step').checked = settings.livenessSettings.enableFarStep;
 
   // Debug settings
   document.getElementById("log-debugging-info").checked = settings.debug;
@@ -131,7 +134,7 @@ const settings = {
 settings.frameSettings.frameInterval = 0;
 
 settings.flashSettings.framePerColor = 4;
-settings.flashSettings.colorsLength = 8;
+settings.flashSettings.colorsLength = 10;
 settings.flashSettings.colorDelay = 120;
 settings.flashSettings.useFaceDetectorWhenFlashing = false;
 settings.flashSettings.flashIntensity = 1;
@@ -153,6 +156,7 @@ settings.closeEyesSettings.enable = false;
 settings.closeEyesSettings.timeout = 5;
 
 settings.livenessSettings.timeout = 30;
+settings.livenessSettings.enableFarStep = true;
 
 settings.debug = false;
 

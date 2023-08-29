@@ -87,7 +87,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection v3</h2>
-    <h3>Build Version: 28th August, 2023 - 17:00</h3>
+    <h3>Build Version: 29th August, 2023 - 14:30</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -297,6 +297,10 @@
           <label for="liveness-timeout">Timeout (in seconds): </label>
           <input id="liveness-timeout" type="number" min="0" />
           <br />
+
+          <label for="enable-far-step">Enable Far step: </label>
+          <input id="enable-far-step" type="checkbox" checked />
+          <br />
         </fieldset>
       </div>
 
@@ -423,7 +427,7 @@
           ovalVerticalOffset,
           chinToMaskBottomPadding,
         } = maskSettings;
-        const { timeout: livenessTimeout } = livenessSettings;
+        const { timeout: livenessTimeout, enableFarStep } = livenessSettings;
         const { enable, timeout } = closeEyesSettings;
 
         const form = document.getElementById("content");
@@ -460,6 +464,7 @@
             ];
 
             frames.forEach((frame) => {
+              if (!frame) return;
               const img = document.createElement("img");
               img.src = `data:image/jpeg;base64,${frame.base64}`;
               img.style.width = "150px";
@@ -504,6 +509,7 @@
           },
           livenessSettings: {
             timeout: parseInt(livenessTimeout),
+            enableFarStep: Boolean(enableFarStep)
           },
           debug: Boolean(debug),
         });
