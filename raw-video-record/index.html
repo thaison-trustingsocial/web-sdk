@@ -89,7 +89,9 @@
   </div>
   <pre id="result-liveness-detection"></pre>
   <div id="raw-video" style="visibility: hidden;">
-    <video id="video-player" controls style="width: 100%; max-width: 400px;" />
+    <video id="video-player" controls style="width: 100%; max-width: 400px;"></video>
+
+    <p id="file-size"></p>
   </div>
 </div>
 
@@ -388,13 +390,12 @@
 
     const rawVideoPanel = document.getElementById('raw-video');
     const videoPlayer = document.getElementById('video-player');
+    const fileSizeEl = document.getElementById('file-size');
     if (video) {
       rawVideoPanel.style.visibility = "visible";
       const fileSize = Math.round((video.size / 1048576) * 100) / 100;
       rawVideoPanel.appendChild(document.createElement("br"));
-      rawVideoPanel.appendChild(
-        document.createTextNode("File size: " + fileSize + "MB")
-      );
+      fileSizeEl.innerHTML = "File size: " + fileSize + "MB";
       display(video, videoPlayer);
     } else {
       resultLivenessDetectionEl.appendChild(
