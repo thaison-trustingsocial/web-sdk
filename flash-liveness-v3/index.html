@@ -118,8 +118,6 @@
 
           <label for="colors-length">Colors length: </label>
           <input id="colors-length" type="number" min="8" max="12" step="1" />
-          <input id="colors" value="" type="text" disabled readonly />
-          <button class="button random-button" id="random-color">⟳</button>
           <br />
 
           <label for="frame-per-color">Frame per Color: </label>
@@ -319,10 +317,7 @@
           <input id="log-debugging-info" type="checkbox" />
           <label for="log-debugging-info">Log debugging info</label>
         </div>
-        <button
-          class="button start-button disabled"
-          onclick="startFaceAuthen()"
-        >
+        <button class="button start-button" onclick="startFaceAuthen()">
           Start
         </button>
       </div>
@@ -349,7 +344,6 @@
     <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
     <script src="./tvweb-sdk.standalone.min.js"></script>
     <script src="./flash-liveness-settings.js"></script>
-    <script src="./random-color.js"></script>
 
     <script>
       let listObjUrls = [];
@@ -410,7 +404,6 @@
         const {
           framePerColor,
           colorsLength,
-          colors,
           colorDelay,
           useFaceDetector,
           flashIntensity,
@@ -450,38 +443,42 @@
             randomColor();
           },
           onFlashDone: async (result, apiResult) => {
-            const resultContainer = document.getElementById("result");
-            resultContainer.innerHTML = "";
+            try {
+              const resultContainer = document.getElementById("result");
+              resultContainer.innerHTML = "";
 
-            const farFaceFrames = result.frames.far_face;
-            const closeFaceFrames = result.frames.close_face;
-            const flashingFrames = result.frames.flashing;
+              const farFaceFrames = result.frames.far_face;
+              const closeFaceFrames = result.frames.close_face;
+              const flashingFrames = result.frames.flashing;
 
-            const frames = [
-              farFaceFrames[farFaceFrames.length - 1],
-              closeFaceFrames[closeFaceFrames.length - 1],
-              ...flashingFrames,
-            ];
+              const frames = [
+                farFaceFrames[farFaceFrames.length - 1],
+                closeFaceFrames[closeFaceFrames.length - 1],
+                ...flashingFrames,
+              ];
 
-            frames.forEach((frame) => {
-              if (!frame) return;
-              const img = document.createElement("img");
-              img.src = `data:image/jpeg;base64,${frame.base64}`;
-              img.style.width = "150px";
-              resultContainer.appendChild(img);
-            });
+              frames.forEach((frame) => {
+                if (!frame) return;
+                const img = document.createElement("img");
+                img.src = `data:image/jpeg;base64,${frame.base64}`;
+                img.style.width = "150px";
+                resultContainer.appendChild(img);
+              });
 
-            // Handle API result
-            const apiResultContainer = document.getElementById("api-result");
-            const preTag = document.createElement("pre");
-            apiResultContainer.innerHTML = "";
-            apiResultContainer.appendChild(preTag);
-            preTag.innerHTML = JSON.stringify(apiResult, null, 2);
+              // Handle API result
+              const apiResultContainer = document.getElementById("api-result");
+              const preTag = document.createElement("pre");
+              apiResultContainer.innerHTML = "";
+              apiResultContainer.appendChild(preTag);
+              preTag.innerHTML = JSON.stringify(apiResult, null, 2);
+            } catch (error) {
+              console.error(error)
+            }
           },
           frameInterval: parseInt(frameInterval),
           flashSettings: {
             framesPerColor: parseInt(framePerColor),
-            colors: colors.replace(/•/g, " "),
+            colorsLength: parseInt(colorsLength),
             delayBetweenColors: parseInt(colorDelay),
             useFaceDetectorWhenFlashing: useFaceDetector,
             flashIntensity: parseFloat(flashIntensity),
@@ -509,7 +506,7 @@
           },
           livenessSettings: {
             timeout: parseInt(livenessTimeout),
-            enableFarStep: Boolean(enableFarStep)
+            enableFarStep: Boolean(enableFarStep),
           },
           debug: Boolean(debug),
         });

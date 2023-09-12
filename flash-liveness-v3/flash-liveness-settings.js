@@ -6,7 +6,6 @@ function getFlashLivenessSettings() {
   // Flash settings
   const framePerColor = document.getElementById("frame-per-color").value;
   const colorsLength = document.getElementById("colors-length").value;
-  const colors = document.getElementById("colors").value;
   const colorDelay = document.getElementById("color-delay").value;
   const useFaceDetector = document.getElementById("use-face-dectector").checked;
   const flashIntensity = document.getElementById("flash-intensity").value;
@@ -44,7 +43,6 @@ function getFlashLivenessSettings() {
     flashSettings: {
       framePerColor,
       colorsLength,
-      colors,
       colorDelay,
       useFaceDetector,
       flashIntensity,
