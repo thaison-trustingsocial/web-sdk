@@ -87,7 +87,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <h2>Flash Liveness detection v3</h2>
-    <h3>Build Version: 6th September, 2023 - 10:45</h3>
+    <h3>Build Version: 13th September, 2023 - 17:45</h3>
     <div id="container"></div>
 
     <div id="content">
@@ -342,7 +342,7 @@
     <script src="../keys-input.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://unpkg.com/@tsocial/trustvision-sdk@2.10.1/dist/trustvision-sdk.umd.js"></script>
-    <script src="./tvweb-sdk.standalone.min.js"></script>
+    <script src="https://unpkg.com/@tsocial/tvweb-sdk@beta/build/tvweb-sdk.standalone.min.js"></script>
     <script src="./flash-liveness-settings.js"></script>
 
     <script>
@@ -427,20 +427,15 @@
         form.style.display = "none";
 
         tv.flashLiveness({
+          apiCheck: inputAccessKey.value ? true : false,
           apiCredentials: {
             accessKey: inputAccessKey.value,
             secretKey: inputSecretKey.value,
             apiUrl: inputApiUrl.value,
           },
-          onDone: (result) => {
-            tv.destroyView();
-            form.style.display = "block";
-            randomColor();
-          },
           onClose: (result) => {
             tv.destroyView();
             form.style.display = "block";
-            randomColor();
           },
           onFlashDone: async (result, apiResult) => {
             try {
@@ -471,8 +466,12 @@
               apiResultContainer.innerHTML = "";
               apiResultContainer.appendChild(preTag);
               preTag.innerHTML = JSON.stringify(apiResult, null, 2);
+
+              // Close
+              tv.destroyView();
+              form.style.display = "block";
             } catch (error) {
-              console.error(error)
+              console.error(error);
             }
           },
           frameInterval: parseInt(frameInterval),
