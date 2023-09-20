@@ -106,7 +106,15 @@
 
       <div class="settings-container">
         <fieldset>
-          <legend>Frame settings</legend>
+          <legend>Capture frame settings</legend>
+
+          <label for="frames-batching-enable">Enable frames batching: </label>
+          <input id="frames-batching-enable" type="checkbox" />
+          <br />
+
+          <label for="frames-batch-length">Frames batch length: </label>
+          <input id="frames-batch-length" type="number" min="0" />
+          <br />
 
           <label for="frame-interval">Frame Interval (ms): </label>
           <input id="frame-interval" type="number" min="0" />
@@ -197,10 +205,6 @@
             max="1"
             step="0.01"
           />
-
-          <br />
-          <label for="use-new-face-detector">Use New Face Detector: </label>
-          <input id="use-new-face-detector" type="checkbox" checked />
         </fieldset>
 
         <fieldset>
@@ -391,37 +395,9 @@
       function startFaceAuthen() {
         const settings = getFlashLivenessSettings();
         const {
-          frameSettings,
-          flashSettings,
-          faceSettings,
-          maskSettings,
-          closeEyesSettings,
-          livenessSettings,
+          clientSettings,
           debug,
         } = settings;
-
-        const { frameInterval } = frameSettings;
-        const {
-          framePerColor,
-          colorsLength,
-          colorDelay,
-          useFaceDetector,
-          flashIntensity,
-        } = flashSettings;
-        const { minFarFaceRatio, maxFarFaceRatio, closeFaceRatio } =
-          faceSettings;
-        const {
-          smallScale,
-          largeScale,
-          ovalPaddingLeft,
-          ovalPaddingRight,
-          ovalPaddingTop,
-          ovalPaddingBottom,
-          ovalVerticalOffset,
-          chinToMaskBottomPadding,
-        } = maskSettings;
-        const { timeout: livenessTimeout, enableFarStep } = livenessSettings;
-        const { enable, timeout } = closeEyesSettings;
 
         const form = document.getElementById("content");
         form.style.display = "none";
@@ -442,15 +418,7 @@
               const resultContainer = document.getElementById("result");
               resultContainer.innerHTML = "";
 
-              const farFaceFrames = result.frames.far_face;
-              const closeFaceFrames = result.frames.close_face;
-              const flashingFrames = result.frames.flashing;
-
-              const frames = [
-                farFaceFrames[farFaceFrames.length - 1],
-                closeFaceFrames[closeFaceFrames.length - 1],
-                ...flashingFrames,
-              ];
+              const frames = result.frames.filter(frame => frame.type === 'flashing')
 
               frames.forEach((frame) => {
                 if (!frame) return;
@@ -474,39 +442,7 @@
               console.error(error);
             }
           },
-          frameInterval: parseInt(frameInterval),
-          flashSettings: {
-            framesPerColor: parseInt(framePerColor),
-            colorsLength: parseInt(colorsLength),
-            delayBetweenColors: parseInt(colorDelay),
-            useFaceDetectorWhenFlashing: useFaceDetector,
-            flashIntensity: parseFloat(flashIntensity),
-          },
-          faceSettings: {
-            minFarFaceRatio: parseFloat(minFarFaceRatio),
-            maxFarFaceRatio: parseFloat(maxFarFaceRatio),
-            closeFaceRatio: parseFloat(closeFaceRatio),
-          },
-          maskSettings: {
-            smallScale: parseFloat(smallScale),
-            largeScale: parseFloat(largeScale),
-            ovalPadding: {
-              left: parseInt(ovalPaddingLeft),
-              right: parseInt(ovalPaddingRight),
-              top: parseInt(ovalPaddingTop),
-              bottom: parseInt(ovalPaddingBottom),
-            },
-            ovalVerticalOffset: parseInt(ovalVerticalOffset),
-            chinToMaskBottomPadding: parseInt(chinToMaskBottomPadding),
-          },
-          closeEyesSettings: {
-            enable: Boolean(enable),
-            timeout: parseInt(timeout),
-          },
-          livenessSettings: {
-            timeout: parseInt(livenessTimeout),
-            enableFarStep: Boolean(enableFarStep),
-          },
+          clientSettings,
           debug: Boolean(debug),
         });
       }

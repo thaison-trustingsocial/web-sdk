@@ -1,6 +1,8 @@
 // prettier-ignore
 function getFlashLivenessSettings() {
-  // Frame settings
+  // Capture frame settings
+  const framesBatchingEnabled = document.getElementById("frames-batching-enable").checked;
+  const framesBatchLength = document.getElementById("frames-batch-length").value;
   const frameInterval = document.getElementById("frame-interval").value;
 
   // Flash settings
@@ -36,40 +38,65 @@ function getFlashLivenessSettings() {
   const livenessTimeout = document.getElementById('liveness-timeout').value;
   const enableFarStep = document.getElementById('enable-far-step').checked;
 
+  const clientSettings = {
+    "capture_frame_settings": {
+      "enable": Boolean(framesBatchingEnabled),
+      "frames_batch_length": parseInt(framesBatchLength),
+      "frames_interval_time": parseInt(frameInterval)
+    },
+    "close_eyes_settings": {
+      "enable": Boolean(useCloseEyesDetector),
+      "timeout": parseInt(closeEyesTimeout)
+    },
+    "face_settings": {
+      "close_face_ratio": parseInt(closeFaceRatio),
+      "max_far_face_ratio": parseInt(maxFarFaceRatio),
+      "min_far_face_ratio": parseInt(minFarFaceRatio),
+      "mobile": {
+        "close_face_ratio": parseInt(closeFaceRatio),
+        "max_far_face_ratio": parseInt(maxFarFaceRatio),
+        "min_far_face_ratio": parseInt(minFarFaceRatio)
+      }
+    },
+    "flash_settings": {
+      "colors_length": parseInt(colorsLength),
+      "delay_between_colors": parseInt(colorDelay),
+      "flash_intensity": parseInt(flashIntensity),
+      "frames_per_color": parseInt(framePerColor),
+      "use_face_detector_when_flashing": Boolean(useFaceDetector)
+    },
+    "liveness_settings": {
+      "enable_far_step": Boolean(enableFarStep),
+      "timeout": parseInt(livenessTimeout)
+    },
+    "mask_settings": {
+      "chin_to_mask_bottom_padding": parseInt(chinToMaskBottomPadding),
+      "large_scale": parseInt(largeScale),
+      "mobile": {
+        "chin_to_mask_bottom_padding": parseInt(chinToMaskBottomPadding),
+        "large_scale": parseInt(largeScale),
+        "oval_padding": {
+          "bottom": parseInt(ovalPaddingBottom),
+          "left": parseInt(ovalPaddingLeft),
+          "right": parseInt(ovalPaddingRight),
+          "top": parseInt(ovalPaddingTop)
+        },
+        "oval_vertical_offset": parseInt(ovalVerticalOffset),
+        "small_scale": parseInt(smallScale)
+      },
+      "oval_padding": {
+        "bottom": parseInt(ovalPaddingBottom),
+        "left": parseInt(ovalPaddingLeft),
+        "right": parseInt(ovalPaddingRight),
+        "top": parseInt(ovalPaddingTop)
+      },
+      "oval_vertical_offset": parseInt(ovalVerticalOffset),
+      "small_scale": parseInt(smallScale)
+    }
+  }
+
   return {
-    frameSettings: {
-      frameInterval,
-    },
-    flashSettings: {
-      framePerColor,
-      colorsLength,
-      colorDelay,
-      useFaceDetector,
-      flashIntensity,
-    },
-    faceSettings: {
-      minFarFaceRatio,
-      maxFarFaceRatio,
-      closeFaceRatio,
-    },
-    maskSettings: {
-      smallScale,
-      largeScale,
-      ovalPaddingLeft,
-      ovalPaddingRight,
-      ovalPaddingTop,
-      ovalPaddingBottom,
-      ovalVerticalOffset,
-      chinToMaskBottomPadding,
-    },
-    closeEyesSettings: {
-      enable: useCloseEyesDetector,
-      timeout: closeEyesTimeout,
-    },
-    livenessSettings: {
-      timeout: livenessTimeout,
-      enableFarStep,
-    },
+    clientSettings,
     debug
   }
 }
@@ -77,7 +104,9 @@ function getFlashLivenessSettings() {
 // prettier-ignore
 function setFlashLivenessSettings(settings) {
   // Frame settings
-  document.getElementById("frame-interval").value = settings.frameSettings.frameInterval;
+  document.getElementById("frames-batching-enable").checked = settings.captureFramesSettings.framesBatchingEnabled;
+  document.getElementById("frames-batch-length").value = settings.captureFramesSettings.framesBatchLength;
+  document.getElementById("frame-interval").value = settings.captureFramesSettings.frameInterval;
 
   // Flash settings
   document.getElementById("frame-per-color").value = settings.flashSettings.framePerColor;
@@ -119,7 +148,7 @@ const isMobile =
     navigator.userAgent
   );
 const settings = {
-  frameSettings: {},
+  captureFramesSettings: {},
   flashSettings: {},
   faceSettings: {},
   maskSettings: {},
@@ -129,7 +158,9 @@ const settings = {
 };
 
 // Default settings
-settings.frameSettings.frameInterval = 0;
+settings.captureFramesSettings.frameInterval = 0;
+settings.captureFramesSettings.framesBatchLength = 10;
+settings.captureFramesSettings.framesBatchingEnabled = false;
 
 settings.flashSettings.framePerColor = 4;
 settings.flashSettings.colorsLength = 10;
